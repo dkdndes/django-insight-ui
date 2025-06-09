@@ -98,3 +98,10 @@ packages = ["insight_ui"]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 python_files = "test_*.py"
 testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-cov>=6.1.1",
+    "pytest-django>=4.11.1",
+]
