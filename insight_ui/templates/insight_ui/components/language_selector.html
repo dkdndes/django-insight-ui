@@ -2,7 +2,7 @@
 {% get_available_languages as LANGUAGES %}
 {% get_current_language as LANGUAGE_CODE %}
 
-<div class="insight-language-selector relative" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<div class="insight-language-selector relative">
   <label for="language-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
     {% trans 'Sprache auswählen' %}
   </label>
@@ -15,7 +15,7 @@
     {% for code, name in LANGUAGES %}
       <option 
         value="{{ code }}"
-        {% if LANGUAGE_CODE == code %}selected{% endif %}>
+        {% if current_language == code %}selected{% endif %}>
         {{ name }}
       </option>
     {% endfor %}
