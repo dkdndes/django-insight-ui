@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Insight UI{% endblock %}</title>
+    
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Insight UI JavaScript -->
+    <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
+    <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    {% block content %}{% endblock %}
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
