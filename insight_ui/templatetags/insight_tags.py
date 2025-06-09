@@ -63,3 +63,217 @@ def alert(
         "dismissible": dismissible,
         "options": kwargs,
     }
+
+
+@register.inclusion_tag("insight_ui/components/sidebar.html")
+def sidebar(
+    title: str = "",
+    items: Optional[List[Dict[str, Any]]] = None,
+    theme: str = "light",
+    collapsible: bool = False,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert eine barrierefreie Seitennavigation.
+
+    Args:
+        title: Der Titel der Sidebar
+        items: Eine Liste von Dictionaries mit Navigation-Elementen
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        collapsible: Ob die Sidebar einklappbar sein soll
+        **kwargs: Zusätzliche Optionen für die Sidebar
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if items is None:
+        items = []
+
+    return {
+        "title": title,
+        "items": items,
+        "theme": theme,
+        "collapsible": collapsible,
+        "options": kwargs,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/breadcrumbs.html")
+def breadcrumbs(
+    items: Optional[List[Dict[str, Any]]] = None,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert eine barrierefreie Breadcrumb-Navigation.
+
+    Args:
+        items: Eine Liste von Dictionaries mit Breadcrumb-Elementen
+        **kwargs: Zusätzliche Optionen für die Breadcrumbs
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if items is None:
+        items = []
+
+    return {
+        "items": items,
+        "options": kwargs,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/table.html")
+def table(
+    headers: Optional[List[str]] = None,
+    rows: Optional[List[List[Any]]] = None,
+    caption: str = "",
+    theme: str = "light",
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert eine barrierefreie Tabelle.
+
+    Args:
+        headers: Eine Liste von Spaltenüberschriften
+        rows: Eine Liste von Listen mit Zellendaten
+        caption: Eine Beschreibung der Tabelle
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        **kwargs: Zusätzliche Optionen für die Tabelle
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if headers is None:
+        headers = []
+    if rows is None:
+        rows = []
+
+    return {
+        "headers": headers,
+        "rows": rows,
+        "caption": caption,
+        "theme": theme,
+        "options": kwargs,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/modal.html")
+def modal(
+    id: str,
+    title: str,
+    content: str = "",
+    description: str = "",
+    theme: str = "light",
+    actions: Optional[List[Dict[str, Any]]] = None,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert ein barrierefreies Modal-Dialog.
+
+    Args:
+        id: Die eindeutige ID des Modals
+        title: Der Titel des Modals
+        content: Der Inhalt des Modals
+        description: Eine optionale Beschreibung
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        actions: Eine Liste von Aktions-Buttons
+        **kwargs: Zusätzliche Optionen für das Modal
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if actions is None:
+        actions = []
+
+    return {
+        "id": id,
+        "title": title,
+        "content": content,
+        "description": description,
+        "theme": theme,
+        "actions": actions,
+        "options": kwargs,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/card.html")
+def card(
+    title: str = "",
+    subtitle: str = "",
+    content: str = "",
+    theme: str = "light",
+    image: Optional[Dict[str, str]] = None,
+    actions: Optional[List[Dict[str, Any]]] = None,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert eine barrierefreie Karte.
+
+    Args:
+        title: Der Titel der Karte
+        subtitle: Ein optionaler Untertitel
+        content: Der Inhalt der Karte
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        image: Ein Dictionary mit Bild-Informationen (url, alt)
+        actions: Eine Liste von Aktions-Links
+        **kwargs: Zusätzliche Optionen für die Karte
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if actions is None:
+        actions = []
+
+    return {
+        "title": title,
+        "subtitle": subtitle,
+        "content": content,
+        "theme": theme,
+        "image": image,
+        "actions": actions,
+        "options": kwargs,
+    }
+
+
+@register.inclusion_tag("insight_ui/components/form.html")
+def form(
+    fields: Optional[List[Dict[str, Any]]] = None,
+    title: str = "",
+    description: str = "",
+    action: str = "",
+    method: str = "post",
+    theme: str = "light",
+    actions: Optional[List[Dict[str, Any]]] = None,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert ein barrierefreies Formular.
+
+    Args:
+        fields: Eine Liste von Formularfeldern
+        title: Der Titel des Formulars
+        description: Eine optionale Beschreibung
+        action: Die URL für die Formular-Übermittlung
+        method: Die HTTP-Methode ('post', 'get')
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        actions: Eine Liste von Aktions-Buttons
+        **kwargs: Zusätzliche Optionen für das Formular
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if fields is None:
+        fields = []
+    if actions is None:
+        actions = []
+
+    return {
+        "fields": fields,
+        "title": title,
+        "description": description,
+        "action": action,
+        "method": method,
+        "theme": theme,
+        "actions": actions,
+        "options": kwargs,
+    }
