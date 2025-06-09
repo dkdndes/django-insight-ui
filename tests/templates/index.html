@@ -16,6 +16,9 @@
     {% load i18n %}
     {% load static %}
     
+    <!-- CSRF-Token für JavaScript -->
+    {% csrf_token %}
+    
     <!-- Navbar mit Sprachauswahl -->
     {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
     

@@ -26,13 +26,27 @@
       form.method = 'POST';
       form.action = '/i18n/setlang/';
       
-      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+      // CSRF-Token hinzufügen
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]') || 
+                       document.querySelector('meta[name=csrf-token]');
       if (csrfToken) {
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'csrfmiddlewaretoken';
-        csrfInput.value = csrfToken.value;
+        csrfInput.value = csrfToken.content || csrfToken.value;
         form.appendChild(csrfInput);
+      } else {
+        // Fallback: CSRF-Token aus Cookie lesen
+        const csrfCookie = document.cookie.split(';').find(cookie => 
+          cookie.trim().startsWith('csrftoken=')
+        );
+        if (csrfCookie) {
+          const csrfInput = document.createElement('input');
+          csrfInput.type = 'hidden';
+          csrfInput.name = 'csrfmiddlewaretoken';
+          csrfInput.value = csrfCookie.split('=')[1];
+          form.appendChild(csrfInput);
+        }
       }
       
       const languageInput = document.createElement('input');
@@ -44,7 +58,7 @@
       const nextInput = document.createElement('input');
       nextInput.type = 'hidden';
       nextInput.name = 'next';
-      nextInput.value = window.location.pathname;
+      nextInput.value = window.location.pathname + window.location.search;
       form.appendChild(nextInput);
       
       document.body.appendChild(form);
