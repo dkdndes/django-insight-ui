@@ -8,14 +8,47 @@
     id="language-select" 
     name="language" 
     class="insight-language-selector__select"
-    onchange="window.location.href = this.value"
+    onchange="changeLanguage(this.value)"
     aria-label="{% trans 'Sprache ändern' %}">
     {% for language in available_languages %}
       <option 
-        value="{% url 'set_language' %}?language={{ language.code }}&next={{ request.get_full_path|urlencode }}"
+        value="{{ language.code }}"
         {% if current_language == language.code %}selected{% endif %}>
         {{ language.native }} ({{ language.name }})
       </option>
     {% endfor %}
   </select>
+  
+  <script>
+    function changeLanguage(languageCode) {
+      // Erstelle ein verstecktes Formular für den Sprachwechsel
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = '/i18n/setlang/';
+      
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+      if (csrfToken) {
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = csrfToken.value;
+        form.appendChild(csrfInput);
+      }
+      
+      const languageInput = document.createElement('input');
+      languageInput.type = 'hidden';
+      languageInput.name = 'language';
+      languageInput.value = languageCode;
+      form.appendChild(languageInput);
+      
+      const nextInput = document.createElement('input');
+      nextInput.type = 'hidden';
+      nextInput.name = 'next';
+      nextInput.value = window.location.pathname;
+      form.appendChild(nextInput);
+      
+      document.body.appendChild(form);
+      form.submit();
+    }
+  </script>
 </div>
