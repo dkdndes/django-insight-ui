@@ -365,10 +365,17 @@ def form(
     method: str = "post",
     theme: str = "light",
     actions: Optional[List[Dict[str, Any]]] = None,
+    htmx_url: str = "",
+    htmx_method: str = "post",
+    htmx_target: str = "",
+    htmx_swap: str = "innerHTML",
+    htmx_trigger: str = "submit",
+    htmx_confirm: str = "",
+    htmx_boost: bool = False,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
-    Rendert ein barrierefreies Formular.
+    Rendert ein barrierefreies Formular mit HTMX-Unterstützung.
 
     Args:
         fields: Eine Liste von Formularfeldern
@@ -378,6 +385,13 @@ def form(
         method: Die HTTP-Methode ('post', 'get')
         theme: Das Farbschema ('light', 'dark', 'high-contrast')
         actions: Eine Liste von Aktions-Buttons
+        htmx_url: HTMX URL für AJAX-Requests
+        htmx_method: HTMX HTTP-Methode ('post', 'get', 'put', 'patch', 'delete')
+        htmx_target: HTMX Ziel-Element
+        htmx_swap: HTMX Swap-Strategie
+        htmx_trigger: HTMX Trigger-Event
+        htmx_confirm: HTMX Bestätigungsnachricht
+        htmx_boost: HTMX Boost aktivieren
         **kwargs: Zusätzliche Optionen für das Formular
 
     Returns:
@@ -388,6 +402,21 @@ def form(
     if actions is None:
         actions = []
 
+    # HTMX-Konfiguration
+    htmx_config = None
+    if htmx_url:
+        htmx_config = {
+            "url": htmx_url,
+            "method": htmx_method,
+            "target": htmx_target,
+            "swap": htmx_swap,
+            "trigger": htmx_trigger,
+            "confirm": htmx_confirm,
+            "boost": htmx_boost,
+            "validate": kwargs.get("htmx_validate", True),
+            "indicator": kwargs.get("htmx_indicator", ".htmx-indicator"),
+        }
+
     return {
         "fields": fields,
         "title": title,
@@ -396,5 +425,8 @@ def form(
         "method": method,
         "theme": theme,
         "actions": actions,
-        "options": kwargs,
+        "options": {
+            **kwargs,
+            "htmx": htmx_config,
+        },
     }

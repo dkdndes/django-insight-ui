@@ -1,18 +1,21 @@
 {% load i18n %}
 
 <form 
-  class="insight-form insight-form--{{ theme }}" 
+  class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md" 
   {% if action %}action="{{ action }}"{% endif %}
   {% if method %}method="{{ method }}"{% else %}method="post"{% endif %}
   {% if options.id %}id="{{ options.id }}"{% endif %}
   {% if options.htmx %}
-    {% if options.htmx.method == 'put' %}hx-put="{{ options.htmx.url }}"{% else %}hx-post="{{ options.htmx.url }}"{% endif %}
+    {% if options.htmx.method == 'put' %}hx-put="{{ options.htmx.url }}"{% elif options.htmx.method == 'patch' %}hx-patch="{{ options.htmx.url }}"{% elif options.htmx.method == 'delete' %}hx-delete="{{ options.htmx.url }}"{% else %}hx-post="{{ options.htmx.url }}"{% endif %}
     {% if options.htmx.target %}hx-target="{{ options.htmx.target }}"{% endif %}
-    {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% endif %}
-    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% endif %}
-    {% if options.htmx.validate %}hx-validate{% endif %}
+    {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% else %}hx-swap="innerHTML"{% endif %}
+    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% else %}hx-trigger="submit"{% endif %}
+    {% if options.htmx.validate %}hx-validate="true"{% endif %}
     {% if options.htmx.indicator %}hx-indicator="{{ options.htmx.indicator }}"{% endif %}
+    {% if options.htmx.confirm %}hx-confirm="{{ options.htmx.confirm }}"{% endif %}
+    {% if options.htmx.boost %}hx-boost="true"{% endif %}
     hx-ext="form-validation,progressive-enhancement"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   {% endif %}
   {% if options.alpine %}
     x-data="formData()"
@@ -22,36 +25,46 @@
   {% csrf_token %}
   
   {% if title %}
-    <div class="insight-form__header">
-      <h2 class="insight-form__title">{{ title }}</h2>
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ title }}</h2>
       {% if description %}
-        <p class="insight-form__description">{{ description }}</p>
+        <p class="mt-2 text-gray-600 dark:text-gray-400">{{ description }}</p>
       {% endif %}
     </div>
   {% endif %}
   
-  <div class="insight-form__body">
+  <div class="space-y-4">
     {% for field in fields %}
-      <div class="insight-form__group">
-        <label for="{{ field.id }}" class="insight-form__label">
+      <div class="space-y-2">
+        <label for="{{ field.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {{ field.label }}
-          {% if field.required %}<span class="insight-form__required" aria-label="{% trans 'Pflichtfeld' %}">*</span>{% endif %}
+          {% if field.required %}<span class="text-red-500 ml-1" aria-label="{% trans 'Pflichtfeld' %}">*</span>{% endif %}
         </label>
         
         {% if field.type == 'textarea' %}
           <textarea 
             id="{{ field.id }}" 
             name="{{ field.name }}" 
-            class="insight-form__textarea"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
             {% if field.required %}required{% endif %}
-            {% if field.rows %}rows="{{ field.rows }}"{% endif %}>{{ field.value|default:'' }}</textarea>
+            {% if field.rows %}rows="{{ field.rows }}"{% else %}rows="4"{% endif %}
+            {% if field.htmx %}
+              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
+              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
+              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
+            {% endif %}>{{ field.value|default:'' }}</textarea>
         {% elif field.type == 'select' %}
           <select 
             id="{{ field.id }}" 
             name="{{ field.name }}" 
-            class="insight-form__select"
-            {% if field.required %}required{% endif %}>
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
+            {% if field.required %}required{% endif %}
+            {% if field.htmx %}
+              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
+              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
+              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
+            {% endif %}>
             {% for option in field.options %}
               <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>{{ option.text }}</option>
             {% endfor %}
@@ -61,22 +74,27 @@
             type="{{ field.type|default:'text' }}" 
             id="{{ field.id }}" 
             name="{{ field.name }}" 
-            class="insight-form__input"
+            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.value %}value="{{ field.value }}"{% endif %}
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
             {% if field.required %}required{% endif %}
             {% if field.min %}min="{{ field.min }}"{% endif %}
-            {% if field.max %}max="{{ field.max }}"{% endif %} />
+            {% if field.max %}max="{{ field.max }}"{% endif %}
+            {% if field.htmx %}
+              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
+              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
+              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
+            {% endif %} />
         {% endif %}
         
         {% if field.help_text %}
-          <small class="insight-form__help">{{ field.help_text }}</small>
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ field.help_text }}</p>
         {% endif %}
         
         {% if field.errors %}
-          <div class="insight-form__errors" role="alert">
+          <div class="space-y-1" role="alert">
             {% for error in field.errors %}
-              <span class="insight-form__error">{{ error }}</span>
+              <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             {% endfor %}
           </div>
         {% endif %}
@@ -85,14 +103,31 @@
   </div>
   
   {% if actions %}
-    <div class="insight-form__footer">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
       {% for action in actions %}
         <button 
           type="{{ action.type|default:'submit' }}" 
-          class="insight-btn insight-btn--{{ action.style|default:'primary' }}">
+          class="{% if action.style == 'primary' %}bg-blue-600 hover:bg-blue-700 text-white{% elif action.style == 'danger' %}bg-red-600 hover:bg-red-700 text-white{% else %}bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white{% endif %} px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          {% if action.htmx %}
+            {% if action.htmx.method == 'delete' %}hx-delete="{{ action.htmx.url }}"{% elif action.htmx.method == 'put' %}hx-put="{{ action.htmx.url }}"{% elif action.htmx.method == 'patch' %}hx-patch="{{ action.htmx.url }}"{% else %}hx-post="{{ action.htmx.url }}"{% endif %}
+            {% if action.htmx.target %}hx-target="{{ action.htmx.target }}"{% endif %}
+            {% if action.htmx.swap %}hx-swap="{{ action.htmx.swap }}"{% endif %}
+            {% if action.htmx.confirm %}hx-confirm="{{ action.htmx.confirm }}"{% endif %}
+          {% endif %}>
           {{ action.text }}
         </button>
       {% endfor %}
+    </div>
+  {% endif %}
+  
+  <!-- HTMX Loading Indicator -->
+  {% if options.htmx %}
+    <div class="htmx-indicator fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow-lg">
+      <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      {% trans 'Wird geladen...' %}
     </div>
   {% endif %}
 </form>

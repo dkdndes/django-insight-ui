@@ -1,12 +1,16 @@
 {% load i18n %}
 
-<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="insight-navbar insight-navbar--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
-  <div class="insight-navbar__container">
+<!-- TailwindCSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if options.id %}id="{{ options.id }}"{% endif %}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Skip-Link für Barrierefreiheit -->
-    <a href="#main-content" class="insight-skip-link">{% trans 'Zum Hauptinhalt springen' %}</a>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">{% trans 'Zum Hauptinhalt springen' %}</a>
     
-    <!-- Markenbereich -->
-    <div class="insight-navbar__brand">
+    <div class="flex justify-between items-center h-16">
+      <!-- Markenbereich -->
+      <div class="flex items-center">
       {% if brand %}
         <a href="{% if options.brand_url %}{{ options.brand_url }}{% else %}#{% endif %}" class="insight-navbar__brand-link">
           {% if options.brand_logo %}
@@ -31,41 +35,73 @@
     <!-- Navigationslinks -->
     <div id="navbar-menu" class="insight-navbar__menu">
       <ul class="insight-navbar__nav">
-        {% for link in links %}
-          <li class="insight-navbar__item{% if link.active %} insight-navbar__item--active{% endif %}">
-            <a 
-              href="{{ link.url }}" 
-              class="insight-navbar__link"
-              {% if link.active %}aria-current="page"{% endif %}
-              {% if link.external %}target="_blank" rel="noopener"{% endif %}>
-              {% if link.icon %}<span class="insight-navbar__icon">{{ link.icon|safe }}</span>{% endif %}
-              <span>{{ link.text }}</span>
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+          {% for link in links %}
+            <li>
+              <a 
+                href="{{ link.url }}" 
+                class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-3 py-2 text-sm font-medium transition-colors duration-200"
+                {% if link.active %}aria-current="page"{% endif %}
+                {% if link.external %}target="_blank" rel="noopener"{% endif %}>
+                {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                {{ link.text }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
       
-      <!-- Zusätzliche Aktionen (z.B. Sprachumschalter, Farbschema-Umschalter) -->
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button 
+          type="button" 
+          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500" 
+          aria-expanded="false" 
+          aria-controls="mobile-menu"
+          aria-label="{% trans 'Menü öffnen' %}"
+          data-insight-toggle="navbar">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Theme Toggle & Language Selector -->
       {% if options.show_theme_toggle or options.show_language_selector %}
-        <div class="insight-navbar__actions">
+        <div class="hidden md:flex items-center space-x-4">
           {% if options.show_language_selector %}
-            <div class="insight-navbar__language-selector">
+            <div class="relative">
               <!-- Sprachumschalter hier einfügen -->
             </div>
           {% endif %}
           
           {% if options.show_theme_toggle %}
-            <div class="insight-navbar__theme-toggle">
-              <button 
-                type="button" 
-                aria-label="{% trans 'Farbschema umschalten' %}"
-                class="insight-theme-toggle">
-                <span class="insight-theme-toggle__icon"></span>
-              </button>
-            </div>
+            <button 
+              type="button" 
+              aria-label="{% trans 'Farbschema umschalten' %}"
+              class="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            </button>
           {% endif %}
         </div>
       {% endif %}
+    </div>
+    
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        {% for link in links %}
+          <a 
+            href="{{ link.url }}" 
+            class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+            {% if link.active %}aria-current="page"{% endif %}
+            {% if link.external %}target="_blank" rel="noopener"{% endif %}>
+            {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+            {{ link.text }}
+          </a>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </nav>
