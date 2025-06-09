@@ -25,10 +25,13 @@
     // Globale Funktion für Sprachwechsel (falls noch nicht definiert)
     if (typeof window.changeLanguage === 'undefined') {
       window.changeLanguage = function(languageCode) {
+        console.log('Sprachwechsel zu:', languageCode);
+        
         // Erstelle ein verstecktes Formular für den Sprachwechsel
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/i18n/setlang/';
+        form.style.display = 'none';
         
         // CSRF-Token aus dem DOM holen
         let csrfToken = null;
@@ -38,6 +41,7 @@
         
         if (csrfInput) {
           csrfToken = csrfInput.value;
+          console.log('CSRF-Token aus Input gefunden');
         } else {
           // Fallback: CSRF-Token aus Cookie lesen
           const cookies = document.cookie.split(';');
@@ -45,6 +49,7 @@
             const trimmed = cookie.trim();
             if (trimmed.startsWith('csrftoken=')) {
               csrfToken = trimmed.substring('csrftoken='.length);
+              console.log('CSRF-Token aus Cookie gefunden');
               break;
             }
           }
@@ -52,30 +57,41 @@
         
         if (!csrfToken) {
           console.error('Kein CSRF-Token gefunden! Sprachwechsel wird möglicherweise fehlschlagen.');
+          alert('Fehler: CSRF-Token nicht gefunden. Bitte laden Sie die Seite neu.');
           return;
         }
         
+        // CSRF-Token hinzufügen
         const csrfHiddenInput = document.createElement('input');
         csrfHiddenInput.type = 'hidden';
         csrfHiddenInput.name = 'csrfmiddlewaretoken';
         csrfHiddenInput.value = csrfToken;
         form.appendChild(csrfHiddenInput);
         
+        // Sprache hinzufügen
         const languageInput = document.createElement('input');
         languageInput.type = 'hidden';
         languageInput.name = 'language';
         languageInput.value = languageCode;
         form.appendChild(languageInput);
         
+        // Redirect-URL hinzufügen
         const nextInput = document.createElement('input');
         nextInput.type = 'hidden';
         nextInput.name = 'next';
         nextInput.value = window.location.pathname + window.location.search;
         form.appendChild(nextInput);
         
+        // Formular zum DOM hinzufügen und absenden
         document.body.appendChild(form);
+        console.log('Formular wird abgesendet...');
         form.submit();
       };
     }
+    
+    // Stelle sicher, dass die Funktion auch nach dem Laden verfügbar ist
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Language selector JavaScript geladen');
+    });
   </script>
 </div>
