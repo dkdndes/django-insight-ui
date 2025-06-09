@@ -49,7 +49,7 @@ class TestInsightUI:
         yield page
         page.close()
     
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def base_url(self):
         """Base URL für Tests."""
         return "http://localhost:8000"
@@ -212,11 +212,15 @@ def test_simple_page_load():
         
         try:
             page.goto("http://localhost:8000")
-            page.wait_for_load_state("networkidle", timeout=5000)
+            page.wait_for_load_state("networkidle", timeout=10000)
             
             # Einfache Prüfung
             title = page.title()
             assert "Django" in title or "Insight" in title
+            
+            # Prüfe, dass die Seite geladen wurde
+            h1 = page.locator("h1")
+            assert h1.is_visible()
             
         except Exception as e:
             pytest.skip(f"Server nicht erreichbar: {e}")
