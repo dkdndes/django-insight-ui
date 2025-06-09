@@ -33,8 +33,12 @@
       
       // Versuche CSRF-Token aus verschiedenen Quellen zu holen
       const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+      const csrfMeta = document.querySelector('meta[name=csrf-token]');
+      
       if (csrfInput) {
         csrfToken = csrfInput.value;
+      } else if (csrfMeta) {
+        csrfToken = csrfMeta.getAttribute('content');
       } else {
         // Fallback: CSRF-Token aus Cookie lesen
         const cookies = document.cookie.split(';');
@@ -46,6 +50,8 @@
           }
         }
       }
+      
+      console.log('CSRF Token gefunden:', csrfToken ? 'Ja' : 'Nein');
       
       if (csrfToken) {
         const csrfHiddenInput = document.createElement('input');
