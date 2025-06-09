@@ -34,6 +34,44 @@
         element.addEventListener(event, handler);
       }
     },
+
+    // Fokus-Management für Barrierefreiheit
+    trapFocus: function(element) {
+      const focusableElements = element.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      element.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      });
+
+      if (firstElement) {
+        firstElement.focus();
+      }
+    },
+
+    // Escape-Key Handler
+    onEscape: function(handler) {
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          handler(e);
+        }
+      });
+    },
     
     // Schaltet eine Klasse an einem Element um
     toggleClass: function(element, className) {
@@ -175,11 +213,225 @@
     }
   };
 
+  // Modal-Komponente
+  InsightUI.Modal = {
+    init: function() {
+      // Modal öffnen
+      utils.on(document, 'click', '[data-insight-toggle="modal"]', function() {
+        const targetId = this.getAttribute('data-insight-target');
+        const modal = document.getElementById(targetId);
+        if (modal) {
+          InsightUI.Modal.show(modal);
+        }
+      });
+
+      // Modal schließen
+      utils.on(document, 'click', '[data-insight-dismiss="modal"]', function() {
+        const modal = this.closest('.insight-modal');
+        if (modal) {
+          InsightUI.Modal.hide(modal);
+        }
+      });
+
+      // Modal bei Backdrop-Klick schließen
+      utils.on(document, 'click', '.insight-modal__backdrop', function() {
+        const modal = this.closest('.insight-modal');
+        if (modal) {
+          InsightUI.Modal.hide(modal);
+        }
+      });
+
+      // Modal bei Escape-Taste schließen
+      utils.onEscape(function() {
+        const openModal = document.querySelector('.insight-modal.insight-modal--open');
+        if (openModal) {
+          InsightUI.Modal.hide(openModal);
+        }
+      });
+    },
+
+    show: function(modal) {
+      if (!modal) return;
+
+      // Modal anzeigen
+      utils.addClass(modal, 'insight-modal--open');
+      modal.setAttribute('aria-hidden', 'false');
+      
+      // Body-Scroll verhindern
+      utils.addClass(document.body, 'insight-modal-open');
+      
+      // Fokus-Management
+      utils.trapFocus(modal);
+      
+      // Event auslösen
+      modal.dispatchEvent(new CustomEvent('insight:modal:show'));
+    },
+
+    hide: function(modal) {
+      if (!modal) return;
+
+      // Modal ausblenden
+      utils.removeClass(modal, 'insight-modal--open');
+      modal.setAttribute('aria-hidden', 'true');
+      
+      // Body-Scroll wieder erlauben
+      utils.removeClass(document.body, 'insight-modal-open');
+      
+      // Event auslösen
+      modal.dispatchEvent(new CustomEvent('insight:modal:hide'));
+    }
+  };
+
+  // Sidebar-Komponente
+  InsightUI.Sidebar = {
+    init: function() {
+      const toggleButtons = document.querySelectorAll('[data-insight-toggle="sidebar"]');
+      
+      toggleButtons.forEach(button => {
+        utils.on(button, 'click', function() {
+          const sidebar = this.closest('.insight-sidebar');
+          if (sidebar) {
+            InsightUI.Sidebar.toggle(sidebar);
+          }
+        });
+      });
+    },
+
+    toggle: function(sidebar) {
+      if (!sidebar) return;
+
+      const isExpanded = sidebar.getAttribute('aria-expanded') !== 'false';
+      const content = sidebar.querySelector('.insight-sidebar__content');
+      const toggleButton = sidebar.querySelector('[data-insight-toggle="sidebar"]');
+
+      if (isExpanded) {
+        // Sidebar einklappen
+        utils.addClass(sidebar, 'insight-sidebar--collapsed');
+        sidebar.setAttribute('aria-expanded', 'false');
+        if (toggleButton) {
+          toggleButton.setAttribute('aria-expanded', 'false');
+          toggleButton.setAttribute('aria-label', 'Sidebar ausklappen');
+        }
+        if (content) {
+          content.setAttribute('aria-hidden', 'true');
+        }
+      } else {
+        // Sidebar ausklappen
+        utils.removeClass(sidebar, 'insight-sidebar--collapsed');
+        sidebar.setAttribute('aria-expanded', 'true');
+        if (toggleButton) {
+          toggleButton.setAttribute('aria-expanded', 'true');
+          toggleButton.setAttribute('aria-label', 'Sidebar einklappen');
+        }
+        if (content) {
+          content.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      // Event auslösen
+      sidebar.dispatchEvent(new CustomEvent('insight:sidebar:toggle', {
+        detail: { expanded: !isExpanded }
+      }));
+    }
+  };
+
+  // Form-Komponente mit HTMX-Integration
+  InsightUI.Form = {
+    init: function() {
+      // Form-Validation
+      utils.on(document, 'submit', '.insight-form', function(e) {
+        const form = this;
+        const isValid = InsightUI.Form.validate(form);
+        
+        if (!isValid) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // Real-time Validation
+      utils.on(document, 'blur', '.insight-form__input, .insight-form__textarea, .insight-form__select', function() {
+        InsightUI.Form.validateField(this);
+      });
+    },
+
+    validate: function(form) {
+      if (!form) return true;
+
+      let isValid = true;
+      const fields = form.querySelectorAll('.insight-form__input, .insight-form__textarea, .insight-form__select');
+      
+      fields.forEach(field => {
+        if (!InsightUI.Form.validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      return isValid;
+    },
+
+    validateField: function(field) {
+      if (!field) return true;
+
+      const fieldGroup = field.closest('.insight-form__group');
+      const errorContainer = fieldGroup ? fieldGroup.querySelector('.insight-form__errors') : null;
+      let isValid = true;
+      let errorMessage = '';
+
+      // Required-Validation
+      if (field.hasAttribute('required') && !field.value.trim()) {
+        isValid = false;
+        errorMessage = 'Dieses Feld ist erforderlich.';
+      }
+
+      // Email-Validation
+      if (field.type === 'email' && field.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(field.value)) {
+          isValid = false;
+          errorMessage = 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
+        }
+      }
+
+      // Min/Max-Length Validation
+      if (field.hasAttribute('minlength') && field.value.length < parseInt(field.getAttribute('minlength'))) {
+        isValid = false;
+        errorMessage = `Mindestens ${field.getAttribute('minlength')} Zeichen erforderlich.`;
+      }
+
+      // Error-Anzeige aktualisieren
+      if (fieldGroup) {
+        if (isValid) {
+          utils.removeClass(fieldGroup, 'insight-form__group--error');
+          utils.addClass(fieldGroup, 'insight-form__group--valid');
+        } else {
+          utils.addClass(fieldGroup, 'insight-form__group--error');
+          utils.removeClass(fieldGroup, 'insight-form__group--valid');
+        }
+
+        if (errorContainer) {
+          if (isValid) {
+            errorContainer.innerHTML = '';
+            errorContainer.setAttribute('aria-hidden', 'true');
+          } else {
+            errorContainer.innerHTML = `<span class="insight-form__error">${errorMessage}</span>`;
+            errorContainer.setAttribute('aria-hidden', 'false');
+          }
+        }
+      }
+
+      return isValid;
+    }
+  };
+
   // Initialisiere alle Komponenten, wenn das DOM geladen ist
   document.addEventListener('DOMContentLoaded', function() {
     InsightUI.Navbar.init();
     InsightUI.Alert.init();
     InsightUI.ThemeToggle.init();
+    InsightUI.Modal.init();
+    InsightUI.Sidebar.init();
+    InsightUI.Form.init();
   });
 
 })();
