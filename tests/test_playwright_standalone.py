@@ -199,30 +199,52 @@ def test_simple_page_load():
         browser = None
         try:
             browser = p.webkit.launch(headless=True)
-        except Exception:
+            print("✓ Webkit Browser gestartet")
+        except Exception as e:
+            print(f"✗ Webkit fehlgeschlagen: {e}")
             try:
                 browser = p.firefox.launch(headless=True)
-            except Exception:
+                print("✓ Firefox Browser gestartet")
+            except Exception as e:
+                print(f"✗ Firefox fehlgeschlagen: {e}")
                 try:
                     browser = p.chromium.launch(headless=True)
-                except Exception:
-                    pytest.skip("Kein Browser verfügbar")
+                    print("✓ Chromium Browser gestartet")
+                except Exception as e:
+                    print(f"✗ Chromium fehlgeschlagen: {e}")
+                    pytest.fail("Kein Browser verfügbar")
         
         page = browser.new_page()
         
         try:
-            page.goto("http://localhost:8000")
+            print("Versuche Verbindung zu http://localhost:8000...")
+            response = page.goto("http://localhost:8000", timeout=5000)
+            print(f"Response Status: {response.status}")
+            
             page.wait_for_load_state("networkidle", timeout=10000)
+            print("Seite vollständig geladen")
             
             # Einfache Prüfung
             title = page.title()
-            assert "Django" in title or "Insight" in title
+            print(f"Seitentitel: {title}")
+            assert "Django" in title or "Insight" in title, f"Unerwarteter Titel: {title}"
             
             # Prüfe, dass die Seite geladen wurde
             h1 = page.locator("h1")
-            assert h1.is_visible()
+            assert h1.is_visible(), "H1-Element nicht sichtbar"
+            h1_text = h1.text_content()
+            print(f"H1-Text: {h1_text}")
+            
+            print("✓ Test erfolgreich!")
             
         except Exception as e:
-            pytest.skip(f"Server nicht erreichbar: {e}")
+            print(f"✗ Fehler beim Laden der Seite: {e}")
+            # Screenshot für Debugging
+            try:
+                page.screenshot(path="debug_screenshot.png")
+                print("Screenshot gespeichert: debug_screenshot.png")
+            except:
+                pass
+            raise
         finally:
             browser.close()
