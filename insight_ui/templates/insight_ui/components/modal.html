@@ -1,0 +1,52 @@
+{% load i18n %}
+
+<div 
+  class="insight-modal insight-modal--{{ theme }}" 
+  id="{{ id }}" 
+  role="dialog" 
+  aria-modal="true" 
+  aria-labelledby="{{ id }}-title"
+  {% if description %}aria-describedby="{{ id }}-description"{% endif %}
+  tabindex="-1">
+  
+  <div class="insight-modal__backdrop" data-insight-dismiss="modal"></div>
+  
+  <div class="insight-modal__dialog">
+    <div class="insight-modal__content">
+      <!-- Modal Header -->
+      <div class="insight-modal__header">
+        <h2 id="{{ id }}-title" class="insight-modal__title">{{ title }}</h2>
+        <button 
+          type="button" 
+          class="insight-modal__close" 
+          data-insight-dismiss="modal"
+          aria-label="{% trans 'Modal schließen' %}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="insight-modal__body">
+        {% if description %}
+          <p id="{{ id }}-description" class="insight-modal__description">{{ description }}</p>
+        {% endif %}
+        {{ content|safe }}
+      </div>
+      
+      <!-- Modal Footer -->
+      {% if actions %}
+        <div class="insight-modal__footer">
+          {% for action in actions %}
+            <button 
+              type="button" 
+              class="insight-btn insight-btn--{{ action.type|default:'secondary' }}"
+              {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
+              {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+              {{ action.text }}
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

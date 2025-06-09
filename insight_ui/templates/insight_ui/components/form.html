@@ -1,0 +1,90 @@
+{% load i18n %}
+
+<form 
+  class="insight-form insight-form--{{ theme }}" 
+  {% if action %}action="{{ action }}"{% endif %}
+  {% if method %}method="{{ method }}"{% else %}method="post"{% endif %}
+  {% if options.id %}id="{{ options.id }}"{% endif %}
+  {% if options.htmx %}
+    hx-post="{{ options.htmx.url }}"
+    {% if options.htmx.target %}hx-target="{{ options.htmx.target }}"{% endif %}
+    {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% endif %}
+  {% endif %}>
+  
+  {% csrf_token %}
+  
+  {% if title %}
+    <div class="insight-form__header">
+      <h2 class="insight-form__title">{{ title }}</h2>
+      {% if description %}
+        <p class="insight-form__description">{{ description }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  <div class="insight-form__body">
+    {% for field in fields %}
+      <div class="insight-form__group">
+        <label for="{{ field.id }}" class="insight-form__label">
+          {{ field.label }}
+          {% if field.required %}<span class="insight-form__required" aria-label="{% trans 'Pflichtfeld' %}">*</span>{% endif %}
+        </label>
+        
+        {% if field.type == 'textarea' %}
+          <textarea 
+            id="{{ field.id }}" 
+            name="{{ field.name }}" 
+            class="insight-form__textarea"
+            {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
+            {% if field.required %}required{% endif %}
+            {% if field.rows %}rows="{{ field.rows }}"{% endif %}>{{ field.value|default:'' }}</textarea>
+        {% elif field.type == 'select' %}
+          <select 
+            id="{{ field.id }}" 
+            name="{{ field.name }}" 
+            class="insight-form__select"
+            {% if field.required %}required{% endif %}>
+            {% for option in field.options %}
+              <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>{{ option.text }}</option>
+            {% endfor %}
+          </select>
+        {% else %}
+          <input 
+            type="{{ field.type|default:'text' }}" 
+            id="{{ field.id }}" 
+            name="{{ field.name }}" 
+            class="insight-form__input"
+            {% if field.value %}value="{{ field.value }}"{% endif %}
+            {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
+            {% if field.required %}required{% endif %}
+            {% if field.min %}min="{{ field.min }}"{% endif %}
+            {% if field.max %}max="{{ field.max }}"{% endif %} />
+        {% endif %}
+        
+        {% if field.help_text %}
+          <small class="insight-form__help">{{ field.help_text }}</small>
+        {% endif %}
+        
+        {% if field.errors %}
+          <div class="insight-form__errors" role="alert">
+            {% for error in field.errors %}
+              <span class="insight-form__error">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if actions %}
+    <div class="insight-form__footer">
+      {% for action in actions %}
+        <button 
+          type="{{ action.type|default:'submit' }}" 
+          class="insight-btn insight-btn--{{ action.style|default:'primary' }}">
+          {{ action.text }}
+        </button>
+      {% endfor %}
+    </div>
+  {% endif %}
+</form>
