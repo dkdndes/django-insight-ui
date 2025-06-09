@@ -1,4 +1,5 @@
 import pytest
+import re
 from playwright.sync_api import Page, expect
 
 
@@ -139,7 +140,7 @@ def test_modal_functionality(page: Page, live_server):
     
     # Prüfe, dass Modal geöffnet wird
     modal = page.locator("#demo-modal")
-    expect(modal).to_have_class(/insight-modal--open/)
+    expect(modal).to_have_class(re.compile(r"insight-modal--open"))
     
     # Prüfe Modal-Inhalt
     expect(modal).to_contain_text("Demo Modal")
