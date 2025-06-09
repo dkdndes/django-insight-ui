@@ -38,6 +38,43 @@ def navbar(
     }
 
 
+@register.inclusion_tag("insight_ui/components/language_selector.html")
+def language_selector(
+    current_language: str = "",
+    available_languages: Optional[List[Dict[str, str]]] = None,
+    theme: str = "light",
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert einen barrierefreien Sprachauswähler.
+
+    Args:
+        current_language: Der aktuelle Sprachcode
+        available_languages: Eine Liste verfügbarer Sprachen
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        **kwargs: Zusätzliche Optionen
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if available_languages is None:
+        available_languages = [
+            {"code": "de", "name": "Deutsch", "native": "Deutsch"},
+            {"code": "en", "name": "English", "native": "English"},
+            {"code": "es", "name": "Spanish", "native": "Español"},
+            {"code": "fr", "name": "French", "native": "Français"},
+            {"code": "ar", "name": "Arabic", "native": "العربية"},
+            {"code": "zh", "name": "Chinese", "native": "中文"},
+        ]
+
+    return {
+        "current_language": current_language,
+        "available_languages": available_languages,
+        "theme": theme,
+        "options": kwargs,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/alert.html")
 def alert(
     message: str,

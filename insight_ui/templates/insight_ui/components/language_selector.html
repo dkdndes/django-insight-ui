@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<div class="insight-language-selector insight-language-selector--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+  <label for="language-select" class="insight-language-selector__label">
+    {% trans 'Sprache auswählen' %}
+  </label>
+  <select 
+    id="language-select" 
+    name="language" 
+    class="insight-language-selector__select"
+    onchange="window.location.href = this.value"
+    aria-label="{% trans 'Sprache ändern' %}">
+    {% for language in available_languages %}
+      <option 
+        value="{% url 'set_language' %}?language={{ language.code }}&next={{ request.get_full_path|urlencode }}"
+        {% if current_language == language.code %}selected{% endif %}>
+        {{ language.native }} ({{ language.name }})
+      </option>
+    {% endfor %}
+  </select>
+</div>

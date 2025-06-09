@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans 'Django Insight UI Demo' %}</title>
+    
+    <!-- Insight UI CSS -->
+    <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
+    {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
+    {% endif %}
+</head>
+<body>
+    {% load insight_tags %}
+    {% load i18n %}
+    {% load static %}
+    
+    <!-- Navbar mit Sprachauswahl -->
+    {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
+    
+    <main id="main-content" class="container">
+        <h1>{% trans 'Willkommen bei Django Insight UI' %}</h1>
+        
+        <!-- Sprachauswähler -->
+        <section class="demo-section">
+            <h2>{% trans 'Sprachauswahl' %}</h2>
+            {% language_selector current_language=LANGUAGE_CODE %}
+        </section>
+        
+        <!-- Alert Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Benachrichtigungen' %}</h2>
+            {% alert message="Dies ist eine Informationsmeldung" type="info" %}
+            {% alert message="Erfolgreich gespeichert!" type="success" %}
+            {% alert message="Achtung: Überprüfen Sie Ihre Eingaben" type="warning" %}
+            {% alert message="Fehler beim Laden der Daten" type="error" %}
+        </section>
+        
+        <!-- Breadcrumbs Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Breadcrumb-Navigation' %}</h2>
+            {% breadcrumbs items=breadcrumb_items %}
+        </section>
+        
+        <!-- Table Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Tabelle' %}</h2>
+            {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
+        </section>
+        
+        <!-- Card Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Karten' %}</h2>
+            <div class="card-grid">
+                {% card title="Beispiel-Karte" subtitle="Untertitel" content="Dies ist der Inhalt einer Karte." %}
+                {% card title="Karte mit Aktionen" content="Diese Karte hat Aktions-Buttons." actions=card_actions %}
+            </div>
+        </section>
+        
+        <!-- Form Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Formular' %}</h2>
+            {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions %}
+        </section>
+        
+        <!-- Modal Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Modal-Dialog' %}</h2>
+            <button type="button" class="insight-btn insight-btn--primary" data-insight-toggle="modal" data-insight-target="demo-modal">
+                {% trans 'Modal öffnen' %}
+            </button>
+            
+            {% modal id="demo-modal" title="Demo Modal" content="Dies ist ein Beispiel-Modal." actions=modal_actions %}
+        </section>
+        
+        <!-- Sidebar Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Seitennavigation' %}</h2>
+            {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
+        </section>
+    </main>
+    
+    <!-- Insight UI JavaScript -->
+    <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
+</body>
+</html>
