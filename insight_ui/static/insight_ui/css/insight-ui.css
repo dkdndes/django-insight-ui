@@ -1,0 +1,388 @@
+/**
+ * Django Insight UI - Hauptstilsheet
+ * 
+ * Dieses Stylesheet enthält die grundlegenden Stile für alle UI-Komponenten
+ * mit Fokus auf Barrierefreiheit, Responsivität und Themenfähigkeit.
+ */
+
+:root {
+  /* Farben - Basis */
+  --insight-color-primary: #3b82f6;
+  --insight-color-primary-dark: #2563eb;
+  --insight-color-primary-light: #60a5fa;
+  --insight-color-secondary: #6b7280;
+  --insight-color-secondary-dark: #4b5563;
+  --insight-color-secondary-light: #9ca3af;
+  
+  /* Farben - Semantisch */
+  --insight-color-success: #10b981;
+  --insight-color-warning: #f59e0b;
+  --insight-color-error: #ef4444;
+  --insight-color-info: #3b82f6;
+  
+  /* Farben - Hintergrund */
+  --insight-color-background: #ffffff;
+  --insight-color-background-alt: #f3f4f6;
+  --insight-color-surface: #ffffff;
+  
+  /* Farben - Text */
+  --insight-color-text: #1f2937;
+  --insight-color-text-light: #6b7280;
+  --insight-color-text-inverted: #ffffff;
+  
+  /* Abstände */
+  --insight-spacing-xs: 0.25rem;
+  --insight-spacing-sm: 0.5rem;
+  --insight-spacing-md: 1rem;
+  --insight-spacing-lg: 1.5rem;
+  --insight-spacing-xl: 2rem;
+  
+  /* Typografie */
+  --insight-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --insight-font-size-xs: 0.75rem;
+  --insight-font-size-sm: 0.875rem;
+  --insight-font-size-md: 1rem;
+  --insight-font-size-lg: 1.125rem;
+  --insight-font-size-xl: 1.25rem;
+  
+  /* Rahmen */
+  --insight-border-radius-sm: 0.25rem;
+  --insight-border-radius-md: 0.375rem;
+  --insight-border-radius-lg: 0.5rem;
+  --insight-border-width: 1px;
+  --insight-border-color: #e5e7eb;
+  
+  /* Schatten */
+  --insight-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --insight-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --insight-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Fokus */
+  --insight-focus-ring-color: rgba(59, 130, 246, 0.5);
+  --insight-focus-ring-width: 3px;
+  
+  /* Übergänge */
+  --insight-transition-fast: 150ms;
+  --insight-transition-normal: 300ms;
+  --insight-transition-slow: 500ms;
+}
+
+/* Dunkles Farbschema */
+[data-theme="dark"] {
+  --insight-color-primary: #60a5fa;
+  --insight-color-primary-dark: #3b82f6;
+  --insight-color-primary-light: #93c5fd;
+  
+  --insight-color-background: #1f2937;
+  --insight-color-background-alt: #111827;
+  --insight-color-surface: #374151;
+  
+  --insight-color-text: #f9fafb;
+  --insight-color-text-light: #d1d5db;
+  --insight-color-text-inverted: #1f2937;
+  
+  --insight-border-color: #4b5563;
+  
+  --insight-focus-ring-color: rgba(96, 165, 250, 0.5);
+}
+
+/* Hochkontrast-Farbschema */
+[data-theme="high-contrast"] {
+  --insight-color-primary: #ffff00;
+  --insight-color-primary-dark: #ffff00;
+  --insight-color-primary-light: #ffff00;
+  
+  --insight-color-success: #00ff00;
+  --insight-color-warning: #ffff00;
+  --insight-color-error: #ff0000;
+  --insight-color-info: #00ffff;
+  
+  --insight-color-background: #000000;
+  --insight-color-background-alt: #000000;
+  --insight-color-surface: #000000;
+  
+  --insight-color-text: #ffffff;
+  --insight-color-text-light: #ffffff;
+  --insight-color-text-inverted: #000000;
+  
+  --insight-border-color: #ffffff;
+  
+  --insight-focus-ring-color: #ffff00;
+  --insight-focus-ring-width: 4px;
+}
+
+/* Basis-Stile */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--insight-font-family);
+  font-size: var(--insight-font-size-md);
+  line-height: 1.5;
+  color: var(--insight-color-text);
+  background-color: var(--insight-color-background);
+  margin: 0;
+  padding: 0;
+}
+
+/* Barrierefreiheit - Skip-Link */
+.insight-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--insight-color-primary);
+  color: var(--insight-color-text-inverted);
+  padding: var(--insight-spacing-sm) var(--insight-spacing-md);
+  z-index: 100;
+  transition: top var(--insight-transition-fast) ease-in-out;
+}
+
+.insight-skip-link:focus {
+  top: 0;
+  outline: none;
+  box-shadow: 0 0 0 var(--insight-focus-ring-width) var(--insight-focus-ring-color);
+}
+
+/* Fokus-Stile */
+:focus {
+  outline: none;
+  box-shadow: 0 0 0 var(--insight-focus-ring-width) var(--insight-focus-ring-color);
+}
+
+:focus:not(:focus-visible) {
+  box-shadow: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--insight-focus-ring-width) var(--insight-focus-ring-color);
+}
+
+/* Navbar-Komponente */
+.insight-navbar {
+  display: flex;
+  align-items: center;
+  padding: var(--insight-spacing-md);
+  background-color: var(--insight-color-surface);
+  border-bottom: var(--insight-border-width) solid var(--insight-border-color);
+}
+
+.insight-navbar__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.insight-navbar__brand {
+  display: flex;
+  align-items: center;
+}
+
+.insight-navbar__brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--insight-color-text);
+}
+
+.insight-navbar__logo {
+  height: 2rem;
+  width: auto;
+  margin-right: var(--insight-spacing-sm);
+}
+
+.insight-navbar__brand-text {
+  font-size: var(--insight-font-size-lg);
+  font-weight: 600;
+}
+
+.insight-navbar__toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--insight-spacing-sm);
+}
+
+.insight-navbar__menu {
+  display: flex;
+  align-items: center;
+}
+
+.insight-navbar__nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.insight-navbar__item {
+  margin: 0 var(--insight-spacing-sm);
+}
+
+.insight-navbar__link {
+  display: flex;
+  align-items: center;
+  padding: var(--insight-spacing-sm) var(--insight-spacing-md);
+  color: var(--insight-color-text);
+  text-decoration: none;
+  border-radius: var(--insight-border-radius-md);
+  transition: background-color var(--insight-transition-fast);
+}
+
+.insight-navbar__link:hover {
+  background-color: var(--insight-color-background-alt);
+}
+
+.insight-navbar__item--active .insight-navbar__link {
+  color: var(--insight-color-primary);
+  font-weight: 600;
+}
+
+.insight-navbar__icon {
+  margin-right: var(--insight-spacing-sm);
+}
+
+.insight-navbar__actions {
+  display: flex;
+  align-items: center;
+  margin-left: var(--insight-spacing-md);
+}
+
+/* Alert-Komponente */
+.insight-alert {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--insight-spacing-md);
+  border-radius: var(--insight-border-radius-md);
+  margin-bottom: var(--insight-spacing-md);
+  border: var(--insight-border-width) solid transparent;
+}
+
+.insight-alert--info {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: var(--insight-color-info);
+  color: var(--insight-color-text);
+}
+
+.insight-alert--success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: var(--insight-color-success);
+  color: var(--insight-color-text);
+}
+
+.insight-alert--warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  border-color: var(--insight-color-warning);
+  color: var(--insight-color-text);
+}
+
+.insight-alert--error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--insight-color-error);
+  color: var(--insight-color-text);
+}
+
+.insight-alert__icon {
+  flex-shrink: 0;
+  margin-right: var(--insight-spacing-md);
+}
+
+.insight-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.insight-alert--info .insight-icon {
+  color: var(--insight-color-info);
+}
+
+.insight-alert--success .insight-icon {
+  color: var(--insight-color-success);
+}
+
+.insight-alert--warning .insight-icon {
+  color: var(--insight-color-warning);
+}
+
+.insight-alert--error .insight-icon {
+  color: var(--insight-color-error);
+}
+
+.insight-alert__content {
+  flex: 1;
+}
+
+.insight-alert__message {
+  font-weight: 500;
+}
+
+.insight-alert__details {
+  margin-top: var(--insight-spacing-sm);
+  font-size: var(--insight-font-size-sm);
+  color: var(--insight-color-text-light);
+}
+
+.insight-alert__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--insight-spacing-xs);
+  margin-left: var(--insight-spacing-sm);
+  font-size: var(--insight-font-size-lg);
+  line-height: 1;
+  color: var(--insight-color-text-light);
+  transition: color var(--insight-transition-fast);
+}
+
+.insight-alert__close:hover {
+  color: var(--insight-color-text);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .insight-navbar__toggle {
+    display: block;
+  }
+  
+  .insight-navbar__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--insight-color-surface);
+    border-bottom: var(--insight-border-width) solid var(--insight-border-color);
+    padding: var(--insight-spacing-md);
+    display: none;
+  }
+  
+  .insight-navbar__menu.is-open {
+    display: flex;
+  }
+  
+  .insight-navbar__nav {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .insight-navbar__item {
+    margin: var(--insight-spacing-xs) 0;
+    width: 100%;
+  }
+  
+  .insight-navbar__link {
+    width: 100%;
+  }
+  
+  .insight-navbar__actions {
+    margin-left: 0;
+    margin-top: var(--insight-spacing-md);
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

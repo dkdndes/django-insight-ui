@@ -1,0 +1,44 @@
+{% load i18n %}
+
+<div 
+  role="alert"
+  class="insight-alert insight-alert--{{ type }}{% if dismissible %} insight-alert--dismissible{% endif %}"
+  {% if options.id %}id="{{ options.id }}"{% endif %}>
+  
+  <div class="insight-alert__icon">
+    {% if type == 'info' %}
+      <svg aria-hidden="true" class="insight-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+      </svg>
+    {% elif type == 'success' %}
+      <svg aria-hidden="true" class="insight-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+      </svg>
+    {% elif type == 'warning' %}
+      <svg aria-hidden="true" class="insight-icon" viewBox="0 0 24 24">
+        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+      </svg>
+    {% elif type == 'error' %}
+      <svg aria-hidden="true" class="insight-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+      </svg>
+    {% endif %}
+  </div>
+  
+  <div class="insight-alert__content">
+    <div class="insight-alert__message">{{ message }}</div>
+    {% if options.details %}
+      <div class="insight-alert__details">{{ options.details }}</div>
+    {% endif %}
+  </div>
+  
+  {% if dismissible %}
+    <button 
+      type="button" 
+      class="insight-alert__close" 
+      aria-label="{% trans 'Schließen' %}"
+      data-insight-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  {% endif %}
+</div>

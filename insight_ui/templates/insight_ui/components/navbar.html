@@ -1,0 +1,71 @@
+{% load i18n %}
+
+<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="insight-navbar insight-navbar--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+  <div class="insight-navbar__container">
+    <!-- Skip-Link für Barrierefreiheit -->
+    <a href="#main-content" class="insight-skip-link">{% trans 'Zum Hauptinhalt springen' %}</a>
+    
+    <!-- Markenbereich -->
+    <div class="insight-navbar__brand">
+      {% if brand %}
+        <a href="{% if options.brand_url %}{{ options.brand_url }}{% else %}#{% endif %}" class="insight-navbar__brand-link">
+          {% if options.brand_logo %}
+            <img src="{{ options.brand_logo }}" alt="{{ brand }}" class="insight-navbar__logo" />
+          {% endif %}
+          <span class="insight-navbar__brand-text">{{ brand }}</span>
+        </a>
+      {% endif %}
+    </div>
+    
+    <!-- Mobile-Menü-Button -->
+    <button 
+      type="button" 
+      class="insight-navbar__toggle" 
+      aria-expanded="false" 
+      aria-controls="navbar-menu"
+      aria-label="{% trans 'Menü öffnen' %}"
+      data-insight-toggle="navbar">
+      <span class="insight-navbar__toggle-icon"></span>
+    </button>
+    
+    <!-- Navigationslinks -->
+    <div id="navbar-menu" class="insight-navbar__menu">
+      <ul class="insight-navbar__nav">
+        {% for link in links %}
+          <li class="insight-navbar__item{% if link.active %} insight-navbar__item--active{% endif %}">
+            <a 
+              href="{{ link.url }}" 
+              class="insight-navbar__link"
+              {% if link.active %}aria-current="page"{% endif %}
+              {% if link.external %}target="_blank" rel="noopener"{% endif %}>
+              {% if link.icon %}<span class="insight-navbar__icon">{{ link.icon|safe }}</span>{% endif %}
+              <span>{{ link.text }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      
+      <!-- Zusätzliche Aktionen (z.B. Sprachumschalter, Farbschema-Umschalter) -->
+      {% if options.show_theme_toggle or options.show_language_selector %}
+        <div class="insight-navbar__actions">
+          {% if options.show_language_selector %}
+            <div class="insight-navbar__language-selector">
+              <!-- Sprachumschalter hier einfügen -->
+            </div>
+          {% endif %}
+          
+          {% if options.show_theme_toggle %}
+            <div class="insight-navbar__theme-toggle">
+              <button 
+                type="button" 
+                aria-label="{% trans 'Farbschema umschalten' %}"
+                class="insight-theme-toggle">
+                <span class="insight-theme-toggle__icon"></span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</nav>
