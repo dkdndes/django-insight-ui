@@ -45,6 +45,15 @@ def browser_context_args(browser_context_args):
     }
 
 
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args):
+    """Browser-Launch-Argumente."""
+    return {
+        **browser_type_launch_args,
+        "headless": True,
+    }
+
+
 @pytest.fixture
 def page_with_context(page):
     """Page-Fixture mit zusätzlichem Kontext."""
