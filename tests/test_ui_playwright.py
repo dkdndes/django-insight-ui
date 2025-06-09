@@ -3,10 +3,7 @@ import re
 from playwright.sync_api import Page, expect
 
 
-@pytest.fixture(scope="session")
-def django_db_setup():
-    """Setup für Django-Datenbank in Playwright-Tests."""
-    pass
+pytestmark = pytest.mark.django_db
 
 
 def test_homepage_loads(page: Page, live_server):
