@@ -6,9 +6,17 @@
   {% if method %}method="{{ method }}"{% else %}method="post"{% endif %}
   {% if options.id %}id="{{ options.id }}"{% endif %}
   {% if options.htmx %}
-    hx-post="{{ options.htmx.url }}"
+    {% if options.htmx.method == 'put' %}hx-put="{{ options.htmx.url }}"{% else %}hx-post="{{ options.htmx.url }}"{% endif %}
     {% if options.htmx.target %}hx-target="{{ options.htmx.target }}"{% endif %}
     {% if options.htmx.swap %}hx-swap="{{ options.htmx.swap }}"{% endif %}
+    {% if options.htmx.trigger %}hx-trigger="{{ options.htmx.trigger }}"{% endif %}
+    {% if options.htmx.validate %}hx-validate{% endif %}
+    {% if options.htmx.indicator %}hx-indicator="{{ options.htmx.indicator }}"{% endif %}
+    hx-ext="form-validation,progressive-enhancement"
+  {% endif %}
+  {% if options.alpine %}
+    x-data="formData()"
+    @submit="handleSubmit"
   {% endif %}>
   
   {% csrf_token %}

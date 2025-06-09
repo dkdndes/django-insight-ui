@@ -5,10 +5,59 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.conf.urls.i18n import i18n_patterns
 from django.views.i18n import set_language
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import time
+
+# HTMX API Views
+def live_data_view(request):
+    """Beispiel für Live-Daten-Endpunkt"""
+    current_time = time.strftime("%H:%M:%S")
+    return JsonResponse({
+        'time': current_time,
+        'message': f'Aktuelle Zeit: {current_time}',
+        'status': 'active'
+    })
+
+def more_items_view(request):
+    """Beispiel für Infinite Scroll-Endpunkt"""
+    page = int(request.GET.get('page', 1))
+    items = [f'Element {i}' for i in range((page-1)*5 + 1, page*5 + 1)]
+    
+    return JsonResponse({
+        'items': items,
+        'has_next': page < 10,  # Simuliere 10 Seiten
+        'next_page': page + 1
+    })
+
+@csrf_exempt
+def htmx_form_submit(request):
+    """Beispiel für HTMX-Formular-Verarbeitung"""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            # Simuliere Validierung
+            if not data.get('name'):
+                return JsonResponse({
+                    'errors': {'name': ['Name ist erforderlich']}
+                }, status=422)
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'Hallo {data.get("name")}, Ihre Nachricht wurde gesendet!'
+            })
+        except:
+            return JsonResponse({'error': 'Invalid data'}, status=400)
+    
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("i18n/setlang/", set_language, name="set_language"),
+    path("api/live-data/", live_data_view, name="live_data"),
+    path("api/more-items/", more_items_view, name="more_items"),
+    path("api/form-submit/", htmx_form_submit, name="htmx_form_submit"),
 ]
 
 urlpatterns += i18n_patterns(
@@ -62,6 +111,31 @@ urlpatterns += i18n_patterns(
                 "sidebar_items": [
                     {"url": "/dashboard/", "text": "Dashboard", "active": True},
                     {"url": "/settings/", "text": "Einstellungen", "icon": "⚙️"},
+                ],
+                "htmx_form_fields": [
+                    {
+                        "id": "htmx_name",
+                        "name": "name",
+                        "label": "Name (HTMX)",
+                        "type": "text",
+                        "required": True,
+                    },
+                    {
+                        "id": "htmx_message",
+                        "name": "message",
+                        "label": "Nachricht (HTMX)",
+                        "type": "textarea",
+                        "rows": 3,
+                    },
+                ],
+                "htmx_config": {
+                    "url": "/api/form-submit/",
+                    "target": "#form-result",
+                    "swap": "innerHTML",
+                    "validate": True,
+                },
+                "scroll_items": [
+                    f"Scroll-Element {i}" for i in range(1, 6)
                 ],
             },
         ),

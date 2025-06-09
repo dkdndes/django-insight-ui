@@ -38,6 +38,90 @@ def navbar(
     }
 
 
+@register.inclusion_tag("insight_ui/components/live_content.html")
+def live_content(
+    url: str = "",
+    theme: str = "light",
+    interval: Optional[int] = None,
+    websocket_url: str = "",
+    initial_content: str = "",
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert einen Container für Live-Updates via HTMX oder WebSocket.
+
+    Args:
+        url: Die URL für HTMX-Updates
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        interval: Intervall für automatische Updates in Millisekunden
+        websocket_url: WebSocket-URL für Live-Updates
+        initial_content: Initialer Inhalt
+        **kwargs: Zusätzliche Optionen
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    htmx_config = {}
+    websocket_config = {}
+    
+    if url:
+        htmx_config = {
+            "url": url,
+            "trigger": kwargs.get("trigger", "load"),
+            "swap": kwargs.get("swap", "innerHTML"),
+        }
+        if interval:
+            htmx_config["interval"] = interval
+    
+    if websocket_url:
+        websocket_config = {
+            "url": websocket_url,
+        }
+
+    return {
+        "theme": theme,
+        "initial_content": initial_content,
+        "options": {
+            **kwargs,
+            "htmx": htmx_config if htmx_config else None,
+            "websocket": websocket_config if websocket_config else None,
+        },
+    }
+
+
+@register.inclusion_tag("insight_ui/components/infinite_scroll.html")
+def infinite_scroll(
+    items: Optional[List[Any]] = None,
+    next_url: str = "",
+    has_next: bool = True,
+    threshold: int = 100,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert einen Container für Infinite Scroll.
+
+    Args:
+        items: Liste der aktuellen Elemente
+        next_url: URL für das Laden weiterer Elemente
+        has_next: Ob weitere Elemente verfügbar sind
+        threshold: Pixel-Schwellenwert für das Laden
+        **kwargs: Zusätzliche Optionen
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    if items is None:
+        items = []
+
+    return {
+        "items": items,
+        "next_url": next_url,
+        "has_next": has_next,
+        "threshold": threshold,
+        "options": kwargs,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/language_selector.html")
 def language_selector(
     current_language: str = "",

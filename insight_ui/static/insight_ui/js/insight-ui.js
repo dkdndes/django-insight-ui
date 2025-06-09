@@ -353,6 +353,89 @@
       utils.on(document, 'blur', '.insight-form__input, .insight-form__textarea, .insight-form__select', function() {
         InsightUI.Form.validateField(this);
       });
+
+      // HTMX Form Events
+      utils.on(document, 'htmx:beforeRequest', '.insight-form[hx-post], .insight-form[hx-put]', function(e) {
+        const form = this;
+        const isValid = InsightUI.Form.validate(form);
+        
+        if (!isValid) {
+          e.preventDefault();
+          return false;
+        }
+        
+        // Zeige Loading-State
+        InsightUI.Form.setLoadingState(form, true);
+      });
+
+      utils.on(document, 'htmx:afterRequest', '.insight-form[hx-post], .insight-form[hx-put]', function(e) {
+        const form = this;
+        InsightUI.Form.setLoadingState(form, false);
+        
+        // Handle Validation Errors
+        if (e.detail.xhr.status === 422) {
+          try {
+            const response = JSON.parse(e.detail.xhr.responseText);
+            InsightUI.Form.showErrors(form, response.errors || {});
+          } catch (err) {
+            console.error('Error parsing validation response:', err);
+          }
+        }
+      });
+    },
+
+    setLoadingState: function(form, loading) {
+      const submitButtons = form.querySelectorAll('button[type="submit"]');
+      const loadingClass = 'insight-form--loading';
+      
+      if (loading) {
+        utils.addClass(form, loadingClass);
+        submitButtons.forEach(btn => {
+          btn.disabled = true;
+          btn.setAttribute('data-original-text', btn.textContent);
+          btn.textContent = 'Wird gesendet...';
+        });
+      } else {
+        utils.removeClass(form, loadingClass);
+        submitButtons.forEach(btn => {
+          btn.disabled = false;
+          const originalText = btn.getAttribute('data-original-text');
+          if (originalText) {
+            btn.textContent = originalText;
+            btn.removeAttribute('data-original-text');
+          }
+        });
+      }
+    },
+
+    showErrors: function(form, errors) {
+      // Entferne vorherige Fehler
+      form.querySelectorAll('.insight-form__error').forEach(error => {
+        error.remove();
+      });
+      
+      // Zeige neue Fehler
+      Object.keys(errors).forEach(fieldName => {
+        const field = form.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+          const fieldGroup = field.closest('.insight-form__group');
+          if (fieldGroup) {
+            utils.addClass(fieldGroup, 'insight-form__group--error');
+            
+            const errorContainer = fieldGroup.querySelector('.insight-form__errors') || 
+                                 fieldGroup.appendChild(document.createElement('div'));
+            errorContainer.className = 'insight-form__errors';
+            errorContainer.setAttribute('role', 'alert');
+            
+            errors[fieldName].forEach(errorMsg => {
+              const errorSpan = document.createElement('span');
+              errorSpan.className = 'insight-form__error';
+              errorSpan.textContent = errorMsg;
+              errorContainer.appendChild(errorSpan);
+            });
+          }
+        }
+      });
     },
 
     validate: function(form) {

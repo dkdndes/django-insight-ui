@@ -5,7 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% trans 'Django Insight UI Demo' %}</title>
     
-    <!-- Insight UI CSS -->
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'insight-primary': '#3b82f6',
+                        'insight-secondary': '#6b7280',
+                        'insight-success': '#10b981',
+                        'insight-warning': '#f59e0b',
+                        'insight-error': '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- HTMX CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Insight UI CSS (ergänzend zu TailwindCSS) -->
     <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
@@ -82,9 +107,46 @@
             <h2>{% trans 'Seitennavigation' %}</h2>
             {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
         </section>
+        
+        <!-- HTMX Live Content Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Live-Inhalte (HTMX)' %}</h2>
+            {% live_content url="/api/live-data/" interval=5000 id="live-content" %}
+        </section>
+        
+        <!-- HTMX Form Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'HTMX-Formular' %}</h2>
+            {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx=htmx_config %}
+            <div id="form-result" class="mt-4"></div>
+        </section>
+        
+        <!-- Infinite Scroll Demo -->
+        <section class="demo-section">
+            <h2>{% trans 'Infinite Scroll' %}</h2>
+            {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
+        </section>
+        
+        <!-- Alpine.js Demo -->
+        <section class="demo-section" x-data="{ count: 0, message: 'Hello Alpine!' }">
+            <h2>{% trans 'Alpine.js Integration' %}</h2>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <p x-text="message" class="text-lg mb-4"></p>
+                <p class="mb-4">Counter: <span x-text="count" class="font-bold text-insight-primary"></span></p>
+                <button @click="count++" class="bg-insight-primary text-white px-4 py-2 rounded hover:bg-blue-600">
+                    {% trans 'Zähler erhöhen' %}
+                </button>
+                <button @click="message = 'Alpine.js funktioniert!'" class="bg-insight-success text-white px-4 py-2 rounded hover:bg-green-600 ml-2">
+                    {% trans 'Nachricht ändern' %}
+                </button>
+            </div>
+        </section>
     </main>
     
     <!-- Insight UI JavaScript -->
     <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
+    
+    <!-- HTMX Extensions -->
+    <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
 </body>
 </html>
