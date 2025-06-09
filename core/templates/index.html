@@ -46,55 +46,57 @@
     <!-- Navbar mit Sprachauswahl -->
     {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
     
-    <main id="main-content" class="container">
-        <h1>{% trans 'Willkommen bei Django Insight UI' %}</h1>
+    <main id="main-content" class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">{% trans 'Willkommen bei Django Insight UI' %}</h1>
         
         <!-- Sprachauswähler -->
-        <section class="demo-section">
-            <h2>{% trans 'Sprachauswahl' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Sprachauswahl' %}</h2>
             {% language_selector current_language=LANGUAGE_CODE %}
         </section>
         
         <!-- Alert Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Benachrichtigungen' %}</h2>
-            {% alert message="Dies ist eine Informationsmeldung" type="info" %}
-            {% alert message="Erfolgreich gespeichert!" type="success" %}
-            {% alert message="Achtung: Überprüfen Sie Ihre Eingaben" type="warning" %}
-            {% alert message="Fehler beim Laden der Daten" type="error" %}
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+            <div class="space-y-4">
+                {% alert message="Dies ist eine Informationsmeldung" type="info" %}
+                {% alert message="Erfolgreich gespeichert!" type="success" %}
+                {% alert message="Achtung: Überprüfen Sie Ihre Eingaben" type="warning" %}
+                {% alert message="Fehler beim Laden der Daten" type="error" %}
+            </div>
         </section>
         
         <!-- Breadcrumbs Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Breadcrumb-Navigation' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
             {% breadcrumbs items=breadcrumb_items %}
         </section>
         
         <!-- Table Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Tabelle' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
             {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
         </section>
         
         <!-- Card Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Karten' %}</h2>
-            <div class="card-grid">
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{% trans 'Karten' %}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% card title="Beispiel-Karte" subtitle="Untertitel" content="Dies ist der Inhalt einer Karte." %}
                 {% card title="Karte mit Aktionen" content="Diese Karte hat Aktions-Buttons." actions=card_actions %}
             </div>
         </section>
         
         <!-- Form Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Formular' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular' %}</h2>
             {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions %}
         </section>
         
         <!-- Modal Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Modal-Dialog' %}</h2>
-            <button type="button" class="insight-btn insight-btn--primary" data-insight-toggle="modal" data-insight-target="demo-modal">
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Modal-Dialog' %}</h2>
+            <button type="button" class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="demo-modal">
                 {% trans 'Modal öffnen' %}
             </button>
             
@@ -102,40 +104,40 @@
         </section>
         
         <!-- Sidebar Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Seitennavigation' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Seitennavigation' %}</h2>
             {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
         </section>
         
         <!-- HTMX Live Content Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Live-Inhalte (HTMX)' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Live-Inhalte (HTMX)' %}</h2>
             {% live_content url="/api/live-data/" interval=5000 id="live-content" %}
         </section>
         
         <!-- HTMX Form Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'HTMX-Formular' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'HTMX-Formular' %}</h2>
             {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx=htmx_config %}
             <div id="form-result" class="mt-4"></div>
         </section>
         
         <!-- Infinite Scroll Demo -->
-        <section class="demo-section">
-            <h2>{% trans 'Infinite Scroll' %}</h2>
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
             {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
         </section>
         
         <!-- Alpine.js Demo -->
-        <section class="demo-section" x-data="{ count: 0, message: 'Hello Alpine!' }">
-            <h2>{% trans 'Alpine.js Integration' %}</h2>
-            <div class="bg-white p-6 rounded-lg shadow">
-                <p x-text="message" class="text-lg mb-4"></p>
-                <p class="mb-4">Counter: <span x-text="count" class="font-bold text-insight-primary"></span></p>
-                <button @click="count++" class="bg-insight-primary text-white px-4 py-2 rounded hover:bg-blue-600">
+        <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6" x-data="{ count: 0, message: 'Hello Alpine!' }">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Alpine.js Integration' %}</h2>
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                <p x-text="message" class="text-lg mb-4 text-gray-900 dark:text-white"></p>
+                <p class="mb-4 text-gray-700 dark:text-gray-300">Counter: <span x-text="count" class="font-bold text-insight-primary"></span></p>
+                <button @click="count++" class="bg-insight-primary hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
                     {% trans 'Zähler erhöhen' %}
                 </button>
-                <button @click="message = 'Alpine.js funktioniert!'" class="bg-insight-success text-white px-4 py-2 rounded hover:bg-green-600 ml-2">
+                <button @click="message = 'Alpine.js funktioniert!'" class="bg-insight-success hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors duration-200 ml-2">
                     {% trans 'Nachricht ändern' %}
                 </button>
             </div>

@@ -7,6 +7,23 @@
     
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'insight-primary': '#3b82f6',
+                        'insight-secondary': '#6b7280',
+                        'insight-success': '#10b981',
+                        'insight-warning': '#f59e0b',
+                        'insight-error': '#ef4444',
+                        'insight-info': '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -18,7 +35,7 @@
     
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
     {% block content %}{% endblock %}
     
     {% block extra_scripts %}{% endblock %}
