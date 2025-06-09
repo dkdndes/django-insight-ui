@@ -56,7 +56,8 @@
         <div class="hidden md:flex items-center space-x-4">
           {% if options.show_language_selector %}
             <div class="relative">
-              <!-- Sprachumschalter hier einfügen -->
+              {% load insight_tags %}
+              {% language_selector %}
             </div>
           {% endif %}
           
