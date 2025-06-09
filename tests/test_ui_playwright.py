@@ -128,12 +128,18 @@ def test_modal_functionality(page: Page, live_server):
     """Test der Modal-Funktionalität."""
     page.goto(f"{live_server.url}/")
     
+    # Warte bis die Seite vollständig geladen ist
+    page.wait_for_load_state("networkidle")
+    
     # Finde Modal-Trigger-Button
     modal_trigger = page.locator('[data-insight-toggle="modal"]')
     expect(modal_trigger).to_be_visible()
     
     # Klicke auf Modal-Button
     modal_trigger.click()
+    
+    # Warte kurz für Animation
+    page.wait_for_timeout(300)
     
     # Prüfe, dass Modal geöffnet wird
     modal = page.locator("#demo-modal")

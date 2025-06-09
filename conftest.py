@@ -50,7 +50,8 @@ def browser_type_launch_args(browser_type_launch_args):
     """Browser-Launch-Argumente."""
     return {
         **browser_type_launch_args,
-        "headless": True,
+        "headless": False,  # Für besseres Debugging
+        "slow_mo": 100,     # Langsamere Ausführung für bessere Sichtbarkeit
     }
 
 
