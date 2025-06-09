@@ -11,30 +11,19 @@
     <div class="flex justify-between items-center h-16">
       <!-- Markenbereich -->
       <div class="flex items-center">
-      {% if brand %}
-        <a href="{% if options.brand_url %}{{ options.brand_url }}{% else %}#{% endif %}" class="insight-navbar__brand-link">
-          {% if options.brand_logo %}
-            <img src="{{ options.brand_logo }}" alt="{{ brand }}" class="insight-navbar__logo" />
-          {% endif %}
-          <span class="insight-navbar__brand-text">{{ brand }}</span>
-        </a>
-      {% endif %}
-    </div>
-    
-    <!-- Mobile-Menü-Button -->
-    <button 
-      type="button" 
-      class="insight-navbar__toggle" 
-      aria-expanded="false" 
-      aria-controls="navbar-menu"
-      aria-label="{% trans 'Menü öffnen' %}"
-      data-insight-toggle="navbar">
-      <span class="insight-navbar__toggle-icon"></span>
-    </button>
-    
-    <!-- Navigationslinks -->
-    <div id="navbar-menu" class="insight-navbar__menu">
-      <ul class="insight-navbar__nav">
+        {% if brand %}
+          <a href="{% if options.brand_url %}{{ options.brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+            {% if options.brand_logo %}
+              <img src="{{ options.brand_logo }}" alt="{{ brand }}" class="h-8 w-8" />
+            {% endif %}
+            <span>{{ brand }}</span>
+          </a>
+        {% endif %}
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <ul class="flex space-x-8">
           {% for link in links %}
             <li>
               <a 
