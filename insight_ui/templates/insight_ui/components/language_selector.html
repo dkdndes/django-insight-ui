@@ -15,7 +15,7 @@
     {% for code, name in LANGUAGES %}
       <option 
         value="{{ code }}"
-        {% if current_language == code %}selected{% endif %}>
+        {% if LANGUAGE_CODE == code %}selected{% endif %}>
         {{ name }}
       </option>
     {% endfor %}
