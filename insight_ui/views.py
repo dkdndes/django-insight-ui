@@ -100,7 +100,7 @@ def index_view(request):
         },
     }
     
-    return render(request, 'core/templates/index.html', context)
+    return render(request, 'index.html', context)
 
 
 @require_http_methods(["GET"])
