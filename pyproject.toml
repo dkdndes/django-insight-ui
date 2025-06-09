@@ -91,6 +91,9 @@ target-version = "py310"
 select = ["E", "F", "B", "I", "N", "UP", "ANN", "S", "A", "C4", "DTZ", "T10", "EM", "ICN", "G", "PIE", "PT", "RSE", "RET", "SIM", "TID", "ARG", "PD", "PGH", "PL", "TRY", "RUF"]
 ignore = ["ANN101", "ANN102", "ANN401"]
 
+[tool.hatch.build.targets.wheel]
+packages = ["insight_ui"]
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 python_files = "test_*.py"
