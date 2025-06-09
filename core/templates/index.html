@@ -1,3 +1,6 @@
+{% load insight_tags %}
+{% load i18n %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
@@ -37,10 +40,6 @@
     {% endif %}
 </head>
 <body>
-    {% load insight_tags %}
-    {% load i18n %}
-    {% load static %}
-    
     <!-- CSRF-Token für JavaScript -->
     {% csrf_token %}
     
