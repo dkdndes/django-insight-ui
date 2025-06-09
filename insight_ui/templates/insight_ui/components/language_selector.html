@@ -33,12 +33,10 @@
       
       // Versuche CSRF-Token aus verschiedenen Quellen zu holen
       const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
-      const csrfMeta = document.querySelector('meta[name=csrf-token]');
       
       if (csrfInput) {
         csrfToken = csrfInput.value;
-      } else if (csrfMeta) {
-        csrfToken = csrfMeta.getAttribute('content');
+        console.log('CSRF Token aus Input gefunden:', csrfToken ? 'Ja' : 'Nein');
       } else {
         // Fallback: CSRF-Token aus Cookie lesen
         const cookies = document.cookie.split(';');
@@ -46,12 +44,17 @@
           const trimmed = cookie.trim();
           if (trimmed.startsWith('csrftoken=')) {
             csrfToken = trimmed.substring('csrftoken='.length);
+            console.log('CSRF Token aus Cookie gefunden:', csrfToken ? 'Ja' : 'Nein');
             break;
           }
         }
       }
       
-      console.log('CSRF Token gefunden:', csrfToken ? 'Ja' : 'Nein');
+      if (!csrfToken) {
+        console.error('Kein CSRF-Token gefunden! Sprachwechsel wird möglicherweise fehlschlagen.');
+        alert('Fehler: CSRF-Token nicht gefunden. Bitte laden Sie die Seite neu.');
+        return;
+      }
       
       if (csrfToken) {
         const csrfHiddenInput = document.createElement('input');
