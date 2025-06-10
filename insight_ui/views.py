@@ -159,7 +159,6 @@ def more_items_view(request):
     })
 
 
-@csrf_exempt
 @require_http_methods(["POST"])
 def htmx_form_submit(request):
     """HTMX Endpoint für Formular-Übermittlung"""
