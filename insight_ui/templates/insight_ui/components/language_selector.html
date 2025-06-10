@@ -27,37 +27,50 @@
       window.changeLanguage = function(languageCode) {
         console.log('Sprachwechsel zu:', languageCode);
         
-        // Django CSRF-Token holen
+        // Django CSRF-Token holen - verbesserte Methode
         function getCSRFToken() {
-          // Versuche zuerst das Django JSON-Script
+          // 1. Versuche das Django JSON-Script
           const csrfScript = document.querySelector('#csrf-token');
           if (csrfScript) {
-            return JSON.parse(csrfScript.textContent);
-          }
-          
-          // Fallback: CSRF-Token aus verstecktem Input
-          const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
-          if (csrfInput) {
-            return csrfInput.value;
-          }
-          
-          // Fallback: CSRF-Token aus Cookie
-          const cookies = document.cookie.split(';');
-          for (let cookie of cookies) {
-            const trimmed = cookie.trim();
-            if (trimmed.startsWith('csrftoken=')) {
-              return trimmed.substring('csrftoken='.length);
+            try {
+              return JSON.parse(csrfScript.textContent);
+            } catch (e) {
+              console.warn('CSRF-Token aus JSON-Script konnte nicht geparst werden');
             }
           }
           
-          return null;
+          // 2. Fallback: CSRF-Token aus verstecktem Input
+          const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+          if (csrfInput && csrfInput.value) {
+            return csrfInput.value;
+          }
+          
+          // 3. Fallback: CSRF-Token aus Cookie (Django Standard)
+          function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+          
+          return getCookie('csrftoken');
         }
         
         const csrfToken = getCSRFToken();
+        console.log('CSRF-Token gefunden:', csrfToken ? 'Ja' : 'Nein');
+        
         if (!csrfToken) {
           console.error('Kein CSRF-Token gefunden!');
-          alert('Fehler: CSRF-Token nicht gefunden. Bitte laden Sie die Seite neu.');
-          return;
+          // Versuche es trotzdem - Django könnte CSRF für diese View deaktiviert haben
+          console.warn('Versuche Sprachwechsel ohne CSRF-Token...');
         }
         
         // Erstelle ein verstecktes Formular für den Sprachwechsel
@@ -66,12 +79,14 @@
         form.action = '/i18n/setlang/';
         form.style.display = 'none';
         
-        // CSRF-Token hinzufügen
-        const csrfHiddenInput = document.createElement('input');
-        csrfHiddenInput.type = 'hidden';
-        csrfHiddenInput.name = 'csrfmiddlewaretoken';
-        csrfHiddenInput.value = csrfToken;
-        form.appendChild(csrfHiddenInput);
+        // CSRF-Token hinzufügen (falls vorhanden)
+        if (csrfToken) {
+          const csrfHiddenInput = document.createElement('input');
+          csrfHiddenInput.type = 'hidden';
+          csrfHiddenInput.name = 'csrfmiddlewaretoken';
+          csrfHiddenInput.value = csrfToken;
+          form.appendChild(csrfHiddenInput);
+        }
         
         // Sprache hinzufügen
         const languageInput = document.createElement('input');
@@ -97,6 +112,17 @@
     // Stelle sicher, dass die Funktion auch nach dem Laden verfügbar ist
     document.addEventListener('DOMContentLoaded', function() {
       console.log('Language selector JavaScript geladen');
+      
+      // Debug: Zeige verfügbare CSRF-Token-Quellen
+      const csrfScript = document.querySelector('#csrf-token');
+      const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+      const csrfCookie = document.cookie.includes('csrftoken=');
+      
+      console.log('CSRF-Quellen verfügbar:', {
+        jsonScript: !!csrfScript,
+        hiddenInput: !!csrfInput,
+        cookie: csrfCookie
+      });
     });
   </script>
 </div>
