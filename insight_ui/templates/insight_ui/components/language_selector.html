@@ -29,13 +29,14 @@
         
         // Django CSRF-Token holen - verbesserte Methode
         function getCSRFToken() {
-          // 1. Versuche das Django JSON-Script
-          const csrfScript = document.querySelector('#csrf-token');
-          if (csrfScript) {
-            try {
-              return JSON.parse(csrfScript.textContent);
-            } catch (e) {
-              console.warn('CSRF-Token aus JSON-Script konnte nicht geparst werden');
+          // 1. Versuche Meta-Tag
+          const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+          if (csrfMeta) {
+            const content = csrfMeta.getAttribute('content');
+            // Entferne HTML-Tags falls vorhanden
+            const cleanToken = content.replace(/<[^>]*>/g, '').trim();
+            if (cleanToken && cleanToken.length > 10) {
+              return cleanToken;
             }
           }
           
