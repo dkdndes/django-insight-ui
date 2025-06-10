@@ -27,39 +27,44 @@
       window.changeLanguage = function(languageCode) {
         console.log('Sprachwechsel zu:', languageCode);
         
+        // Django CSRF-Token holen
+        function getCSRFToken() {
+          // Versuche zuerst das Django JSON-Script
+          const csrfScript = document.querySelector('#csrf-token');
+          if (csrfScript) {
+            return JSON.parse(csrfScript.textContent);
+          }
+          
+          // Fallback: CSRF-Token aus verstecktem Input
+          const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
+          if (csrfInput) {
+            return csrfInput.value;
+          }
+          
+          // Fallback: CSRF-Token aus Cookie
+          const cookies = document.cookie.split(';');
+          for (let cookie of cookies) {
+            const trimmed = cookie.trim();
+            if (trimmed.startsWith('csrftoken=')) {
+              return trimmed.substring('csrftoken='.length);
+            }
+          }
+          
+          return null;
+        }
+        
+        const csrfToken = getCSRFToken();
+        if (!csrfToken) {
+          console.error('Kein CSRF-Token gefunden!');
+          alert('Fehler: CSRF-Token nicht gefunden. Bitte laden Sie die Seite neu.');
+          return;
+        }
+        
         // Erstelle ein verstecktes Formular für den Sprachwechsel
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '/i18n/setlang/';
         form.style.display = 'none';
-        
-        // CSRF-Token aus dem DOM holen
-        let csrfToken = null;
-        
-        // Versuche CSRF-Token aus verschiedenen Quellen zu holen
-        const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
-        
-        if (csrfInput) {
-          csrfToken = csrfInput.value;
-          console.log('CSRF-Token aus Input gefunden');
-        } else {
-          // Fallback: CSRF-Token aus Cookie lesen
-          const cookies = document.cookie.split(';');
-          for (let cookie of cookies) {
-            const trimmed = cookie.trim();
-            if (trimmed.startsWith('csrftoken=')) {
-              csrfToken = trimmed.substring('csrftoken='.length);
-              console.log('CSRF-Token aus Cookie gefunden');
-              break;
-            }
-          }
-        }
-        
-        if (!csrfToken) {
-          console.error('Kein CSRF-Token gefunden! Sprachwechsel wird möglicherweise fehlschlagen.');
-          alert('Fehler: CSRF-Token nicht gefunden. Bitte laden Sie die Seite neu.');
-          return;
-        }
         
         // CSRF-Token hinzufügen
         const csrfHiddenInput = document.createElement('input');
