@@ -115,13 +115,15 @@
       console.log('Language selector JavaScript geladen');
       
       // Debug: Zeige verfügbare CSRF-Token-Quellen
-      const csrfScript = document.querySelector('#csrf-token');
+      const csrfMeta = document.querySelector('meta[name="csrf-token"]');
       const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
       const csrfCookie = document.cookie.includes('csrftoken=');
       
       console.log('CSRF-Quellen verfügbar:', {
-        jsonScript: !!csrfScript,
+        metaTag: !!csrfMeta,
+        metaContent: csrfMeta ? csrfMeta.getAttribute('content') : 'nicht gefunden',
         hiddenInput: !!csrfInput,
+        inputValue: csrfInput ? csrfInput.value : 'nicht gefunden',
         cookie: csrfCookie
       });
     });
