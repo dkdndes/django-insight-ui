@@ -28,6 +28,7 @@
     </script>
     
     <!-- Django CSRF Token für JavaScript -->
+    <meta name="csrf-token" content="{{ csrf_token }}">
     {{ csrf_token|json_script:"csrf-token" }}
     
     <!-- Alpine.js CDN -->
