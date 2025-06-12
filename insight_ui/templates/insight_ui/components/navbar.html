@@ -62,7 +62,7 @@
                 id="navbar-language-select" 
                 name="language" 
                 class="block px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                onchange="changeLanguage(this.value)"
+                onchange="if(typeof changeLanguage === 'function') { changeLanguage(this.value); } else { window.location.href='/i18n/setlang/?language=' + this.value + '&next=' + encodeURIComponent(window.location.pathname); }"
                 aria-label="{% trans 'Sprache ändern' %}">
                 {% for code, name in LANGUAGES %}
                   <option 
