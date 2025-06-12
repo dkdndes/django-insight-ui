@@ -1,5 +1,4 @@
 {% load i18n %}
-{% get_available_languages as LANGUAGES %}
 {% get_current_language as LANGUAGE_CODE %}
 
 <nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
@@ -64,6 +63,7 @@
                 class="block px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
                 onchange="if(typeof changeLanguage === 'function') { changeLanguage(this.value); } else { window.location.href='/i18n/setlang/?language=' + this.value + '&next=' + encodeURIComponent(window.location.pathname); }"
                 aria-label="{% trans 'Sprache ändern' %}">
+                {% get_available_languages as LANGUAGES %}
                 {% for code, name in LANGUAGES %}
                   <option 
                     value="{{ code }}"
