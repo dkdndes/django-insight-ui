@@ -70,16 +70,14 @@
                   {% get_available_languages as LANGUAGES %}
                   {% if LANGUAGES %}
                     {% for lang in LANGUAGES %}
-                      <option 
-                        value="{{ lang.0 }}"
-                        {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                      <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
                         {{ lang.1 }}
                       </option>
                     {% endfor %}
                   {% else %}
                     <!-- Fallback für den Fall, dass get_available_languages nicht funktioniert -->
-                    <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
-                    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                    <option value="de"{% if LANGUAGE_CODE == 'de' %} selected{% endif %}>Deutsch</option>
+                    <option value="en"{% if LANGUAGE_CODE == 'en' %} selected{% endif %}>English</option>
                   {% endif %}
                 </select>
               </form>
