@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" data-theme="light">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,5 +39,19 @@
     {% block content %}{% endblock %}
     
     {% block extra_scripts %}{% endblock %}
+    
+    <script>
+        // Initialisiere Insight UI Komponenten
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.InsightUI) {
+                InsightUI.ThemeToggle.init();
+                InsightUI.Navbar.init();
+                InsightUI.Modal.init();
+                InsightUI.Alert.init();
+                InsightUI.Form.init();
+                InsightUI.Sidebar.init();
+            }
+        });
+    </script>
 </body>
 </html>

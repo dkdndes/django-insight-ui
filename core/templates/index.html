@@ -152,5 +152,34 @@
     
     <!-- HTMX Extensions -->
     <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
+    
+    <!-- Sprachformular für Django -->
+    <form id="language-form" method="post" action="{% url 'set_language' %}" style="display: none;">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+        <input name="language" type="hidden" />
+    </form>
+    
+    <script>
+        // Sprach-Wechsel-Funktion
+        function changeLanguage(languageCode) {
+            const form = document.getElementById('language-form');
+            const languageInput = form.querySelector('input[name="language"]');
+            languageInput.value = languageCode;
+            form.submit();
+        }
+        
+        // Initialisiere Insight UI Komponenten
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.InsightUI) {
+                InsightUI.ThemeToggle.init();
+                InsightUI.Navbar.init();
+                InsightUI.Modal.init();
+                InsightUI.Alert.init();
+                InsightUI.Form.init();
+                InsightUI.Sidebar.init();
+            }
+        });
+    </script>
 </body>
 </html>
