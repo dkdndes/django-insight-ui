@@ -1,4 +1,6 @@
 {% load i18n %}
+{% get_available_languages as LANGUAGES %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,8 +58,6 @@
         <div class="hidden md:flex items-center space-x-4">
           {% if show_language_selector %}
             <div class="relative">
-              {% get_available_languages as LANGUAGES %}
-              {% get_current_language as LANGUAGE_CODE %}
               <select 
                 id="navbar-language-select" 
                 name="language" 
