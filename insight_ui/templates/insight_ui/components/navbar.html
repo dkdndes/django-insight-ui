@@ -68,11 +68,11 @@
                   onchange="document.getElementById('navbar-language-form').querySelector('input[name=language]').value=this.value; document.getElementById('navbar-language-form').submit();"
                   aria-label="{% trans 'Sprache ändern' %}">
                   {% get_available_languages as LANGUAGES %}
-                  {% for code, name in LANGUAGES %}
+                  {% for lang in LANGUAGES %}
                     <option 
-                      value="{{ code }}"
-                      {% if code == LANGUAGE_CODE %}selected{% endif %}>
-                      {{ name }}
+                      value="{{ lang.0 }}"
+                      {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                      {{ lang.1 }}
                     </option>
                   {% endfor %}
                 </select>
