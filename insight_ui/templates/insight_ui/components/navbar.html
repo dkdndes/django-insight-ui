@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Skip-Link für Barrierefreiheit -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">{% trans 'Zum Hauptinhalt springen' %}</a>
@@ -9,9 +9,9 @@
       <!-- Markenbereich -->
       <div class="flex items-center">
         {% if brand %}
-          <a href="{% if options.brand_url %}{{ options.brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-            {% if options.brand_logo %}
-              <img src="{{ options.brand_logo }}" alt="{{ brand }}" class="h-8 w-8" />
+          <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+            {% if brand_logo %}
+              <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8" />
             {% endif %}
             <span>{{ brand }}</span>
           </a>
@@ -52,9 +52,9 @@
       </div>
       
       <!-- Theme Toggle & Language Selector -->
-      {% if options.show_theme_toggle or options.show_language_selector %}
+      {% if show_theme_toggle or show_language_selector %}
         <div class="hidden md:flex items-center space-x-4">
-          {% if options.show_language_selector %}
+          {% if show_language_selector %}
             <div class="relative">
               {% get_available_languages as LANGUAGES %}
               {% get_current_language as LANGUAGE_CODE %}
@@ -75,7 +75,7 @@
             </div>
           {% endif %}
           
-          {% if options.show_theme_toggle %}
+          {% if show_theme_toggle %}
             <button 
               type="button" 
               aria-label="{% trans 'Farbschema umschalten' %}"
