@@ -1,13 +1,15 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
+<!-- Skip-Link for Accessibility, placed BEFORE nav -->
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">
+    {% trans 'Zum Hauptinhalt springen' %}
+</a>
+
 <nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Skip-Link für Barrierefreiheit -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 rounded">{% trans 'Zum Hauptinhalt springen' %}</a>
-    
     <div class="flex justify-between items-center h-16">
-      <!-- Markenbereich -->
+      <!-- Brand -->
       <div class="flex items-center">
         {% if brand %}
           <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
@@ -18,8 +20,9 @@
           </a>
         {% endif %}
       </div>
-      
+
       <!-- Desktop Navigation -->
+      {% if links %}
       <div class="hidden md:block">
         <ul class="flex space-x-8">
           {% for link in links %}
@@ -36,7 +39,8 @@
           {% endfor %}
         </ul>
       </div>
-      
+      {% endif %}
+
       <!-- Mobile menu button -->
       <div class="md:hidden">
         <button 
@@ -51,7 +55,7 @@
           </svg>
         </button>
       </div>
-      
+
       <!-- Theme Toggle & Language Selector -->
       {% if show_theme_toggle or show_language_selector %}
         <div class="hidden md:flex items-center space-x-4">
@@ -65,17 +69,16 @@
                   id="navbar-language-select" 
                   name="language_select" 
                   class="block px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                  onchange="document.getElementById('navbar-language-form').querySelector('input[name=language]').value=this.value; document.getElementById('navbar-language-form').submit();"
+                  onchange="this.form.elements['language'].value=this.value; this.form.submit();"
                   aria-label="{% trans 'Sprache ändern' %}">
-                  {% get_available_languages as LANGUAGES %}
-                  {% if LANGUAGES %}
-                    {% for lang in LANGUAGES %}
+                  {% get_available_languages as NAV_LANGUAGES %}
+                  {% if NAV_LANGUAGES %}
+                    {% for lang in NAV_LANGUAGES %}
                       <option value="{{ lang.0 }}"{% if lang.0 == LANGUAGE_CODE %} selected{% endif %}>
                         {{ lang.1 }}
                       </option>
                     {% endfor %}
                   {% else %}
-                    <!-- Fallback für den Fall, dass get_available_languages nicht funktioniert -->
                     <option value="de"{% if LANGUAGE_CODE == 'de' %} selected{% endif %}>Deutsch</option>
                     <option value="en"{% if LANGUAGE_CODE == 'en' %} selected{% endif %}>English</option>
                   {% endif %}
@@ -83,7 +86,6 @@
               </form>
             </div>
           {% endif %}
-          
           {% if show_theme_toggle %}
             <button 
               type="button" 
@@ -99,8 +101,9 @@
         </div>
       {% endif %}
     </div>
-    
+
     <!-- Mobile menu -->
+    {% if links %}
     <div id="mobile-menu" class="md:hidden hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         {% for link in links %}
@@ -115,5 +118,6 @@
         {% endfor %}
       </div>
     </div>
+    {% endif %}
   </div>
 </nav>
