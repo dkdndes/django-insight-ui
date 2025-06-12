@@ -56,7 +56,6 @@
         <div class="hidden md:flex items-center space-x-4">
           {% if options.show_language_selector %}
             <div class="relative">
-              {% load i18n %}
               {% get_available_languages as LANGUAGES %}
               {% get_current_language as LANGUAGE_CODE %}
               <select 
