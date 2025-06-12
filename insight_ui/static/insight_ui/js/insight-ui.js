@@ -176,18 +176,47 @@
         return 'light';
       };
       
-      // Aktuelles Theme setzen
+      // Aktuelles Theme setzen (TailwindCSS-kompatibel)
       const setTheme = (theme) => {
-        document.documentElement.setAttribute('data-theme', theme);
+        const html = document.documentElement;
+        
+        if (theme === 'dark') {
+          html.classList.add('dark');
+          html.setAttribute('data-theme', 'dark');
+        } else {
+          html.classList.remove('dark');
+          html.setAttribute('data-theme', 'light');
+        }
+        
         localStorage.setItem('insight-theme', theme);
         
-        // Aktualisiere alle Toggle-Buttons
+        // Aktualisiere alle Toggle-Button-Icons
         themeToggles.forEach(toggle => {
-          const themeIcon = toggle.querySelector('.insight-theme-toggle__icon');
-          if (themeIcon) {
-            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+          const iconContainer = toggle.querySelector('.insight-theme-toggle__icon');
+          if (iconContainer) {
+            // Ersetze das SVG-Icon basierend auf dem Theme
+            if (theme === 'light') {
+              // Mond-Icon für Light Mode (um zu Dark zu wechseln)
+              iconContainer.innerHTML = `
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              `;
+            } else {
+              // Sonnen-Icon für Dark Mode (um zu Light zu wechseln)
+              iconContainer.innerHTML = `
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              `;
+            }
           }
         });
+        
+        // Event für Theme-Änderung auslösen
+        document.dispatchEvent(new CustomEvent('insight:theme:changed', {
+          detail: { theme: theme }
+        }));
       };
       
       // Initialisiere mit dem gespeicherten oder Systemthema
@@ -196,7 +225,8 @@
       // Event-Listener für Theme-Toggle-Buttons
       themeToggles.forEach(toggle => {
         utils.on(toggle, 'click', function() {
-          const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+          const html = document.documentElement;
+          const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
           const newTheme = currentTheme === 'light' ? 'dark' : 'light';
           setTheme(newTheme);
         });
@@ -515,6 +545,8 @@
     InsightUI.Modal.init();
     InsightUI.Sidebar.init();
     InsightUI.Form.init();
+    
+    console.log('InsightUI components initialized');
   });
 
 })();
