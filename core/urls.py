@@ -20,6 +20,7 @@ urlpatterns = [
     path("components/<str:component_name>/", insight_views.component_demo_view, name="component_demo"),
 ]
 
+urlpatterns += i18n_patterns(
     path("", insight_views.index_view, name="home"),
     prefix_default_language=False,
 )
