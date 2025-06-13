@@ -8,6 +8,22 @@
     <div class="container mx-auto">
         <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">{% trans 'Willkommen bei Django Insight UI' %}</h1>
         
+        <!-- Erfolgsmeldung anzeigen -->
+        {% if form_success %}
+            <div class="mb-6">
+                {% alert message=form_success.message type="success" dismissible=True %}
+            </div>
+        {% endif %}
+        
+        <!-- Fehlermeldungen anzeigen -->
+        {% if form_errors %}
+            <div class="mb-6">
+                {% for field, error in form_errors.items %}
+                    {% alert message=error type="error" dismissible=True %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
         <!-- Include Demo Sections -->
         {% include "insight_ui/components/demo_sections.html" %}
     </div>
