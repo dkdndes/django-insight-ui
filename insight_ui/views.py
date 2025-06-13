@@ -246,6 +246,8 @@ def normal_form_submit(request):
     logger = logging.getLogger(__name__)
     
     # Debug: Alle POST-Daten loggen
+    print(f"[NORMAL FORM] Empfangene POST-Daten: {dict(request.POST)}")
+    print(f"[NORMAL FORM] Content-Type: {request.content_type}")
     logger.info(f"Empfangene POST-Daten: {dict(request.POST)}")
     logger.info(f"Content-Type: {request.content_type}")
     
@@ -254,6 +256,7 @@ def normal_form_submit(request):
     email = request.POST.get('email', '')
     message = request.POST.get('message', '')
     
+    print(f"[NORMAL FORM] Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'")
     logger.info(f"Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'")
     
     # Synchrones Logging der Eingabedaten
@@ -283,6 +286,7 @@ def normal_form_submit(request):
     # Erfolg simulieren mit synchroner Verarbeitung
     time.sleep(1)  # Simuliere synchrone Verarbeitungszeit
     
+    print("[NORMAL FORM] Normales Formular erfolgreich verarbeitet")
     logger.info("Normales Formular erfolgreich verarbeitet")
     
     # Bei erfolgreichem Submit die komplette Seite mit Erfolgsmeldung rendern
@@ -310,11 +314,25 @@ def log_form_input_sync(name, email, message, logger):
     # Simuliere synchrone Verarbeitung
     time.sleep(0.1)
     
-    # Detailliertes Logging der Eingabedaten
-    logger.info("=" * 50)
+    # Detailliertes Logging der Eingabedaten - sowohl print als auch logger
+    separator = "=" * 50
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    print(separator)
+    print("NORMALES Kontaktformular - Neue Eingabe erhalten")
+    print(separator)
+    print(f"Zeitstempel: {timestamp}")
+    print(f"Name: {name}")
+    print(f"E-Mail: {email}")
+    print(f"Nachricht: {message}")
+    print(f"Name-Länge: {len(name)} Zeichen")
+    print(f"E-Mail-Länge: {len(email)} Zeichen")
+    print(f"Nachricht-Länge: {len(message)} Zeichen")
+    
+    logger.info(separator)
     logger.info("NORMALES Kontaktformular - Neue Eingabe erhalten")
-    logger.info("=" * 50)
-    logger.info(f"Zeitstempel: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(separator)
+    logger.info(f"Zeitstempel: {timestamp}")
     logger.info(f"Name: {name}")
     logger.info(f"E-Mail: {email}")
     logger.info(f"Nachricht: {message}")
@@ -325,12 +343,16 @@ def log_form_input_sync(name, email, message, logger):
     # Zusätzliche Validierungsinfos
     if '@' in email:
         email_parts = email.split('@')
-        logger.info(f"E-Mail Domain: {email_parts[1] if len(email_parts) > 1 else 'Unbekannt'}")
+        domain = email_parts[1] if len(email_parts) > 1 else 'Unbekannt'
+        print(f"E-Mail Domain: {domain}")
+        logger.info(f"E-Mail Domain: {domain}")
     
-    logger.info("=" * 50)
+    print(separator)
+    logger.info(separator)
     
     # Simuliere weitere synchrone Verarbeitung
     time.sleep(0.05)
+    print("Synchrones Logging abgeschlossen")
     logger.debug("Synchrones Logging abgeschlossen")
 
 
