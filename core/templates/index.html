@@ -113,9 +113,19 @@
             
             // Button-Click-Handler
             if (toggleButton) {
+                console.log('Toggle button found:', toggleButton);
                 toggleButton.addEventListener('click', function(e) {
                     e.preventDefault();
+                    console.log('Toggle button clicked');
                     toggleRightSidebar();
+                });
+            } else {
+                console.warn('Toggle button with ID "right-sidebar-toggle" not found');
+                // Debug: Alle Buttons in der Navbar auflisten
+                const allButtons = document.querySelectorAll('button');
+                console.log('All buttons found:', allButtons);
+                allButtons.forEach((btn, index) => {
+                    console.log(`Button ${index}:`, btn.id, btn.textContent.trim());
                 });
             }
             
