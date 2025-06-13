@@ -216,6 +216,7 @@ async def htmx_form_submit(request):
             'email': email,
             'type': 'success'
         })
+        # Erfolgreiche Antwort ohne Redirect - bleibt auf der Seite
         return HttpResponse(success_html)
     
     logger.warning("Nicht-HTMX Request an htmx_form_submit erhalten")
