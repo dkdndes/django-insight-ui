@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div 
-  class="fixed inset-0 z-50 overflow-y-auto hidden" 
+  class="insight-modal fixed inset-0 z-50 overflow-y-auto hidden" 
   id="{{ id }}" 
   role="dialog" 
   aria-modal="true" 
@@ -9,6 +9,7 @@
   {% if description %}aria-describedby="{{ id }}-description"{% endif %}
   tabindex="-1">
   
+  <!-- Modal Backdrop - Klick zum Schließen -->
   <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" data-insight-dismiss="modal"></div>
   
   <div class="flex items-center justify-center min-h-screen p-4">
@@ -39,14 +40,40 @@
       {% if actions %}
         <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
           {% for action in actions %}
-            <button 
-              type="button" 
-              class="{% if action.type == 'primary' %}bg-blue-600 hover:bg-blue-700 text-white{% else %}bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white{% endif %} px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-              {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
-              {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
-              {{ action.text }}
-            </button>
+            {% if action.type == 'cancel' or action.dismiss %}
+              <button 
+                type="button" 
+                class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                data-insight-dismiss="modal">
+                {{ action.text|default:"Abbrechen" }}
+              </button>
+            {% elif action.type == 'primary' %}
+              <button 
+                type="button" 
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                {{ action.text }}
+              </button>
+            {% else %}
+              <button 
+                type="button" 
+                class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
+                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                {{ action.text }}
+              </button>
+            {% endif %}
           {% endfor %}
+        </div>
+      {% else %}
+        <!-- Standard Schließen-Button wenn keine Actions definiert sind -->
+        <div class="flex justify-end p-6 border-t border-gray-200 dark:border-gray-700">
+          <button 
+            type="button" 
+            class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+            data-insight-dismiss="modal">
+            {% trans 'Schließen' %}
+          </button>
         </div>
       {% endif %}
     </div>
