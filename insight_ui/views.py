@@ -62,8 +62,12 @@ def index_view(request):
             {'text': _('Zurücksetzen'), 'type': 'reset', 'style': 'secondary'},
         ],
         'modal_actions': [
-            {'text': _('Speichern'), 'type': 'button', 'style': 'primary', 'action': 'save'},
-            {'text': _('Abbrechen'), 'type': 'button', 'style': 'secondary', 'action': 'close'},
+            {'text': _('Speichern'), 'type': 'primary'},
+            {'text': _('Abbrechen'), 'type': 'cancel', 'dismiss': True},
+        ],
+        'confirm_modal_actions': [
+            {'text': _('Ja, fortfahren'), 'type': 'primary', 'onclick': 'alert("Aktion bestätigt!")'},
+            {'text': _('Abbrechen'), 'type': 'cancel', 'dismiss': True},
         ],
         'sidebar_items': [
             {'text': _('Dashboard'), 'url': '/', 'icon': '📊'},
