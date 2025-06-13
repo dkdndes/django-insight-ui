@@ -16,6 +16,10 @@ from asgiref.sync import sync_to_async
 def index_view(request):
     """Hauptseite mit allen Insight UI Komponenten"""
     
+    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
+    if request.method == 'POST':
+        return normal_form_submit(request)
+    
     # Beispieldaten für die Komponenten
     context = {
         'nav_links': [
