@@ -54,7 +54,7 @@
     
     <div class="flex flex-1 relative">
         <!-- Left Sidebar -->
-        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 hidden lg:block left-sidebar">
+        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:block left-sidebar">
             {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
         </aside>
         
@@ -209,6 +209,9 @@
                 leftOpenIcon.classList.add('hidden');
                 leftCloseIcon.classList.remove('hidden');
                 
+                // Position des Toggle-Buttons initial setzen
+                leftSidebarToggle.style.left = '16rem'; // 256px = w-64
+                
                 leftSidebarToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
                     leftSidebar.classList.toggle('closed');
@@ -223,6 +226,17 @@
                         leftSidebarToggle.style.left = '0';
                     } else {
                         leftSidebarToggle.style.left = '16rem'; // 256px = w-64
+                    }
+                });
+                
+                // Schließen bei Escape-Taste, wenn die Sidebar geöffnet ist
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && !leftSidebar.classList.contains('closed') && window.innerWidth < 1024) {
+                        leftSidebar.classList.add('closed');
+                        document.body.classList.add('left-sidebar-closed');
+                        leftOpenIcon.classList.remove('hidden');
+                        leftCloseIcon.classList.add('hidden');
+                        leftSidebarToggle.style.left = '0';
                     }
                 });
             }
