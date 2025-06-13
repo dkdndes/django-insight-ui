@@ -49,8 +49,24 @@
     <!-- CSRF-Token für JavaScript -->
     {% csrf_token %}
     
-    <!-- Navbar mit Sprachauswahl -->
-    {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
+    <!-- Navbar mit Sprachauswahl und Sidebar-Toggles -->
+    <div class="navbar-container">
+        {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
+        
+        <!-- Sidebar Toggle Buttons in der Navbar -->
+        <div class="absolute right-20 top-4 flex space-x-2">
+            <button id="toggle-left-sidebar" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <button id="toggle-right-sidebar" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
     
     <div class="flex flex-1 relative">
         <!-- Left Sidebar -->
@@ -58,30 +74,16 @@
             {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
         </aside>
         
-        <!-- Left Sidebar Toggle Button -->
-        <button id="left-sidebar-toggle" class="fixed left-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-2 rounded-r-lg shadow-md border border-gray-200 dark:border-gray-700 z-10 hidden lg:block">
-            <svg id="left-sidebar-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-            </svg>
-            <svg id="left-sidebar-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-            </svg>
-        </button>
+        <!-- Linker Hover-Bereich für Sidebar -->
+        <div id="left-sidebar-hover-area" class="fixed left-0 top-0 w-8 h-full z-10"></div>
         
         <!-- Main Content -->
         <main id="main-content" class="flex-1 p-6 lg:pl-8 max-w-7xl mx-auto">
             {% block content %}{% endblock %}
         </main>
         
-        <!-- Right Sidebar Toggle Button -->
-        <button id="right-sidebar-toggle" class="fixed right-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-2 rounded-l-lg shadow-md border border-gray-200 dark:border-gray-700 z-10">
-            <svg id="right-sidebar-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-            </svg>
-            <svg id="right-sidebar-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-            </svg>
-        </button>
+        <!-- Rechter Hover-Bereich für Sidebar -->
+        <div id="right-sidebar-hover-area" class="fixed right-0 top-0 w-8 h-full z-10"></div>
         
         <!-- Right Sidebar -->
         <aside id="right-sidebar" class="bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 pt-16">
@@ -158,47 +160,49 @@
             const leftOpenIcon = document.getElementById('left-sidebar-open-icon');
             const leftCloseIcon = document.getElementById('left-sidebar-close-icon');
             
-            // Rechte Sidebar Funktionalität
-            if (rightSidebarToggle && rightSidebar) {
-                // Initialer Zustand sicherstellen
+            // Rechte Sidebar Funktionalität mit Hover
+            if (rightSidebar) {
+                const rightSidebarHoverArea = document.getElementById('right-sidebar-hover-area');
+                const toggleRightSidebar = document.getElementById('toggle-right-sidebar');
+                
+                // Initialer Zustand
                 rightSidebar.classList.remove('open');
                 document.body.classList.remove('right-sidebar-open');
-                rightOpenIcon.classList.remove('hidden');
-                rightCloseIcon.classList.add('hidden');
                 
-                rightSidebarToggle.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Verhindert Bubble-Up des Events
-                    rightSidebar.classList.toggle('open');
-                    document.body.classList.toggle('right-sidebar-open');
+                // Hover-Funktionalität
+                if (rightSidebarHoverArea) {
+                    rightSidebarHoverArea.addEventListener('mouseenter', function() {
+                        if (!rightSidebar.classList.contains('open')) {
+                            rightSidebar.classList.add('open');
+                            document.body.classList.add('right-sidebar-open');
+                        }
+                    });
                     
-                    // Icons umschalten
-                    rightOpenIcon.classList.toggle('hidden');
-                    rightCloseIcon.classList.toggle('hidden');
-                });
+                    // Maus verlässt die Sidebar
+                    rightSidebar.addEventListener('mouseleave', function(e) {
+                        // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
+                        if (e.relatedTarget !== rightSidebarHoverArea) {
+                            rightSidebar.classList.remove('open');
+                            document.body.classList.remove('right-sidebar-open');
+                        }
+                    });
+                }
+                
+                // Button in der Navbar
+                if (toggleRightSidebar) {
+                    toggleRightSidebar.addEventListener('click', function() {
+                        rightSidebar.classList.toggle('open');
+                        document.body.classList.toggle('right-sidebar-open');
+                    });
+                }
                 
                 // Schließen bei Escape-Taste
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape' && rightSidebar.classList.contains('open')) {
-                        closeRightSidebar();
+                        rightSidebar.classList.remove('open');
+                        document.body.classList.remove('right-sidebar-open');
                     }
                 });
-                
-                // Schließen bei Klick außerhalb
-                document.addEventListener('click', function(e) {
-                    if (rightSidebar.classList.contains('open') && 
-                        !rightSidebar.contains(e.target) && 
-                        !rightSidebarToggle.contains(e.target)) {
-                        closeRightSidebar();
-                    }
-                });
-                
-                // Hilfsfunktion zum Schließen der rechten Sidebar
-                function closeRightSidebar() {
-                    rightSidebar.classList.remove('open');
-                    document.body.classList.remove('right-sidebar-open');
-                    rightOpenIcon.classList.remove('hidden');
-                    rightCloseIcon.classList.add('hidden');
-                }
             }
             
             // Linke Sidebar Funktionalität
