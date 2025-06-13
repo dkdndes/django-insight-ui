@@ -13,15 +13,9 @@ from datetime import datetime
 from asgiref.sync import sync_to_async
 
 
-def index_view(request):
-    """Hauptseite mit allen Insight UI Komponenten"""
-    
-    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
-    if request.method == 'POST':
-        return normal_form_submit(request)
-    
-    # Beispieldaten für die Komponenten
-    context = {
+def get_index_context():
+    """Hilfsfunktion für Index-Seiten Context"""
+    return {
         'nav_links': [
             {'text': _('Startseite'), 'url': '/', 'active': True},
             {'text': _('Komponenten'), 'url': '/components/', 'active': False},
@@ -118,6 +112,17 @@ def index_view(request):
             'swap': 'innerHTML',
         },
     }
+
+
+def index_view(request):
+    """Hauptseite mit allen Insight UI Komponenten"""
+    
+    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
+    if request.method == 'POST':
+        return normal_form_submit(request)
+    
+    # Beispieldaten für die Komponenten
+    context = get_index_context()
     
     return render(request, 'index.html', context)
 
@@ -265,25 +270,31 @@ def normal_form_submit(request):
     
     if errors:
         logger.warning(f"Formular-Validierungsfehler: {errors}")
-        # Fehler zurückgeben
-        html = render_to_string('insight_ui/components/form_errors.html', {
-            'errors': errors,
-            'type': 'error'
-        })
-        return HttpResponse(html, status=400)
+        # Bei Fehlern die komplette Seite mit Fehlermeldungen rendern
+        context = get_index_context()
+        context['form_errors'] = errors
+        context['form_data'] = {
+            'name': name,
+            'email': email,
+            'message': message
+        }
+        return render(request, 'index.html', context)
     
     # Erfolg simulieren mit synchroner Verarbeitung
     time.sleep(1)  # Simuliere synchrone Verarbeitungszeit
     
     logger.info("Normales Formular erfolgreich verarbeitet")
-    success_html = render_to_string('insight_ui/components/form_success.html', {
+    
+    # Bei erfolgreichem Submit die komplette Seite mit Erfolgsmeldung rendern
+    context = get_index_context()
+    context['form_success'] = {
         'message': _('Normales Formular erfolgreich übermittelt!'),
         'name': name,
         'email': email,
         'type': 'success'
-    })
+    }
     
-    return HttpResponse(success_html)
+    return render(request, 'index.html', context)
 
 
 def log_form_input_sync(name, email, message, logger):
