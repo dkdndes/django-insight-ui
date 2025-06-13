@@ -31,35 +31,25 @@
   <div class="space-y-4">
     {% for field in fields %}
       <div class="space-y-2">
-        <label for="{{ field.id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label for="{{ field.name }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
           {{ field.label }}
           {% if field.required %}<span class="text-red-500 ml-1" aria-label="{% trans 'Pflichtfeld' %}">*</span>{% endif %}
         </label>
         
         {% if field.type == 'textarea' %}
           <textarea 
-            id="{{ field.id }}" 
+            id="{{ field.name }}" 
             name="{{ field.name }}" 
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
             {% if field.required %}required{% endif %}
-            {% if field.rows %}rows="{{ field.rows }}"{% else %}rows="4"{% endif %}
-            {% if field.htmx %}
-              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
-              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
-              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
-            {% endif %}>{{ field.value|default:'' }}</textarea>
+            {% if field.rows %}rows="{{ field.rows }}"{% else %}rows="4"{% endif %}>{{ field.value|default:'' }}</textarea>
         {% elif field.type == 'select' %}
           <select 
-            id="{{ field.id }}" 
+            id="{{ field.name }}" 
             name="{{ field.name }}" 
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-            {% if field.required %}required{% endif %}
-            {% if field.htmx %}
-              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
-              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
-              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
-            {% endif %}>
+            {% if field.required %}required{% endif %}>
             {% for option in field.options %}
               <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>{{ option.text }}</option>
             {% endfor %}
@@ -67,19 +57,14 @@
         {% else %}
           <input 
             type="{{ field.type|default:'text' }}" 
-            id="{{ field.id }}" 
+            id="{{ field.name }}" 
             name="{{ field.name }}" 
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.value %}value="{{ field.value }}"{% endif %}
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
             {% if field.required %}required{% endif %}
             {% if field.min %}min="{{ field.min }}"{% endif %}
-            {% if field.max %}max="{{ field.max }}"{% endif %}
-            {% if field.htmx %}
-              {% if field.htmx.trigger %}hx-trigger="{{ field.htmx.trigger }}"{% endif %}
-              {% if field.htmx.target %}hx-target="{{ field.htmx.target }}"{% endif %}
-              {% if field.htmx.swap %}hx-swap="{{ field.htmx.swap }}"{% endif %}
-            {% endif %} />
+            {% if field.max %}max="{{ field.max }}"{% endif %} />
         {% endif %}
         
         {% if field.help_text %}
@@ -104,10 +89,7 @@
           type="{{ action.type|default:'submit' }}" 
           class="{% if action.style == 'primary' %}bg-blue-600 hover:bg-blue-700 text-white{% elif action.style == 'danger' %}bg-red-600 hover:bg-red-700 text-white{% else %}bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white{% endif %} px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           {% if action.htmx %}
-            {% if action.htmx.method == 'delete' %}hx-delete="{{ action.htmx.url }}"{% elif action.htmx.method == 'put' %}hx-put="{{ action.htmx.url }}"{% elif action.htmx.method == 'patch' %}hx-patch="{{ action.htmx.url }}"{% else %}hx-post="{{ action.htmx.url }}"{% endif %}
-            {% if action.htmx.target %}hx-target="{{ action.htmx.target }}"{% endif %}
-            {% if action.htmx.swap %}hx-swap="{{ action.htmx.swap }}"{% endif %}
-            {% if action.htmx.confirm %}hx-confirm="{{ action.htmx.confirm }}"{% endif %}
+            {% if action.htmx.method == 'delete' %}hx-delete="{{ action.htmx.url }}"{% elif action.htmx.method == 'put' %}hx-put="{{ action.htmx.url }}"{% elif action.htmx.method == 'patch' %}hx-patch="{{ action.htmx.url }}"{% else %}hx-post="{{ action.htmx.url }}"{% endif %} {% if action.htmx.target %}hx-target="{{ action.htmx.target }}"{% endif %} {% if action.htmx.swap %}hx-swap="{{ action.htmx.swap }}"{% endif %} {% if action.htmx.confirm %}hx-confirm="{{ action.htmx.confirm }}"{% endif %}
           {% endif %}>
           {{ action.text }}
         </button>
