@@ -27,14 +27,26 @@
         <ul class="flex space-x-8">
           {% for link in links %}
             <li>
-              <a 
-                href="{{ link.url }}" 
-                class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-3 py-2 text-sm font-medium transition-colors duration-200"
-                {% if link.active %}aria-current="page"{% endif %}
-                {% if link.external %}target="_blank" rel="noopener"{% endif %}>
-                {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-                {{ link.text }}
-              </a>
+              {% if link.type == 'button' %}
+                <button 
+                  type="button"
+                  {% if link.id %}id="{{ link.id }}"{% endif %}
+                  class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  {% if link.active %}aria-current="page"{% endif %}>
+                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                  {{ link.text }}
+                </button>
+              {% else %}
+                <a 
+                  href="{{ link.url }}" 
+                  {% if link.id %}id="{{ link.id }}"{% endif %}
+                  class="{% if link.active %}text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400{% endif %} px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  {% if link.active %}aria-current="page"{% endif %}
+                  {% if link.external %}target="_blank" rel="noopener"{% endif %}>
+                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                  {{ link.text }}
+                </a>
+              {% endif %}
             </li>
           {% endfor %}
         </ul>
@@ -102,14 +114,26 @@
     <div id="mobile-menu" class="md:hidden hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         {% for link in links %}
-          <a 
-            href="{{ link.url }}" 
-            class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-            {% if link.active %}aria-current="page"{% endif %}
-            {% if link.external %}target="_blank" rel="noopener"{% endif %}>
-            {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-            {{ link.text }}
-          </a>
+          {% if link.type == 'button' %}
+            <button 
+              type="button"
+              {% if link.id %}id="{{ link.id }}"{% endif %}
+              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left"
+              {% if link.active %}aria-current="page"{% endif %}>
+              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+              {{ link.text }}
+            </button>
+          {% else %}
+            <a 
+              href="{{ link.url }}" 
+              {% if link.id %}id="{{ link.id }}"{% endif %}
+              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+              {% if link.active %}aria-current="page"{% endif %}
+              {% if link.external %}target="_blank" rel="noopener"{% endif %}>
+              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+              {{ link.text }}
+            </a>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
