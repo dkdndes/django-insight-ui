@@ -430,3 +430,24 @@ def form(
             "htmx": htmx_config,
         },
     }
+
+
+@register.inclusion_tag("insight_ui/components/footer.html")
+def footer(
+    theme: str = "light",
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert einen barrierefreien Footer.
+
+    Args:
+        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        **kwargs: Zusätzliche Optionen für den Footer
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    return {
+        "theme": theme,
+        "options": kwargs,
+    }

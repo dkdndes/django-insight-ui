@@ -1,0 +1,84 @@
+{% load insight_tags %}
+{% load i18n %}
+
+<!-- Alert Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+    <div class="space-y-4">
+        {% alert message="Dies ist eine Informationsmeldung" type="info" %}
+        {% alert message="Erfolgreich gespeichert!" type="success" %}
+        {% alert message="Achtung: Überprüfen Sie Ihre Eingaben" type="warning" %}
+        {% alert message="Fehler beim Laden der Daten" type="error" %}
+    </div>
+</section>
+
+<!-- Breadcrumbs Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
+    {% breadcrumbs items=breadcrumb_items %}
+</section>
+
+<!-- Table Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
+    {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
+</section>
+
+<!-- Card Demo -->
+<section class="mb-12">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">{% trans 'Karten' %}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% card title="Beispiel-Karte" subtitle="Untertitel" content="Dies ist der Inhalt einer Karte." %}
+        {% card title="Karte mit Aktionen" content="Diese Karte hat Aktions-Buttons." actions=card_actions %}
+    </div>
+</section>
+
+<!-- Form Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular' %}</h2>
+    {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions %}
+</section>
+
+<!-- Modal Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Modal-Dialog' %}</h2>
+    <button type="button" class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="demo-modal">
+        {% trans 'Modal öffnen' %}
+    </button>
+    
+    {% modal id="demo-modal" title="Demo Modal" content="Dies ist ein Beispiel-Modal." actions=modal_actions %}
+</section>
+
+<!-- HTMX Live Content Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Live-Inhalte (HTMX)' %}</h2>
+    {% live_content url="/api/live-data/" interval=5000 id="live-content" %}
+</section>
+
+<!-- HTMX Form Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'HTMX-Formular' %}</h2>
+    {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx=htmx_config %}
+    <div id="form-result" class="mt-4"></div>
+</section>
+
+<!-- Infinite Scroll Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
+    {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
+</section>
+
+<!-- Alpine.js Demo -->
+<section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6" x-data="{ count: 0, message: 'Hello Alpine!' }">
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Alpine.js Integration' %}</h2>
+    <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+        <p x-text="message" class="text-lg mb-4 text-gray-900 dark:text-white"></p>
+        <p class="mb-4 text-gray-700 dark:text-gray-300">Counter: <span x-text="count" class="font-bold text-insight-primary"></span></p>
+        <button @click="count++" class="bg-insight-primary hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+            {% trans 'Zähler erhöhen' %}
+        </button>
+        <button @click="message = 'Alpine.js funktioniert!'" class="bg-insight-success hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors duration-200 ml-2">
+            {% trans 'Nachricht ändern' %}
+        </button>
+    </div>
+</section>

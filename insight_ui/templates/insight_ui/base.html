@@ -1,5 +1,8 @@
+{% load insight_tags %}
+{% load i18n %}
+{% load static %}
 <!DOCTYPE html>
-<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,22 +28,69 @@
         }
     </script>
     
-    <!-- HTMX -->
+    <!-- Django CSRF Token für JavaScript -->
+    {% csrf_token %}
+    
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- HTMX CDN -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     
-    <!-- Insight UI JavaScript -->
-    {% load static %}
-    <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
-    <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
+    <!-- Insight UI CSS (ergänzend zu TailwindCSS) -->
+    <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
+    {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
+    {% endif %}
     
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
-    {% block content %}{% endblock %}
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
+    <!-- CSRF-Token für JavaScript -->
+    {% csrf_token %}
+    
+    <!-- Navbar mit Sprachauswahl -->
+    {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
+    
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 hidden lg:block">
+            {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
+        </aside>
+        
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <!-- Footer -->
+    {% footer %}
+    
+    <!-- Sprachformular für Django -->
+    <form id="language-form" method="post" action="{% url 'set_language' %}" style="display: none;">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+        <input name="language" type="hidden" />
+    </form>
+    
+    <!-- Insight UI JavaScript -->
+    <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
+    
+    <!-- HTMX Extensions -->
+    <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
     
     {% block extra_scripts %}{% endblock %}
     
     <script>
+        // Sprach-Wechsel-Funktion
+        function changeLanguage(languageCode) {
+            const form = document.getElementById('language-form');
+            const languageInput = form.querySelector('input[name="language"]');
+            languageInput.value = languageCode;
+            form.submit();
+        }
+        
         // Initialisiere Insight UI Komponenten
         document.addEventListener('DOMContentLoaded', function() {
             if (window.InsightUI) {
