@@ -978,6 +978,34 @@ body {
 }
 
 /* ==========================================================================
+   Layout Improvements
+   ========================================================================== */
+
+/* Verbesserte Ausrichtung des Hauptinhalts */
+#main-content {
+  transition: var(--insight-transition);
+}
+
+/* Besserer Abstand zwischen Sidebar und Hauptinhalt */
+@media (min-width: 1024px) {
+  #main-content {
+    margin-left: var(--insight-spacing-4);
+  }
+  
+  /* Wenn die Sidebar eingeklappt ist, mehr Platz für den Hauptinhalt */
+  .insight-sidebar--collapsed + #main-content {
+    margin-left: var(--insight-spacing-8);
+  }
+}
+
+/* Container für bessere Inhaltsbreite */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ==========================================================================
    Accessibility & Motion
    ========================================================================== */
 
