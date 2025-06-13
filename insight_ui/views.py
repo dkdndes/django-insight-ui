@@ -4,9 +4,13 @@ from django.views.decorators.http import require_http_methods
 from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 import json
 import time
+import logging
+import asyncio
 from datetime import datetime
+from asgiref.sync import sync_to_async
 
 
 def index_view(request):
@@ -94,6 +98,14 @@ def index_view(request):
                 'placeholder': _('E-Mail eingeben'),
                 'required': True,
             },
+            {
+                'type': 'textarea',
+                'name': 'message',
+                'label': _('Nachricht (HTMX)'),
+                'placeholder': _('Ihre Nachricht...'),
+                'rows': 4,
+                'required': False,
+            },
         ],
         'htmx_config': {
             'url': '/api/form-submit/',
@@ -163,12 +175,18 @@ def more_items_view(request):
 
 
 @require_http_methods(["POST"])
-def htmx_form_submit(request):
-    """HTMX Endpoint für Formular-Übermittlung"""
+async def htmx_form_submit(request):
+    """HTMX Endpoint für Formular-Übermittlung mit asynchronem Logging"""
+    logger = logging.getLogger(__name__)
+    
     if request.headers.get('HX-Request'):
-        # Simuliere Formular-Verarbeitung
+        # Eingabedaten extrahieren
         name = request.POST.get('htmx_name', '')
         email = request.POST.get('htmx_email', '')
+        message = request.POST.get('message', '')
+        
+        # Asynchrones Logging der Eingabedaten
+        await log_form_input_async(name, email, message, logger)
         
         # Einfache Validierung
         errors = {}
@@ -180,17 +198,19 @@ def htmx_form_submit(request):
             errors['htmx_email'] = _('Ungültige E-Mail-Adresse')
         
         if errors:
+            logger.warning(f"Formular-Validierungsfehler: {errors}")
             # Fehler zurückgeben
-            html = render_to_string('insight_ui/components/form_errors.html', {
+            html = await sync_to_async(render_to_string)('insight_ui/components/form_errors.html', {
                 'errors': errors,
                 'type': 'error'
             })
             return HttpResponse(html, status=400)
         
-        # Erfolg simulieren
-        time.sleep(1)  # Simuliere Verarbeitungszeit
+        # Erfolg simulieren mit asynchroner Verarbeitung
+        await asyncio.sleep(1)  # Simuliere asynchrone Verarbeitungszeit
         
-        success_html = render_to_string('insight_ui/components/form_success.html', {
+        logger.info("Formular erfolgreich verarbeitet")
+        success_html = await sync_to_async(render_to_string)('insight_ui/components/form_success.html', {
             'message': _('Formular erfolgreich übermittelt!'),
             'name': name,
             'email': email,
@@ -198,7 +218,45 @@ def htmx_form_submit(request):
         })
         return HttpResponse(success_html)
     
+    logger.warning("Nicht-HTMX Request an htmx_form_submit erhalten")
     return JsonResponse({'error': _('Nur HTMX-Requests erlaubt')}, status=400)
+
+
+async def log_form_input_async(name, email, message, logger):
+    """
+    Asynchrone Funktion zum Loggen der Formular-Eingaben
+    
+    Args:
+        name (str): Name des Benutzers
+        email (str): E-Mail-Adresse des Benutzers  
+        message (str): Nachricht des Benutzers
+        logger: Logger-Instanz
+    """
+    # Simuliere asynchrone Verarbeitung
+    await asyncio.sleep(0.1)
+    
+    # Detailliertes Logging der Eingabedaten
+    logger.info("=" * 50)
+    logger.info("HTMX Kontaktformular - Neue Eingabe erhalten")
+    logger.info("=" * 50)
+    logger.info(f"Zeitstempel: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(f"Name: {name}")
+    logger.info(f"E-Mail: {email}")
+    logger.info(f"Nachricht: {message}")
+    logger.info(f"Name-Länge: {len(name)} Zeichen")
+    logger.info(f"E-Mail-Länge: {len(email)} Zeichen")
+    logger.info(f"Nachricht-Länge: {len(message)} Zeichen")
+    
+    # Zusätzliche Validierungsinfos
+    if '@' in email:
+        email_parts = email.split('@')
+        logger.info(f"E-Mail Domain: {email_parts[1] if len(email_parts) > 1 else 'Unbekannt'}")
+    
+    logger.info("=" * 50)
+    
+    # Simuliere weitere asynchrone Verarbeitung
+    await asyncio.sleep(0.05)
+    logger.debug("Asynchrones Logging abgeschlossen")
 
 
 @require_http_methods(["GET"])
