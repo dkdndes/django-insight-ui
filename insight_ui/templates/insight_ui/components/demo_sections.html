@@ -102,7 +102,7 @@
 <!-- HTMX Form Demo -->
 <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
     <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'HTMX-Formular' %}</h2>
-    {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx=htmx_config %}
+    {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx_url="/api/form-submit/" htmx_target="#form-result" htmx_swap="innerHTML" %}
     <div id="form-result" class="mt-4"></div>
 </section>
 
