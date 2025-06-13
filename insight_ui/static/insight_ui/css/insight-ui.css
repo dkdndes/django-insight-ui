@@ -1006,6 +1006,41 @@ body {
 }
 
 /* ==========================================================================
+   Right Sidebar Styles
+   ========================================================================== */
+
+#right-sidebar {
+  box-shadow: var(--insight-shadow-lg);
+}
+
+#right-sidebar.open {
+  transform: translateX(0);
+}
+
+#right-sidebar-toggle {
+  transition: var(--insight-transition);
+}
+
+#right-sidebar-toggle:hover {
+  background-color: var(--insight-color-gray-100);
+}
+
+body.right-sidebar-open #main-content {
+  margin-right: 16rem; /* 256px = w-64 */
+}
+
+@media (max-width: 1023px) {
+  body.right-sidebar-open #main-content {
+    margin-right: 0;
+  }
+  
+  #right-sidebar {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ==========================================================================
    Accessibility & Motion
    ========================================================================== */
 
