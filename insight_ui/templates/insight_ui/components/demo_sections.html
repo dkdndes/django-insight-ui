@@ -102,7 +102,49 @@
 <!-- HTMX Form Demo -->
 <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
     <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'HTMX-Formular' %}</h2>
-    {% form title="HTMX Kontaktformular" fields=htmx_form_fields actions=form_actions htmx_url="/api/form-submit/" htmx_target="#form-result" htmx_swap="innerHTML" %}
+    
+    <!-- Manuelles HTMX-Formular für bessere Kontrolle -->
+    <form hx-post="/api/form-submit/" hx-target="#form-result" hx-swap="innerHTML" class="space-y-4">
+        {% csrf_token %}
+        
+        <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">HTMX Kontaktformular</h3>
+        </div>
+        
+        <div>
+            <label for="htmx_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {% trans 'Name (HTMX)' %} <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="htmx_name" name="htmx_name" required 
+                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                   placeholder="{% trans 'Name eingeben' %}">
+        </div>
+        
+        <div>
+            <label for="htmx_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {% trans 'E-Mail (HTMX)' %} <span class="text-red-500">*</span>
+            </label>
+            <input type="email" id="htmx_email" name="htmx_email" required 
+                   class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                   placeholder="{% trans 'E-Mail eingeben' %}">
+        </div>
+        
+        <div>
+            <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {% trans 'Nachricht (HTMX)' %}
+            </label>
+            <textarea id="message" name="message" rows="4" 
+                      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                      placeholder="{% trans 'Ihre Nachricht...' %}"></textarea>
+        </div>
+        
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                {% trans 'Senden' %}
+            </button>
+        </div>
+    </form>
+    
     <div id="form-result" class="mt-4"></div>
 </section>
 

@@ -174,16 +174,23 @@ def more_items_view(request):
     })
 
 
+@csrf_exempt
 @require_http_methods(["POST"])
-async def htmx_form_submit(request):
+async def htmx_form_submit(request) -> HttpResponse:
     """HTMX Endpoint für Formular-Übermittlung mit asynchronem Logging"""
     logger = logging.getLogger(__name__)
     
     if request.headers.get('HX-Request'):
+        # Debug: Alle POST-Daten loggen
+        logger.info(f"Empfangene POST-Daten: {dict(request.POST)}")
+        logger.info(f"Content-Type: {request.content_type}")
+        
         # Eingabedaten extrahieren
         name = request.POST.get('htmx_name', '')
         email = request.POST.get('htmx_email', '')
         message = request.POST.get('message', '')
+        
+        logger.info(f"Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'")
         
         # Asynchrones Logging der Eingabedaten
         await log_form_input_async(name, email, message, logger)
