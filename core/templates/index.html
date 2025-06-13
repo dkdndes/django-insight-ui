@@ -5,26 +5,159 @@
 {% block title %}{% trans 'Django Insight UI Demo' %}{% endblock %}
 
 {% block content %}
-    <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">{% trans 'Willkommen bei Django Insight UI' %}</h1>
-        
-        <!-- Erfolgsmeldung anzeigen -->
-        {% if form_success %}
-            <div class="mb-6">
-                {% alert message=form_success.message type="success" dismissible=True %}
+    <!-- Layout mit Sidebars -->
+    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+        <!-- Linke Sidebar -->
+        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700 fixed left-0 top-16 h-full z-30 transition-transform duration-300">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Navigation' %}</h3>
+                <nav class="space-y-2">
+                    {% for item in left_sidebar_items %}
+                        <a href="{{ item.url }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if item.active %}bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
+                            <span class="mr-3">{{ item.icon }}</span>
+                            {{ item.text }}
+                        </a>
+                    {% endfor %}
+                </nav>
             </div>
-        {% endif %}
-        
-        <!-- Fehlermeldungen anzeigen -->
-        {% if form_errors %}
-            <div class="mb-6">
-                {% for field, error in form_errors.items %}
-                    {% alert message=error type="error" dismissible=True %}
-                {% endfor %}
+        </aside>
+
+        <!-- Hauptinhalt -->
+        <main class="flex-1 ml-64 mr-0 transition-all duration-300" id="main-content">
+            <div class="container mx-auto p-6">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">{% trans 'Willkommen bei Django Insight UI' %}</h1>
+                
+                <!-- Erfolgsmeldung anzeigen -->
+                {% if form_success %}
+                    <div class="mb-6">
+                        {% alert message=form_success.message type="success" dismissible=True %}
+                    </div>
+                {% endif %}
+                
+                <!-- Fehlermeldungen anzeigen -->
+                {% if form_errors %}
+                    <div class="mb-6">
+                        {% for field, error in form_errors.items %}
+                            {% alert message=error type="error" dismissible=True %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <!-- Include Demo Sections -->
+                {% include "insight_ui/components/demo_sections.html" %}
             </div>
-        {% endif %}
-        
-        <!-- Include Demo Sections -->
-        {% include "insight_ui/components/demo_sections.html" %}
+        </main>
+
+        <!-- Rechte Sidebar -->
+        <aside id="right-sidebar" class="w-80 bg-white dark:bg-gray-800 shadow-lg border-l border-gray-200 dark:border-gray-700 fixed right-0 top-16 h-full z-30 transform translate-x-full transition-transform duration-300 ease-in-out">
+            <!-- Hover-Trigger-Bereich -->
+            <div class="absolute -left-4 top-0 w-4 h-full bg-transparent hover-trigger"></div>
+            
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{% trans 'Schnellzugriff' %}</h3>
+                    <button id="right-sidebar-close" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <nav class="space-y-3">
+                    {% for item in right_sidebar_items %}
+                        <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 cursor-pointer">
+                            <div class="flex items-center">
+                                <span class="mr-3 text-lg">{{ item.icon }}</span>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ item.text }}</span>
+                            </div>
+                            {% if item.badge %}
+                                <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">{{ item.badge }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </nav>
+                
+                <!-- Zusätzlicher Inhalt -->
+                <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2">{% trans 'Tipp des Tages' %}</h4>
+                    <p class="text-xs text-blue-700 dark:text-blue-300">{% trans 'Verwenden Sie Tastenkombinationen für eine schnellere Navigation durch die Anwendung.' %}</p>
+                </div>
+            </div>
+        </aside>
     </div>
+
+    <!-- JavaScript für Sidebar-Funktionalität -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rightSidebar = document.getElementById('right-sidebar');
+            const mainContent = document.getElementById('main-content');
+            const toggleButton = document.getElementById('right-sidebar-toggle');
+            const closeButton = document.getElementById('right-sidebar-close');
+            const hoverTrigger = rightSidebar.querySelector('.hover-trigger');
+            
+            let isRightSidebarOpen = false;
+            let hoverTimeout;
+            
+            // Toggle-Funktion für rechte Sidebar
+            function toggleRightSidebar() {
+                isRightSidebarOpen = !isRightSidebarOpen;
+                
+                if (isRightSidebarOpen) {
+                    rightSidebar.classList.remove('translate-x-full');
+                    mainContent.classList.add('mr-80');
+                } else {
+                    rightSidebar.classList.add('translate-x-full');
+                    mainContent.classList.remove('mr-80');
+                }
+            }
+            
+            // Button-Click-Handler
+            if (toggleButton) {
+                toggleButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleRightSidebar();
+                });
+            }
+            
+            if (closeButton) {
+                closeButton.addEventListener('click', function() {
+                    if (isRightSidebarOpen) {
+                        toggleRightSidebar();
+                    }
+                });
+            }
+            
+            // Hover-Funktionalität für rechte Sidebar
+            function showRightSidebar() {
+                if (!isRightSidebarOpen) {
+                    clearTimeout(hoverTimeout);
+                    rightSidebar.classList.remove('translate-x-full');
+                }
+            }
+            
+            function hideRightSidebar() {
+                if (!isRightSidebarOpen) {
+                    hoverTimeout = setTimeout(() => {
+                        rightSidebar.classList.add('translate-x-full');
+                    }, 300);
+                }
+            }
+            
+            // Hover-Events
+            hoverTrigger.addEventListener('mouseenter', showRightSidebar);
+            rightSidebar.addEventListener('mouseenter', function() {
+                if (!isRightSidebarOpen) {
+                    clearTimeout(hoverTimeout);
+                }
+            });
+            rightSidebar.addEventListener('mouseleave', hideRightSidebar);
+            
+            // Escape-Taste zum Schließen
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isRightSidebarOpen) {
+                    toggleRightSidebar();
+                }
+            });
+        });
+    </script>
 {% endblock %}

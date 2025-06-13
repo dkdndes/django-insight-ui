@@ -20,6 +20,7 @@ def get_index_context():
             {'text': _('Startseite'), 'url': '/', 'active': True},
             {'text': _('Komponenten'), 'url': '/components/', 'active': False},
             {'text': _('Dokumentation'), 'url': '/docs/', 'active': False},
+            {'text': _('Sidebar'), 'url': '#', 'id': 'right-sidebar-toggle', 'icon': '☰', 'type': 'button'},
         ],
         'breadcrumb_items': [
             {'text': _('Startseite'), 'url': '/'},
@@ -70,6 +71,21 @@ def get_index_context():
         'confirm_modal_actions': [
             {'text': _('Ja, fortfahren'), 'type': 'primary', 'onclick': 'alert("Aktion bestätigt!")'},
             {'text': _('Abbrechen'), 'type': 'cancel', 'dismiss': True},
+        ],
+        'left_sidebar_items': [
+            {'text': _('Dashboard'), 'url': '/', 'icon': '📊', 'active': True},
+            {'text': _('Komponenten'), 'url': '/components/', 'icon': '🧩'},
+            {'text': _('Formulare'), 'url': '#forms', 'icon': '📝'},
+            {'text': _('Tabellen'), 'url': '#tables', 'icon': '📊'},
+            {'text': _('Modals'), 'url': '#modals', 'icon': '🪟'},
+        ],
+        'right_sidebar_items': [
+            {'text': _('Benachrichtigungen'), 'icon': '🔔', 'badge': '3'},
+            {'text': _('Nachrichten'), 'icon': '💬', 'badge': '12'},
+            {'text': _('Aufgaben'), 'icon': '✅', 'badge': '5'},
+            {'text': _('Kalender'), 'icon': '📅'},
+            {'text': _('Einstellungen'), 'icon': '⚙️'},
+            {'text': _('Profil'), 'icon': '👤'},
         ],
         'sidebar_items': [
             {'text': _('Dashboard'), 'url': '/', 'icon': '📊'},
