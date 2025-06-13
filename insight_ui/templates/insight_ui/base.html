@@ -54,9 +54,19 @@
     
     <div class="flex flex-1 relative">
         <!-- Left Sidebar -->
-        <aside class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 hidden lg:block left-sidebar">
+        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 hidden lg:block left-sidebar">
             {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
         </aside>
+        
+        <!-- Left Sidebar Toggle Button -->
+        <button id="left-sidebar-toggle" class="fixed left-0 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-2 rounded-r-lg shadow-md border border-gray-200 dark:border-gray-700 z-10 hidden lg:block">
+            <svg id="left-sidebar-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+            </svg>
+            <svg id="left-sidebar-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+        </button>
         
         <!-- Main Content -->
         <main id="main-content" class="flex-1 p-6 lg:pl-8 max-w-7xl mx-auto">
@@ -134,19 +144,27 @@
             form.submit();
         }
         
-        // Rechte Sidebar Funktionalität
+        // Linke und Rechte Sidebar Funktionalität
         document.addEventListener('DOMContentLoaded', function() {
+            // Rechte Sidebar
             const rightSidebar = document.getElementById('right-sidebar');
             const rightSidebarToggle = document.getElementById('right-sidebar-toggle');
-            const openIcon = document.getElementById('right-sidebar-open-icon');
-            const closeIcon = document.getElementById('right-sidebar-close-icon');
+            const rightOpenIcon = document.getElementById('right-sidebar-open-icon');
+            const rightCloseIcon = document.getElementById('right-sidebar-close-icon');
             
+            // Linke Sidebar
+            const leftSidebar = document.getElementById('left-sidebar');
+            const leftSidebarToggle = document.getElementById('left-sidebar-toggle');
+            const leftOpenIcon = document.getElementById('left-sidebar-open-icon');
+            const leftCloseIcon = document.getElementById('left-sidebar-close-icon');
+            
+            // Rechte Sidebar Funktionalität
             if (rightSidebarToggle && rightSidebar) {
                 // Initialer Zustand sicherstellen
                 rightSidebar.classList.remove('open');
                 document.body.classList.remove('right-sidebar-open');
-                openIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
+                rightOpenIcon.classList.remove('hidden');
+                rightCloseIcon.classList.add('hidden');
                 
                 rightSidebarToggle.addEventListener('click', function(e) {
                     e.stopPropagation(); // Verhindert Bubble-Up des Events
@@ -154,14 +172,14 @@
                     document.body.classList.toggle('right-sidebar-open');
                     
                     // Icons umschalten
-                    openIcon.classList.toggle('hidden');
-                    closeIcon.classList.toggle('hidden');
+                    rightOpenIcon.classList.toggle('hidden');
+                    rightCloseIcon.classList.toggle('hidden');
                 });
                 
                 // Schließen bei Escape-Taste
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape' && rightSidebar.classList.contains('open')) {
-                        closeSidebar();
+                        closeRightSidebar();
                     }
                 });
                 
@@ -170,17 +188,43 @@
                     if (rightSidebar.classList.contains('open') && 
                         !rightSidebar.contains(e.target) && 
                         !rightSidebarToggle.contains(e.target)) {
-                        closeSidebar();
+                        closeRightSidebar();
                     }
                 });
                 
-                // Hilfsfunktion zum Schließen der Sidebar
-                function closeSidebar() {
+                // Hilfsfunktion zum Schließen der rechten Sidebar
+                function closeRightSidebar() {
                     rightSidebar.classList.remove('open');
                     document.body.classList.remove('right-sidebar-open');
-                    openIcon.classList.remove('hidden');
-                    closeIcon.classList.add('hidden');
+                    rightOpenIcon.classList.remove('hidden');
+                    rightCloseIcon.classList.add('hidden');
                 }
+            }
+            
+            // Linke Sidebar Funktionalität
+            if (leftSidebarToggle && leftSidebar) {
+                // Initialer Zustand
+                leftSidebar.classList.remove('closed');
+                document.body.classList.remove('left-sidebar-closed');
+                leftOpenIcon.classList.add('hidden');
+                leftCloseIcon.classList.remove('hidden');
+                
+                leftSidebarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    leftSidebar.classList.toggle('closed');
+                    document.body.classList.toggle('left-sidebar-closed');
+                    
+                    // Icons umschalten
+                    leftOpenIcon.classList.toggle('hidden');
+                    leftCloseIcon.classList.toggle('hidden');
+                    
+                    // Position des Toggle-Buttons anpassen
+                    if (leftSidebar.classList.contains('closed')) {
+                        leftSidebarToggle.style.left = '0';
+                    } else {
+                        leftSidebarToggle.style.left = '16rem'; // 256px = w-64
+                    }
+                });
             }
         });
         
