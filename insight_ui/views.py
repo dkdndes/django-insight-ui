@@ -191,6 +191,8 @@ async def htmx_form_submit(request) -> HttpResponse:
     
     if request.headers.get('HX-Request'):
         # Debug: Alle POST-Daten loggen
+        print(f"[HTMX FORM] Empfangene POST-Daten: {dict(request.POST)}")
+        print(f"[HTMX FORM] Content-Type: {request.content_type}")
         logger.info(f"Empfangene POST-Daten: {dict(request.POST)}")
         logger.info(f"Content-Type: {request.content_type}")
         
@@ -199,6 +201,7 @@ async def htmx_form_submit(request) -> HttpResponse:
         email = request.POST.get('htmx_email', '')
         message = request.POST.get('message', '')
         
+        print(f"[HTMX FORM] Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'")
         logger.info(f"Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'")
         
         # Asynchrones Logging der Eingabedaten
@@ -225,6 +228,7 @@ async def htmx_form_submit(request) -> HttpResponse:
         # Erfolg simulieren mit asynchroner Verarbeitung
         await asyncio.sleep(1)  # Simuliere asynchrone Verarbeitungszeit
         
+        print("[HTMX FORM] Formular erfolgreich verarbeitet")
         logger.info("Formular erfolgreich verarbeitet")
         success_html = await sync_to_async(render_to_string)('insight_ui/components/form_success.html', {
             'message': _('Formular erfolgreich übermittelt!'),
@@ -369,11 +373,25 @@ async def log_form_input_async(name, email, message, logger):
     # Simuliere asynchrone Verarbeitung
     await asyncio.sleep(0.1)
     
-    # Detailliertes Logging der Eingabedaten
-    logger.info("=" * 50)
+    # Detailliertes Logging der Eingabedaten - sowohl print als auch logger
+    separator = "=" * 50
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    print(separator)
+    print("HTMX Kontaktformular - Neue Eingabe erhalten")
+    print(separator)
+    print(f"Zeitstempel: {timestamp}")
+    print(f"Name: {name}")
+    print(f"E-Mail: {email}")
+    print(f"Nachricht: {message}")
+    print(f"Name-Länge: {len(name)} Zeichen")
+    print(f"E-Mail-Länge: {len(email)} Zeichen")
+    print(f"Nachricht-Länge: {len(message)} Zeichen")
+    
+    logger.info(separator)
     logger.info("HTMX Kontaktformular - Neue Eingabe erhalten")
-    logger.info("=" * 50)
-    logger.info(f"Zeitstempel: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(separator)
+    logger.info(f"Zeitstempel: {timestamp}")
     logger.info(f"Name: {name}")
     logger.info(f"E-Mail: {email}")
     logger.info(f"Nachricht: {message}")
@@ -384,12 +402,16 @@ async def log_form_input_async(name, email, message, logger):
     # Zusätzliche Validierungsinfos
     if '@' in email:
         email_parts = email.split('@')
-        logger.info(f"E-Mail Domain: {email_parts[1] if len(email_parts) > 1 else 'Unbekannt'}")
+        domain = email_parts[1] if len(email_parts) > 1 else 'Unbekannt'
+        print(f"E-Mail Domain: {domain}")
+        logger.info(f"E-Mail Domain: {domain}")
     
-    logger.info("=" * 50)
+    print(separator)
+    logger.info(separator)
     
     # Simuliere weitere asynchrone Verarbeitung
     await asyncio.sleep(0.05)
+    print("Asynchrones Logging abgeschlossen")
     logger.debug("Asynchrones Logging abgeschlossen")
 
 
