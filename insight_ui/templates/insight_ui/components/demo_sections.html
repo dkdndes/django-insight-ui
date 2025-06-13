@@ -41,12 +41,56 @@
 
 <!-- Modal Demo -->
 <section class="mb-12 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Modal-Dialog' %}</h2>
-    <button type="button" class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="demo-modal">
-        {% trans 'Modal öffnen' %}
-    </button>
+    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Modal-Dialoge' %}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Standard Modal -->
+        <button type="button" class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="demo-modal">
+            {% trans 'Standard Modal' %}
+        </button>
+        
+        <!-- Info Modal -->
+        <button type="button" class="bg-insight-info hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="info-modal">
+            {% trans 'Info Modal' %}
+        </button>
+        
+        <!-- Success Modal -->
+        <button type="button" class="bg-insight-success hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="success-modal">
+            {% trans 'Erfolg Modal' %}
+        </button>
+        
+        <!-- Warning Modal -->
+        <button type="button" class="bg-insight-warning hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="warning-modal">
+            {% trans 'Warnung Modal' %}
+        </button>
+        
+        <!-- Error Modal -->
+        <button type="button" class="bg-insight-error hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="error-modal">
+            {% trans 'Fehler Modal' %}
+        </button>
+        
+        <!-- Confirmation Modal -->
+        <button type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="confirm-modal">
+            {% trans 'Bestätigung Modal' %}
+        </button>
+    </div>
     
-    {% modal id="demo-modal" title="Demo Modal" content="Dies ist ein Beispiel-Modal." actions=modal_actions %}
+    <!-- Standard Modal -->
+    {% modal id="demo-modal" title="Demo Modal" content="Dies ist ein Beispiel-Modal mit Standard-Styling." actions=modal_actions %}
+    
+    <!-- Info Modal -->
+    {% modal id="info-modal" title="Information" content="<div class='flex items-center'><svg class='w-6 h-6 text-blue-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Dies ist eine wichtige Information für den Benutzer.</span></div>" %}
+    
+    <!-- Success Modal -->
+    {% modal id="success-modal" title="Erfolgreich!" content="<div class='flex items-center'><svg class='w-6 h-6 text-green-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Die Aktion wurde erfolgreich ausgeführt!</span></div>" %}
+    
+    <!-- Warning Modal -->
+    {% modal id="warning-modal" title="Achtung!" content="<div class='flex items-center'><svg class='w-6 h-6 text-yellow-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'></path></svg><span>Bitte überprüfen Sie Ihre Eingaben vor dem Fortfahren.</span></div>" %}
+    
+    <!-- Error Modal -->
+    {% modal id="error-modal" title="Fehler aufgetreten" content="<div class='flex items-center'><svg class='w-6 h-6 text-red-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.</span></div>" %}
+    
+    <!-- Confirmation Modal -->
+    {% modal id="confirm-modal" title="Bestätigung erforderlich" content="<div class='flex items-center'><svg class='w-6 h-6 text-gray-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Sind Sie sicher, dass Sie diese Aktion ausführen möchten?</span></div>" actions=confirm_modal_actions %}
 </section>
 
 <!-- HTMX Live Content Demo -->
