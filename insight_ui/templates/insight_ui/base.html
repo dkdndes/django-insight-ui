@@ -205,42 +205,47 @@
                 });
             }
             
-            // Linke Sidebar Funktionalität
-            if (leftSidebarToggle && leftSidebar) {
+            // Linke Sidebar Funktionalität mit Hover
+            if (leftSidebar) {
+                const leftSidebarHoverArea = document.getElementById('left-sidebar-hover-area');
+                const toggleLeftSidebar = document.getElementById('toggle-left-sidebar');
+                
                 // Initialer Zustand
                 leftSidebar.classList.remove('closed');
                 document.body.classList.remove('left-sidebar-closed');
-                leftOpenIcon.classList.add('hidden');
-                leftCloseIcon.classList.remove('hidden');
                 
-                // Position des Toggle-Buttons initial setzen
-                leftSidebarToggle.style.left = '16rem'; // 256px = w-64
-                
-                leftSidebarToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    leftSidebar.classList.toggle('closed');
-                    document.body.classList.toggle('left-sidebar-closed');
+                // Hover-Funktionalität
+                if (leftSidebarHoverArea) {
+                    leftSidebarHoverArea.addEventListener('mouseenter', function() {
+                        if (leftSidebar.classList.contains('closed')) {
+                            leftSidebar.classList.remove('closed');
+                            document.body.classList.remove('left-sidebar-closed');
+                        }
+                    });
                     
-                    // Icons umschalten
-                    leftOpenIcon.classList.toggle('hidden');
-                    leftCloseIcon.classList.toggle('hidden');
-                    
-                    // Position des Toggle-Buttons anpassen
-                    if (leftSidebar.classList.contains('closed')) {
-                        leftSidebarToggle.style.left = '0';
-                    } else {
-                        leftSidebarToggle.style.left = '16rem'; // 256px = w-64
-                    }
-                });
+                    // Maus verlässt die Sidebar
+                    leftSidebar.addEventListener('mouseleave', function(e) {
+                        // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
+                        if (e.relatedTarget !== leftSidebarHoverArea) {
+                            leftSidebar.classList.add('closed');
+                            document.body.classList.add('left-sidebar-closed');
+                        }
+                    });
+                }
                 
-                // Schließen bei Escape-Taste, wenn die Sidebar geöffnet ist
+                // Button in der Navbar
+                if (toggleLeftSidebar) {
+                    toggleLeftSidebar.addEventListener('click', function() {
+                        leftSidebar.classList.toggle('closed');
+                        document.body.classList.toggle('left-sidebar-closed');
+                    });
+                }
+                
+                // Schließen bei Escape-Taste
                 document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && !leftSidebar.classList.contains('closed') && window.innerWidth < 1024) {
+                    if (e.key === 'Escape' && !leftSidebar.classList.contains('closed')) {
                         leftSidebar.classList.add('closed');
                         document.body.classList.add('left-sidebar-closed');
-                        leftOpenIcon.classList.remove('hidden');
-                        leftCloseIcon.classList.add('hidden');
-                        leftSidebarToggle.style.left = '0';
                     }
                 });
             }
