@@ -178,8 +178,10 @@
                 hx-get="{% url 'toggle_view' %}?view=table"
                 hx-target="#switchable-view"
                 hx-swap="outerHTML"
-                class="px-3 py-1 rounded border text-sm font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white"
+                class="px-3 py-1 rounded border text-sm font-medium"
                 hx-boost="true"
+                {% if current_view == 'table' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Tabelle ist aktuell' %}"{% endif %}
+                {% if current_view == 'table' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Tabelle' %}
             </button>
@@ -187,8 +189,10 @@
                 hx-get="{% url 'toggle_view' %}?view=card"
                 hx-target="#switchable-view"
                 hx-swap="outerHTML"
-                class="px-3 py-1 rounded border text-sm font-medium bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-white"
+                class="px-3 py-1 rounded border text-sm font-medium"
                 hx-boost="true"
+                {% if current_view == 'card' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Kartenansicht ist aktuell' %}"{% endif %}
+                {% if current_view == 'card' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Karten' %}
             </button>
