@@ -40,7 +40,7 @@ def run_tests():
         env["PLAYWRIGHT_BROWSERS_PATH"] = "0"  # Verwende global installierte Browser
         
         result = subprocess.run(
-            ["/opt/homebrew/bin/playwright", "test", "insight_ui/tests/test_ui.py", "-v"],
+            ["pytest", "insight_ui/tests/test_ui.py", "-v"],
             env=env
         )
         
