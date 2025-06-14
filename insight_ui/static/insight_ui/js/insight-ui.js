@@ -127,7 +127,7 @@
           
           if (target) {
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !isExpanded);
+            this.setAttribute('aria-expanded', (!isExpanded).toString());
             utils.toggleClass(target, 'is-open');
             
             // Ändere das Aria-Label basierend auf dem Status
