@@ -108,31 +108,17 @@
             
             // Button-Click-Handler
             if (toggleButton) {
-                console.log('Toggle button found:', toggleButton);
                 toggleButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('Toggle button clicked');
                     toggleRightSidebar();
-                });
-            } else {
-                console.warn('Toggle button with ID "right-sidebar-toggle" not found');
-                // Debug: Alle Buttons in der Navbar auflisten
-                const allButtons = document.querySelectorAll('button');
-                console.log('All buttons found:', allButtons);
-                allButtons.forEach((btn, index) => {
-                    console.log(`Button ${index}:`, btn.id, btn.textContent.trim());
                 });
             }
             
             // Close-Button-Handler
             if (closeButton) {
-                console.log('Close button found:', closeButton);
                 closeButton.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Close button clicked, closing sidebar');
-                    console.log('Sidebar classes before:', rightSidebar.className);
-                    console.log('Main content classes before:', mainContent.className);
                     
                     // Schließe die Sidebar immer, unabhängig vom Status
                     rightSidebar.classList.add('translate-x-full');
@@ -140,18 +126,6 @@
                     mainContent.classList.remove('mr-80');
                     isRightSidebarOpen = false;
                     clearTimeout(hoverTimeout);
-                    
-                    console.log('Sidebar classes after:', rightSidebar.className);
-                    console.log('Main content classes after:', mainContent.className);
-                    console.log('isRightSidebarOpen set to:', isRightSidebarOpen);
-                });
-            } else {
-                console.warn('Close button with ID "right-sidebar-close" not found');
-                // Debug: Alle Buttons in der Sidebar auflisten
-                const sidebarButtons = rightSidebar.querySelectorAll('button');
-                console.log('Sidebar buttons found:', sidebarButtons);
-                sidebarButtons.forEach((btn, index) => {
-                    console.log(`Sidebar Button ${index}:`, btn.id, btn.getAttribute('aria-label'));
                 });
             }
             
