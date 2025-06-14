@@ -216,20 +216,45 @@
                 
                 // Hover-Funktionalität
                 if (leftSidebarHoverArea) {
+                    // Verzögerung für das Öffnen und Schließen
+                    let openTimeout, closeTimeout;
+                    
                     leftSidebarHoverArea.addEventListener('mouseenter', function() {
-                        if (leftSidebar.classList.contains('closed')) {
-                            leftSidebar.classList.remove('closed');
-                            document.body.classList.remove('left-sidebar-closed');
+                        clearTimeout(closeTimeout);
+                        openTimeout = setTimeout(function() {
+                            if (leftSidebar.classList.contains('closed')) {
+                                leftSidebar.classList.remove('closed');
+                                document.body.classList.remove('left-sidebar-closed');
+                            }
+                        }, 200); // Kurze Verzögerung vor dem Öffnen
+                    });
+                    
+                    leftSidebarHoverArea.addEventListener('mouseleave', function(e) {
+                        clearTimeout(openTimeout);
+                        // Nur schließen, wenn die Maus nicht zur Sidebar geht
+                        if (e.relatedTarget !== leftSidebar) {
+                            closeTimeout = setTimeout(function() {
+                                leftSidebar.classList.add('closed');
+                                document.body.classList.add('left-sidebar-closed');
+                            }, 500); // Längere Verzögerung vor dem Schließen
                         }
                     });
                     
                     // Maus verlässt die Sidebar
                     leftSidebar.addEventListener('mouseleave', function(e) {
+                        clearTimeout(openTimeout);
                         // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
                         if (e.relatedTarget !== leftSidebarHoverArea) {
-                            leftSidebar.classList.add('closed');
-                            document.body.classList.add('left-sidebar-closed');
+                            closeTimeout = setTimeout(function() {
+                                leftSidebar.classList.add('closed');
+                                document.body.classList.add('left-sidebar-closed');
+                            }, 500); // Längere Verzögerung vor dem Schließen
                         }
+                    });
+                    
+                    // Maus betritt die Sidebar
+                    leftSidebar.addEventListener('mouseenter', function() {
+                        clearTimeout(closeTimeout);
                     });
                 }
                 
@@ -238,7 +263,21 @@
                     toggleLeftSidebar.addEventListener('click', function() {
                         leftSidebar.classList.toggle('closed');
                         document.body.classList.toggle('left-sidebar-closed');
+                        
+                        // Speichere den Zustand im localStorage
+                        if (leftSidebar.classList.contains('closed')) {
+                            localStorage.setItem('leftSidebarClosed', 'true');
+                        } else {
+                            localStorage.setItem('leftSidebarClosed', 'false');
+                        }
                     });
+                    
+                    // Stelle den gespeicherten Zustand wieder her
+                    const savedState = localStorage.getItem('leftSidebarClosed');
+                    if (savedState === 'true') {
+                        leftSidebar.classList.add('closed');
+                        document.body.classList.add('left-sidebar-closed');
+                    }
                 }
                 
                 // Schließen bei Escape-Taste

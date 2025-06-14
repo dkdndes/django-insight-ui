@@ -1020,6 +1020,7 @@ body {
   overflow-y: auto;
   padding-top: 4rem; /* Platz für die Navbar */
   transform: translateX(0); /* Standardmäßig sichtbar */
+  box-shadow: var(--insight-shadow-lg);
 }
 
 #left-sidebar.closed {
