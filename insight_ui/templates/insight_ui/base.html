@@ -230,23 +230,23 @@
                 });
             }
             
-            // Linke Sidebar Funktionalität mit Hover
+            // Linke Sidebar Funktionalität mit Hover (konsistent mit rechter Sidebar)
             if (leftSidebar) {
                 const leftSidebarHoverArea = document.getElementById('left-sidebar-hover-area');
                 const toggleLeftSidebar = document.getElementById('toggle-left-sidebar');
                 
-                // Initialer Zustand
-                leftSidebar.classList.remove('closed');
-                document.body.classList.remove('left-sidebar-closed');
+                // Initialer Zustand - standardmäßig geschlossen
+                leftSidebar.classList.add('closed');
+                document.body.classList.add('left-sidebar-closed');
                 
                 // Hover-Funktionalität
                 if (leftSidebarHoverArea) {
                     // Verzögerung für das Öffnen und Schließen
-                    let openTimeout, closeTimeout;
+                    let leftOpenTimeout, leftCloseTimeout;
                     
                     leftSidebarHoverArea.addEventListener('mouseenter', function() {
-                        clearTimeout(closeTimeout);
-                        openTimeout = setTimeout(function() {
+                        clearTimeout(leftCloseTimeout);
+                        leftOpenTimeout = setTimeout(function() {
                             if (leftSidebar.classList.contains('closed')) {
                                 leftSidebar.classList.remove('closed');
                                 document.body.classList.remove('left-sidebar-closed');
@@ -255,24 +255,22 @@
                     });
                     
                     leftSidebarHoverArea.addEventListener('mouseleave', function(e) {
-                        clearTimeout(openTimeout);
+                        clearTimeout(leftOpenTimeout);
                         // Nur schließen, wenn die Maus nicht zur Sidebar geht
                         if (e.relatedTarget !== leftSidebar) {
-                            closeTimeout = setTimeout(function() {
-                                if (!document.querySelector(':hover') === leftSidebar) {
-                                    leftSidebar.classList.add('closed');
-                                    document.body.classList.add('left-sidebar-closed');
-                                }
+                            leftCloseTimeout = setTimeout(function() {
+                                leftSidebar.classList.add('closed');
+                                document.body.classList.add('left-sidebar-closed');
                             }, 300); // Mittlere Verzögerung vor dem Schließen
                         }
                     });
                     
                     // Maus verlässt die Sidebar
                     leftSidebar.addEventListener('mouseleave', function(e) {
-                        clearTimeout(openTimeout);
+                        clearTimeout(leftOpenTimeout);
                         // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
                         if (e.relatedTarget !== leftSidebarHoverArea) {
-                            closeTimeout = setTimeout(function() {
+                            leftCloseTimeout = setTimeout(function() {
                                 leftSidebar.classList.add('closed');
                                 document.body.classList.add('left-sidebar-closed');
                             }, 300); // Mittlere Verzögerung vor dem Schließen
@@ -281,14 +279,8 @@
                     
                     // Maus betritt die Sidebar
                     leftSidebar.addEventListener('mouseenter', function() {
-                        clearTimeout(closeTimeout);
+                        clearTimeout(leftCloseTimeout);
                     });
-                    
-                    // Initialer Zustand - standardmäßig geschlossen, wenn nicht explizit geöffnet
-                    if (localStorage.getItem('leftSidebarClosed') !== 'false') {
-                        leftSidebar.classList.add('closed');
-                        document.body.classList.add('left-sidebar-closed');
-                    }
                 }
                 
                 // Button in der Navbar
@@ -296,21 +288,7 @@
                     toggleLeftSidebar.addEventListener('click', function() {
                         leftSidebar.classList.toggle('closed');
                         document.body.classList.toggle('left-sidebar-closed');
-                        
-                        // Speichere den Zustand im localStorage
-                        if (leftSidebar.classList.contains('closed')) {
-                            localStorage.setItem('leftSidebarClosed', 'true');
-                        } else {
-                            localStorage.setItem('leftSidebarClosed', 'false');
-                        }
                     });
-                    
-                    // Stelle den gespeicherten Zustand wieder her
-                    const savedState = localStorage.getItem('leftSidebarClosed');
-                    if (savedState === 'true') {
-                        leftSidebar.classList.add('closed');
-                        document.body.classList.add('left-sidebar-closed');
-                    }
                 }
                 
                 // Schließen bei Escape-Taste
