@@ -34,7 +34,7 @@
         </main>
 
         <!-- Rechte Sidebar -->
-        <aside id="right-sidebar" class="w-80 bg-white dark:bg-gray-800 shadow-lg border-l border-gray-200 dark:border-gray-700 fixed right-0 top-16 h-full z-30 transform translate-x-full transition-transform duration-300 ease-in-out">
+        <aside id="right-sidebar" class="w-80 bg-white dark:bg-gray-800 shadow-lg border-l border-gray-200 dark:border-gray-700 fixed right-0 top-16 h-full z-30 transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
             <!-- Hover-Trigger-Bereich -->
             <div class="absolute -left-4 top-0 w-4 h-full bg-transparent hover-trigger"></div>
             
@@ -129,11 +129,18 @@
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('Close button clicked, closing sidebar');
+                    console.log('Sidebar classes before:', rightSidebar.className);
+                    console.log('Main content classes before:', mainContent.className);
+                    
                     // Schließe die Sidebar immer, unabhängig vom Status
                     rightSidebar.classList.add('translate-x-full');
                     mainContent.classList.remove('mr-80');
                     isRightSidebarOpen = false;
                     clearTimeout(hoverTimeout);
+                    
+                    console.log('Sidebar classes after:', rightSidebar.className);
+                    console.log('Main content classes after:', mainContent.className);
+                    console.log('isRightSidebarOpen set to:', isRightSidebarOpen);
                 });
             } else {
                 console.warn('Close button with ID "right-sidebar-close" not found');
