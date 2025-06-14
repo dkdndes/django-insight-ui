@@ -116,14 +116,24 @@
             
             // Close-Button-Handler
             if (closeButton) {
+                console.log('Close button found:', closeButton);
                 closeButton.addEventListener('click', function(e) {
                     e.preventDefault();
-                    console.log('Close button clicked');
+                    e.stopPropagation();
+                    console.log('Close button clicked, closing sidebar');
                     // Schließe die Sidebar immer, unabhängig vom Status
                     rightSidebar.classList.add('translate-x-full');
                     mainContent.classList.remove('mr-80');
                     isRightSidebarOpen = false;
                     clearTimeout(hoverTimeout);
+                });
+            } else {
+                console.warn('Close button with ID "right-sidebar-close" not found');
+                // Debug: Alle Buttons in der Sidebar auflisten
+                const sidebarButtons = rightSidebar.querySelectorAll('button');
+                console.log('Sidebar buttons found:', sidebarButtons);
+                sidebarButtons.forEach((btn, index) => {
+                    console.log(`Sidebar Button ${index}:`, btn.id, btn.getAttribute('aria-label'));
                 });
             }
             
