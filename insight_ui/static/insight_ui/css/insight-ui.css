@@ -1010,7 +1010,7 @@ body {
    ========================================================================== */
 
 #left-sidebar {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
@@ -1021,10 +1021,13 @@ body {
   padding-top: 4rem; /* Platz für die Navbar */
   transform: translateX(0); /* Standardmäßig sichtbar */
   box-shadow: var(--insight-shadow-lg);
+  opacity: 1;
 }
 
 #left-sidebar.closed {
   transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 #left-sidebar-hover-area {
