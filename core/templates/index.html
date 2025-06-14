@@ -97,9 +97,11 @@
                 
                 if (isRightSidebarOpen) {
                     rightSidebar.classList.remove('translate-x-full');
+                    rightSidebar.classList.add('open');
                     mainContent.classList.add('mr-80');
                 } else {
                     rightSidebar.classList.add('translate-x-full');
+                    rightSidebar.classList.remove('open');
                     mainContent.classList.remove('mr-80');
                 }
             }
@@ -134,6 +136,7 @@
                     
                     // Schließe die Sidebar immer, unabhängig vom Status
                     rightSidebar.classList.add('translate-x-full');
+                    rightSidebar.classList.remove('open');
                     mainContent.classList.remove('mr-80');
                     isRightSidebarOpen = false;
                     clearTimeout(hoverTimeout);
@@ -157,6 +160,7 @@
                 if (!isRightSidebarOpen) {
                     clearTimeout(hoverTimeout);
                     rightSidebar.classList.remove('translate-x-full');
+                    rightSidebar.classList.add('open');
                 }
             }
             
@@ -164,6 +168,7 @@
                 if (!isRightSidebarOpen) {
                     hoverTimeout = setTimeout(() => {
                         rightSidebar.classList.add('translate-x-full');
+                        rightSidebar.classList.remove('open');
                     }, 300);
                 }
             }
