@@ -5,115 +5,6 @@
  * mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.
  */
 
-// Sofort ausgeführte Funktion zum Schutz des globalen Namensraums
-(function() {
-  'use strict';
-
-  // Namespace für alle Insight UI-Funktionen
-  window.InsightUI = window.InsightUI || {};
-
-  // Hilfsfunktionen
-  const utils = {
-    // Fügt einen Event-Listener zu einem Element oder einer Sammlung von Elementen hinzu
-    on: function(element, event, selector, handler) {
-      if (!element) return;
-      
-      if (typeof selector === 'function') {
-        handler = selector;
-        selector = null;
-      }
-      
-      if (selector) {
-        element.addEventListener(event, function(e) {
-          try {
-            // Sichere Überprüfung für closest-Methode
-            if (e.target && typeof e.target.closest === 'function') {
-              const target = e.target.closest(selector);
-              if (target) {
-                handler.call(target, e);
-              }
-            }
-          } catch (error) {
-            console.warn('Event handler error:', error);
-          }
-        }, { passive: true });
-      } else {
-        element.addEventListener(event, function(e) {
-          try {
-            handler.call(this, e);
-          } catch (error) {
-            console.warn('Event handler error:', error);
-          }
-        }, { passive: true });
-      }
-    },
-
-    // Fokus-Management für Barrierefreiheit
-    trapFocus: function(element) {
-      const focusableElements = element.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      element.addEventListener('keydown', function(e) {
-        if (e.key === 'Tab') {
-          if (e.shiftKey) {
-            if (document.activeElement === firstElement) {
-              lastElement.focus();
-              e.preventDefault();
-            }
-          } else {
-            if (document.activeElement === lastElement) {
-              firstElement.focus();
-              e.preventDefault();
-            }
-          }
-        }
-      });
-
-      if (firstElement) {
-        firstElement.focus();
-      }
-    },
-
-    // Escape-Key Handler
-    onEscape: function(handler) {
-      document.addEventListener('keydown', function(e) {
-        try {
-          if (e.key === 'Escape') {
-            handler(e);
-          }
-        } catch (error) {
-          console.warn('Escape handler error:', error);
-        }
-      }, { passive: true });
-    },
-    
-    // Schaltet eine Klasse an einem Element um
-    toggleClass: function(element, className) {
-      if (!element) return;
-      element.classList.toggle(className);
-    },
-    
-    // Fügt eine Klasse zu einem Element hinzu
-    addClass: function(element, className) {
-      if (!element) return;
-      element.classList.add(className);
-    },
-    
-    // Entfernt eine Klasse von einem Element
-    removeClass: function(element, className) {
-      if (!element) return;
-      element.classList.remove(className);
-    },
-    
-    // Prüft, ob ein Element eine bestimmte Klasse hat
-    hasClass: function(element, className) {
-      if (!element) return false;
-      return element.classList.contains(className);
-    }
-  };
 
   // Navbar-Komponente
   InsightUI.Navbar = {
@@ -347,7 +238,7 @@
     toggle: function(sidebar) {
       if (!sidebar) return;
 
-      const isExpanded = sidebar.getAttribute('aria-expanded') !== 'false';
+      const isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
       const content = sidebar.querySelector('.insight-sidebar__content');
       const toggleButton = sidebar.querySelector('[data-insight-toggle="sidebar"]');
 
