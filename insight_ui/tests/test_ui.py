@@ -1,16 +1,9 @@
 import pytest
 import os
-import subprocess
 from playwright.sync_api import expect
 
 # Stelle sicher, dass die global installierte Playwright-Version verwendet wird
 os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
-
-# Prüfe, ob die Browser installiert sind, und installiere sie bei Bedarf
-try:
-    subprocess.run(["/opt/homebrew/bin/playwright", "install", "chromium"], check=True)
-except subprocess.CalledProcessError:
-    print("Warnung: Konnte Playwright-Browser nicht installieren")
 
 @pytest.mark.django_db
 def test_sidebar_functionality(page, live_server_url):
