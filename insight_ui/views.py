@@ -20,7 +20,6 @@ def get_index_context():
             {'text': _('Startseite'), 'url': '/', 'active': True},
             {'text': _('Komponenten'), 'url': '/components/', 'active': False},
             {'text': _('Dokumentation'), 'url': '/docs/', 'active': False},
-            {'text': _('Sidebar'), 'url': '#', 'id': 'right-sidebar-toggle', 'icon': '☰', 'type': 'button'},
         ],
         'breadcrumb_items': [
             {'text': _('Startseite'), 'url': '/'},
