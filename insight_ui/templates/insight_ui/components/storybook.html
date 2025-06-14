@@ -196,8 +196,14 @@
     </div>
 
     <!-- Der Bereich wird per HTMX ersetzt -->
-    <div id="switchable-view" hx-target="this" hx-swap="outerHTML">
-        {% include 'insight_ui/components/table_view.html' %}
+    <div id="switchable-view" hx-target="#switchable-view" hx-swap="outerHTML">
+        {% if current_view == 'table' %}
+            {% include 'insight_ui/components/table_view.html' %}
+        {% elif current_view == 'card' %}
+            {% include 'insight_ui/components/card_view.html' %}
+        {% else %}
+            {% include 'insight_ui/components/table_view.html' %}
+        {% endif %}
     </div>
 </section>
 
