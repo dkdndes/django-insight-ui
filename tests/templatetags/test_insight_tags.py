@@ -5,6 +5,12 @@ Tests für die Template-Tags des Insight UI-Pakets.
 import pytest
 from django.template import Context, Template
 
+def check_in_rendered(rendered, *expected_strings):
+    """Hilfsfunktion zum Prüfen, ob Strings im gerenderten Template enthalten sind."""
+    for expected in expected_strings:
+        if expected not in rendered:
+            pytest.fail(f"Erwarteter String '{expected}' nicht in gerenderten Template gefunden")
+
 
 @pytest.mark.django_db
 def test_navbar_tag() -> None:
@@ -13,12 +19,13 @@ def test_navbar_tag() -> None:
     rendered = template.render(Context({}))
 
     # Überprüfe, ob die wichtigsten Elemente vorhanden sind
-    assert 'role="navigation"' in rendered
-    assert 'aria-label="Hauptnavigation"' in rendered
-    assert "Test App" in rendered
-    assert (
-        "bg-white dark:bg-gray-800" in rendered
-    )  # TailwindCSS-Klassen statt insight-navbar
+    check_in_rendered(
+        rendered,
+        'role="navigation"',
+        'aria-label="Hauptnavigation"',
+        "Test App",
+        "bg-white dark:bg-gray-800"  # TailwindCSS-Klassen statt insight-navbar
+    )
 
 
 @pytest.mark.django_db
@@ -35,9 +42,12 @@ def test_navbar_with_links() -> None:
     rendered = template.render(Context({"links": links}))
 
     # Überprüfe, ob die Links korrekt gerendert werden
-    assert "Home" in rendered
-    assert "Über uns" in rendered
-    assert 'aria-current="page"' in rendered
+    check_in_rendered(
+        rendered,
+        "Home",
+        "Über uns",
+        'aria-current="page"'
+    )
 
 
 @pytest.mark.django_db

@@ -63,12 +63,10 @@ def test_theme_toggle_functionality(page: Page, live_server_url: str) -> None:
         # Prüfe, ob sich das Theme geändert hat
         if initial_theme == "light":
             expect(html_element).to_have_attribute("data-theme", "dark")
-            assert has_dark_class_after, "Dark class should be added to HTML element"
+            expect(has_dark_class_after).to_be_truthy("Dark class should be added to HTML element")
         else:
             expect(html_element).to_have_attribute("data-theme", "light")
-            assert not has_dark_class_after, (
-                "Dark class should be removed from HTML element"
-            )
+            expect(has_dark_class_after).to_be_falsy("Dark class should be removed from HTML element")
 
         # Teste nochmaliges Klicken (zurück zum ursprünglichen Theme)
         theme_toggle.first.click()
@@ -84,9 +82,8 @@ def test_theme_toggle_functionality(page: Page, live_server_url: str) -> None:
 
         # Sollte wieder zum ursprünglichen Theme zurückkehren
         expect(html_element).to_have_attribute("data-theme", initial_theme)
-        assert has_dark_class_final == has_dark_class_initial, (
-            "Should return to initial dark class state"
-        )
+        expect(has_dark_class_final).to_equal(has_dark_class_initial, 
+            "Should return to initial dark class state")
 
     else:
         pytest.fail("Kein Theme-Toggle-Button gefunden")
@@ -118,9 +115,8 @@ def test_theme_persistence(page: Page, live_server_url: str) -> None:
         print(f"Stored theme after click: {stored_theme}")
 
         # localStorage sollte das neue Theme enthalten
-        assert stored_theme in ["light", "dark"], (
-            f"Invalid theme in localStorage: {stored_theme}"
-        )
+        expect(["light", "dark"]).to_contain(stored_theme, 
+            f"Invalid theme in localStorage: {stored_theme}")
 
         # Lade die Seite neu
         page.reload()
@@ -135,10 +131,9 @@ def test_theme_persistence(page: Page, live_server_url: str) -> None:
         print(f"localStorage after reload: {reloaded_storage}")
 
         # Theme sollte nach Reload gleich sein
-        assert reloaded_theme == stored_theme, "Theme should persist after page reload"
-        assert reloaded_storage == stored_theme, (
-            "localStorage should persist after page reload"
-        )
+        expect(reloaded_theme).to_equal(stored_theme, "Theme should persist after page reload")
+        expect(reloaded_storage).to_equal(stored_theme, 
+            "localStorage should persist after page reload")
     else:
         pytest.fail("Kein Theme-Toggle-Button gefunden")
 
@@ -178,7 +173,7 @@ def test_javascript_console_errors(page: Page, live_server_url: str) -> None:
     insight_ui_loaded = page.evaluate("() => typeof window.InsightUI !== 'undefined'")
     print(f"InsightUI loaded: {insight_ui_loaded}")
 
-    assert insight_ui_loaded, "InsightUI should be loaded"
+    expect(insight_ui_loaded).to_be_truthy("InsightUI should be loaded")
 
 
 def test_navbar_structure(page: Page, live_server_url: str) -> None:
@@ -236,4 +231,4 @@ def test_navbar_structure(page: Page, live_server_url: str) -> None:
             print(f"  Button {i}: classes='{classes}', aria-label='{aria_label}'")
             print(f"    HTML: {inner_html[:100]}...")
 
-    assert found_toggle, "Theme-Toggle-Button sollte in der Navbar gefunden werden"
+    expect(found_toggle).to_be_truthy("Theme-Toggle-Button sollte in der Navbar gefunden werden")
