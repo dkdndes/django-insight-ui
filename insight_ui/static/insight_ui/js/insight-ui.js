@@ -25,16 +25,26 @@
       
       if (selector) {
         element.addEventListener(event, function(e) {
-          // Sichere Überprüfung für closest-Methode
-          if (e.target && typeof e.target.closest === 'function') {
-            const target = e.target.closest(selector);
-            if (target) {
-              handler.call(target, e);
+          try {
+            // Sichere Überprüfung für closest-Methode
+            if (e.target && typeof e.target.closest === 'function') {
+              const target = e.target.closest(selector);
+              if (target) {
+                handler.call(target, e);
+              }
             }
+          } catch (error) {
+            console.warn('Event handler error:', error);
           }
-        });
+        }, { passive: true });
       } else {
-        element.addEventListener(event, handler);
+        element.addEventListener(event, function(e) {
+          try {
+            handler.call(this, e);
+          } catch (error) {
+            console.warn('Event handler error:', error);
+          }
+        }, { passive: true });
       }
     },
 
@@ -70,10 +80,14 @@
     // Escape-Key Handler
     onEscape: function(handler) {
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          handler(e);
+        try {
+          if (e.key === 'Escape') {
+            handler(e);
+          }
+        } catch (error) {
+          console.warn('Escape handler error:', error);
         }
-      });
+      }, { passive: true });
     },
     
     // Schaltet eine Klasse an einem Element um
