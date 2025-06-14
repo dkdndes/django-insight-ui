@@ -1,9 +1,5 @@
 import pytest
-import os
 from playwright.sync_api import expect
-
-# Stelle sicher, dass die global installierte Playwright-Version verwendet wird
-os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/Users/peterrosemann/Documents/Programming/Insight/user_interface/django-insight-ui/.venv/bin/playwright"
 
 @pytest.mark.django_db
 def test_sidebar_functionality(page, live_server_url):
