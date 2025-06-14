@@ -25,9 +25,12 @@
       
       if (selector) {
         element.addEventListener(event, function(e) {
-          const target = e.target.closest(selector);
-          if (target) {
-            handler.call(target, e);
+          // Sichere Überprüfung für closest-Methode
+          if (e.target && typeof e.target.closest === 'function') {
+            const target = e.target.closest(selector);
+            if (target) {
+              handler.call(target, e);
+            }
           }
         });
       } else {
