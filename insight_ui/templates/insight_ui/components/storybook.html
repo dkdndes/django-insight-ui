@@ -194,7 +194,7 @@
     </div>
 
     <!-- Der Bereich wird per HTMX ersetzt -->
-    <div id="switchable-view">
+    <div id="switchable-view" hx-target="this" hx-swap="outerHTML">
         {% include 'partials/table_view.html' %}
     </div>
 </section>
