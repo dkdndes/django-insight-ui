@@ -63,10 +63,6 @@ Homepage = "https://github.com/yourusername/django-insight-ui"
 Documentation = "https://yourusername.github.io/django-insight-ui"
 Issues = "https://github.com/yourusername/django-insight-ui/issues"
 
-[tool.black]
-line-length = 88
-target-version = ["py310"]
-include = '\.pyi?$'
 
 [tool.isort]
 profile = "black"
@@ -102,9 +98,3 @@ DJANGO_SETTINGS_MODULE = "core.settings"
 python_files = "test_*.py"
 testpaths = ["core"]
 
-[dependency-groups]
-dev = [
-    "pytest>=8.4.0",
-    "pytest-cov>=6.1.1",
-    "pytest-django>=4.11.1",
-]
