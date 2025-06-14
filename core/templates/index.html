@@ -115,10 +115,14 @@
             }
             
             if (closeButton) {
-                closeButton.addEventListener('click', function() {
-                    if (isRightSidebarOpen) {
-                        toggleRightSidebar();
-                    }
+                closeButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Close button clicked');
+                    // Schließe die Sidebar unabhängig vom Status
+                    rightSidebar.classList.add('translate-x-full');
+                    mainContent.classList.remove('mr-80');
+                    isRightSidebarOpen = false;
+                    clearTimeout(hoverTimeout);
                 });
             }
             
