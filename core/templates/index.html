@@ -39,8 +39,13 @@
             <div class="absolute -left-4 top-0 w-4 h-full bg-transparent hover-trigger"></div>
             
             <div class="p-4">
-                <div class="mb-4">
+                <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{% trans 'Schnellzugriff' %}</h3>
+                    <button id="right-sidebar-close" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" aria-label="{% trans 'Sidebar schließen' %}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
                 
                 <nav class="space-y-3">
@@ -72,6 +77,7 @@
             const rightSidebar = document.getElementById('right-sidebar');
             const mainContent = document.getElementById('main-content');
             const toggleButton = document.getElementById('right-sidebar-toggle');
+            const closeButton = document.getElementById('right-sidebar-close');
             const hoverTrigger = rightSidebar.querySelector('.hover-trigger');
             
             let isRightSidebarOpen = false;
@@ -105,6 +111,17 @@
                 console.log('All buttons found:', allButtons);
                 allButtons.forEach((btn, index) => {
                     console.log(`Button ${index}:`, btn.id, btn.textContent.trim());
+                });
+            }
+            
+            // Close-Button-Handler
+            if (closeButton) {
+                closeButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Close button clicked');
+                    if (isRightSidebarOpen) {
+                        toggleRightSidebar();
+                    }
                 });
             }
             
