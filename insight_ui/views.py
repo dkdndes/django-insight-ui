@@ -7,12 +7,14 @@ from asgiref.sync import sync_to_async
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_GET, require_http_methods
+from django_htmx.http import HttpResponseClientRedirect, HttpResponseLocation
 
 
-def get_index_context():
+def get_storybook_context():
     """Hilfsfunktion für Index-Seiten Context"""
     return {
         "nav_links": [
@@ -140,7 +142,7 @@ def get_index_context():
     }
 
 
-def index_view(request):
+def storybook_view(request):
     """Hauptseite mit allen Insight UI Komponenten"""
 
     # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
@@ -148,7 +150,7 @@ def index_view(request):
         return normal_form_submit(request)
 
     # Beispieldaten für die Komponenten
-    context = get_index_context()
+    context = get_storybook_context()
 
     return render(request, "index.html", context)
 
@@ -346,7 +348,7 @@ def normal_form_submit(request):
     return render(request, "index.html", context)
 
 
-def log_form_input_sync(name, email, message, logger):
+def log_form_input_sync(name, email, message, logger) -> None:
     """
     Synchrone Funktion zum Loggen der Formular-Eingaben
 
@@ -401,7 +403,7 @@ def log_form_input_sync(name, email, message, logger):
     logger.debug("Synchrones Logging abgeschlossen")
 
 
-async def log_form_input_async(name, email, message, logger):
+async def log_form_input_async(name, email, message, logger) -> None:
     """
     Asynchrone Funktion zum Loggen der Formular-Eingaben
 
@@ -564,3 +566,28 @@ def get_component_context(component_name):
     }
 
     return contexts.get(component_name, {})
+
+
+@require_GET
+def toggle_view(request):
+    view_type = request.GET.get("view", "table")
+
+    context = {
+        "table_headers": ["Name", "E-Mail"],
+        "table_rows": [
+            ["Alice", "alice@example.com"],
+            ["Bob", "bob@example.com"],
+        ],
+        "card_data": [
+            {"title": "Alice", "subtitle": "alice@example.com", "content": "Benutzerin", "actions": []},
+            {"title": "Bob", "subtitle": "bob@example.com", "content": "Benutzer", "actions": []},
+        ],
+    }
+
+    if not request.htmx:
+        # Fallback for non-HTMX access (optional)
+        return render(request, "full_page.html", context)
+
+    if view_type == "card":
+        return TemplateResponse(request, "partials/card_view.html", context)
+    return TemplateResponse(request, "partials/table_view.html", context)
