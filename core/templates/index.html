@@ -119,9 +119,11 @@
                 closeButton.addEventListener('click', function(e) {
                     e.preventDefault();
                     console.log('Close button clicked');
-                    if (isRightSidebarOpen) {
-                        toggleRightSidebar();
-                    }
+                    // Schließe die Sidebar immer, unabhängig vom Status
+                    rightSidebar.classList.add('translate-x-full');
+                    mainContent.classList.remove('mr-80');
+                    isRightSidebarOpen = false;
+                    clearTimeout(hoverTimeout);
                 });
             }
             
