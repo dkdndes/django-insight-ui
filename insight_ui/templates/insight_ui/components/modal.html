@@ -44,14 +44,16 @@
               <button 
                 type="button" 
                 class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-                data-insight-dismiss="modal">
+                data-insight-dismiss="modal"
+                aria-label="{{ action.text|default:'Abbrechen' }}">
                 {{ action.text|default:"Abbrechen" }}
               </button>
             {% elif action.type == 'primary' %}
               <button 
                 type="button" 
                 class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
+                aria-label="{{ action.text }}">
                 {{ action.text }}
               </button>
             {% else %}
@@ -59,7 +61,8 @@
                 type="button" 
                 class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
                 {% if action.dismiss %}data-insight-dismiss="modal"{% endif %}
-                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}>
+                {% if action.onclick %}onclick="{{ action.onclick }}"{% endif %}
+                aria-label="{{ action.text }}">
                 {{ action.text }}
               </button>
             {% endif %}
@@ -71,7 +74,8 @@
           <button 
             type="button" 
             class="bg-gray-200 hover:bg-gray-300 text-gray-900 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
-            data-insight-dismiss="modal">
+            data-insight-dismiss="modal"
+            aria-label="{% trans 'Schließen' %}">
             {% trans 'Schließen' %}
           </button>
         </div>

@@ -42,14 +42,14 @@
             name="{{ field.name }}" 
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
-            {% if field.required %}required{% endif %}
+            {% if field.required %}required aria-required="true"{% endif %}
             {% if field.rows %}rows="{{ field.rows }}"{% else %}rows="4"{% endif %}>{{ field.value|default:'' }}</textarea>
         {% elif field.type == 'select' %}
           <select 
             id="{{ field.name }}" 
             name="{{ field.name }}" 
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
-            {% if field.required %}required{% endif %}>
+            {% if field.required %}required aria-required="true"{% endif %}>
             {% for option in field.options %}
               <option value="{{ option.value }}" {% if option.selected %}selected{% endif %}>{{ option.text }}</option>
             {% endfor %}
@@ -62,7 +62,7 @@
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors duration-200"
             {% if field.value %}value="{{ field.value }}"{% endif %}
             {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
-            {% if field.required %}required{% endif %}
+            {% if field.required %}required aria-required="true"{% endif %}
             {% if field.min %}min="{{ field.min }}"{% endif %}
             {% if field.max %}max="{{ field.max }}"{% endif %} />
         {% endif %}
@@ -72,7 +72,7 @@
         {% endif %}
         
         {% if field.errors %}
-          <div class="space-y-1" role="alert">
+          <div class="space-y-1" role="alert" aria-live="assertive" aria-atomic="true">
             {% for error in field.errors %}
               <p class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             {% endfor %}
