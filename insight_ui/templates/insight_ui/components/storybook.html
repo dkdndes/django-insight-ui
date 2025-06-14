@@ -180,7 +180,7 @@
                 hx-swap="outerHTML"
                 class="px-3 py-1 rounded border text-sm font-medium"
                 hx-boost="true"
-                {% if current_view == 'table' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Tabelle ist aktuell' %}"{% else %}hx-trigger="click changed delay:500ms"{% endif %}
+                {% if current_view == 'table' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Tabelle ist aktuell' %}"{% else %}hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"{% endif %}
                 {% if current_view == 'table' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Tabelle' %}
@@ -191,7 +191,7 @@
                 hx-swap="outerHTML"
                 class="px-3 py-1 rounded border text-sm font-medium"
                 hx-boost="true"
-                {% if current_view == 'card' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Kartenansicht ist aktuell' %}"{% else %}hx-trigger="click changed delay:500ms"{% endif %}
+                {% if current_view == 'card' %}disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Kartenansicht ist aktuell' %}"{% else %}hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"{% endif %}
                 {% if current_view == 'card' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Karten' %}
