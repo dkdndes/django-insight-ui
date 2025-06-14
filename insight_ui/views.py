@@ -570,24 +570,15 @@ def get_component_context(component_name):
 
 @require_GET
 def toggle_view(request):
-    view_type = request.GET.get("view", "table")
-
-    context = {
-        "table_headers": ["Name", "E-Mail"],
-        "table_rows": [
-            ["Alice", "alice@example.com"],
-            ["Bob", "bob@example.com"],
-        ],
-        "card_data": [
-            {"title": "Alice", "subtitle": "alice@example.com", "content": "Benutzerin", "actions": []},
-            {"title": "Bob", "subtitle": "bob@example.com", "content": "Benutzer", "actions": []},
-        ],
-    }
-
-    if not request.htmx:
-        # Fallback for non-HTMX access (optional)
-        return render(request, "full_page.html", context)
-
-    if view_type == "card":
-        return TemplateResponse(request, "partials/card_view.html", context)
-    return TemplateResponse(request, "partials/table_view.html", context)
+    view = request.GET.get("view", "table")
+    context = get_storybook_context()
+    context["current_view"] = view
+    if view == "card":
+        # Beispiel: andere Daten für Kartenansicht
+        context["table_headers"] = []
+        context["table_rows"] = []
+        context["card_actions"] = [
+            {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+            {"text": "Teilen", "url": "#", "type": "secondary"},
+        ]
+    return render(request, "insight_ui/components/storybook.html", context)
