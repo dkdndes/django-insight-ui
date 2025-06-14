@@ -5,25 +5,10 @@
 {% block title %}{% trans 'Django Insight UI Demo' %}{% endblock %}
 
 {% block content %}
-    <!-- Layout mit Sidebars -->
+    <!-- Layout mit rechter Sidebar -->
     <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
-        <!-- Linke Sidebar -->
-        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700 fixed left-0 top-16 h-full z-30 transition-transform duration-300">
-            <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Navigation' %}</h3>
-                <nav class="space-y-2">
-                    {% for item in left_sidebar_items %}
-                        <a href="{{ item.url }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 {% if item.active %}bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200{% else %}text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
-                            <span class="mr-3">{{ item.icon }}</span>
-                            {{ item.text }}
-                        </a>
-                    {% endfor %}
-                </nav>
-            </div>
-        </aside>
-
         <!-- Hauptinhalt -->
-        <main class="flex-1 ml-64 mr-0 transition-all duration-300" id="main-content">
+        <main class="flex-1 mr-0 transition-all duration-300" id="main-content">
             <div class="container mx-auto p-6">
                 <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8">{% trans 'Willkommen bei Django Insight UI' %}</h1>
                 
