@@ -213,7 +213,6 @@
             
         });
         
-        // Initialisiere Insight UI Komponenten
         document.addEventListener('DOMContentLoaded', function() {
             if (window.InsightUI) {
                 InsightUI.ThemeToggle.init();
@@ -223,6 +222,40 @@
                 InsightUI.Form.init();
                 InsightUI.Sidebar.init();
             }
+
+            // Theme Toggle Button Logik
+            const themeToggleBtn = document.querySelector('.insight-theme-toggle');
+            if (!themeToggleBtn) return;
+
+            // Prüfe, ob Dark Mode aktiv ist
+            function isDarkMode() {
+                return document.documentElement.classList.contains('dark');
+            }
+
+            // Umschalten des Dark Mode
+            function toggleDarkMode() {
+                if (isDarkMode()) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+
+            // Initiale Einstellung aus localStorage oder Systempräferenz
+            (function initTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+
+            themeToggleBtn.addEventListener('click', function() {
+                toggleDarkMode();
+            });
         });
     </script>
 </body>
