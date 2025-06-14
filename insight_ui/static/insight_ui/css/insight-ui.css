@@ -1006,56 +1006,6 @@ body {
 }
 
 /* ==========================================================================
-   Left Sidebar Styles
-   ========================================================================== */
-
-#left-sidebar {
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 16rem; /* 256px = w-64 */
-  z-index: 50;
-  overflow-y: auto;
-  padding-top: 4rem; /* Platz für die Navbar */
-  transform: translateX(0); /* Standardmäßig sichtbar */
-  box-shadow: var(--insight-shadow-lg);
-  opacity: 1;
-}
-
-#left-sidebar.closed {
-  transform: translateX(-100%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-#left-sidebar-hover-area {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 12px;
-  z-index: 40;
-  transition: var(--insight-transition);
-  background-color: transparent;
-}
-
-#left-sidebar-hover-area:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  width: 20px;
-}
-
-body.left-sidebar-closed #main-content {
-  margin-left: 0;
-  transition: margin-left 0.3s ease-in-out;
-}
-
-body.left-sidebar-closed #left-sidebar-toggle {
-  left: 0;
-}
-
-/* ==========================================================================
    Right Sidebar Styles
    ========================================================================== */
 

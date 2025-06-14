@@ -55,11 +55,6 @@
         
         <!-- Sidebar Toggle Buttons in der Navbar -->
         <div class="absolute right-20 top-4 flex space-x-2">
-            <button id="toggle-left-sidebar" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
             <button id="toggle-right-sidebar" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
@@ -69,16 +64,8 @@
     </div>
     
     <div class="flex flex-1 relative">
-        <!-- Left Sidebar -->
-        <aside id="left-sidebar" class="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:block left-sidebar">
-            {% sidebar title="Navigation" items=sidebar_items collapsible=True %}
-        </aside>
-        
-        <!-- Linker Hover-Bereich für Sidebar -->
-        <div id="left-sidebar-hover-area" class="fixed left-0 top-0 w-8 h-full z-10"></div>
-        
         <!-- Main Content -->
-        <main id="main-content" class="flex-1 p-6 lg:pl-8 max-w-7xl mx-auto">
+        <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
             {% block content %}{% endblock %}
         </main>
         
@@ -154,12 +141,6 @@
             const rightOpenIcon = document.getElementById('right-sidebar-open-icon');
             const rightCloseIcon = document.getElementById('right-sidebar-close-icon');
             
-            // Linke Sidebar
-            const leftSidebar = document.getElementById('left-sidebar');
-            const leftSidebarToggle = document.getElementById('left-sidebar-toggle');
-            const leftOpenIcon = document.getElementById('left-sidebar-open-icon');
-            const leftCloseIcon = document.getElementById('left-sidebar-close-icon');
-            
             // Rechte Sidebar Funktionalität mit Hover
             if (rightSidebar) {
                 const rightSidebarHoverArea = document.getElementById('right-sidebar-hover-area');
@@ -230,75 +211,6 @@
                 });
             }
             
-            // Linke Sidebar Funktionalität mit Hover (konsistent mit rechter Sidebar)
-            if (leftSidebar) {
-                const leftSidebarHoverArea = document.getElementById('left-sidebar-hover-area');
-                const toggleLeftSidebar = document.getElementById('toggle-left-sidebar');
-                
-                // Initialer Zustand - standardmäßig geschlossen
-                leftSidebar.classList.add('closed');
-                document.body.classList.add('left-sidebar-closed');
-                
-                // Hover-Funktionalität
-                if (leftSidebarHoverArea) {
-                    // Verzögerung für das Öffnen und Schließen
-                    let leftOpenTimeout, leftCloseTimeout;
-                    
-                    leftSidebarHoverArea.addEventListener('mouseenter', function() {
-                        clearTimeout(leftCloseTimeout);
-                        leftOpenTimeout = setTimeout(function() {
-                            if (leftSidebar.classList.contains('closed')) {
-                                leftSidebar.classList.remove('closed');
-                                document.body.classList.remove('left-sidebar-closed');
-                            }
-                        }, 100); // Sehr kurze Verzögerung vor dem Öffnen
-                    });
-                    
-                    leftSidebarHoverArea.addEventListener('mouseleave', function(e) {
-                        clearTimeout(leftOpenTimeout);
-                        // Nur schließen, wenn die Maus nicht zur Sidebar geht
-                        if (e.relatedTarget !== leftSidebar) {
-                            leftCloseTimeout = setTimeout(function() {
-                                leftSidebar.classList.add('closed');
-                                document.body.classList.add('left-sidebar-closed');
-                            }, 300); // Mittlere Verzögerung vor dem Schließen
-                        }
-                    });
-                    
-                    // Maus verlässt die Sidebar
-                    leftSidebar.addEventListener('mouseleave', function(e) {
-                        clearTimeout(leftOpenTimeout);
-                        // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
-                        if (e.relatedTarget !== leftSidebarHoverArea) {
-                            leftCloseTimeout = setTimeout(function() {
-                                leftSidebar.classList.add('closed');
-                                document.body.classList.add('left-sidebar-closed');
-                            }, 300); // Mittlere Verzögerung vor dem Schließen
-                        }
-                    });
-                    
-                    // Maus betritt die Sidebar
-                    leftSidebar.addEventListener('mouseenter', function() {
-                        clearTimeout(leftCloseTimeout);
-                    });
-                }
-                
-                // Button in der Navbar
-                if (toggleLeftSidebar) {
-                    toggleLeftSidebar.addEventListener('click', function() {
-                        leftSidebar.classList.toggle('closed');
-                        document.body.classList.toggle('left-sidebar-closed');
-                    });
-                }
-                
-                // Schließen bei Escape-Taste
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && !leftSidebar.classList.contains('closed')) {
-                        leftSidebar.classList.add('closed');
-                        document.body.classList.add('left-sidebar-closed');
-                    }
-                });
-            }
         });
         
         // Initialisiere Insight UI Komponenten
