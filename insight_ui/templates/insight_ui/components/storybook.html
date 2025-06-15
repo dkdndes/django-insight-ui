@@ -182,10 +182,10 @@
                 hx-boost="true"
                 {% if current_view == 'table' %}
                     disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Tabelle ist aktuell' %}"
+                    style="color: #9ca3af; cursor: not-allowed;"
                 {% else %}
                     hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"
                 {% endif %}
-                {% if current_view == 'table' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Tabelle' %}
             </button>
@@ -197,10 +197,10 @@
                 hx-boost="true"
                 {% if current_view == 'card' %}
                     disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Kartenansicht ist aktuell' %}"
+                    style="color: #9ca3af; cursor: not-allowed;"
                 {% else %}
                     hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"
                 {% endif %}
-                {% if current_view == 'card' %}style="color: #9ca3af; cursor: not-allowed;"{% endif %}
             >
                 {% trans 'Karten' %}
             </button>
