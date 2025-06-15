@@ -37,7 +37,7 @@
       type="button" 
       class="insight-alert__close" 
       aria-label="{% trans 'Schließen' %}"
-      data-insight-dismiss="alert">
+      onclick="this.closest('.insight-alert').style.display='none';">
       <span aria-hidden="true">&times;</span>
     </button>
   {% endif %}
