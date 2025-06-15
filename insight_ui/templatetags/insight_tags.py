@@ -1,6 +1,6 @@
 """Template-Tags für Insight UI-Komponenten."""
 
-from typing import Any
+from typing import Any, List, Dict
 
 from django import template
 
@@ -10,10 +10,10 @@ register = template.Library()
 @register.inclusion_tag("insight_ui/components/navbar.html")
 def navbar(
     brand: str = "",
-    links: list[dict[str, Any]] | None = None,
+    links: List[Dict[str, Any]] = None,
     theme: str = "light",
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Navigationsleiste.
 
@@ -41,11 +41,11 @@ def navbar(
 def live_content(
     url: str = "",
     theme: str = "light",
-    interval: int | None = None,
+    interval: int = None,
     websocket_url: str = "",
     initial_content: str = "",
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert einen Container für Live-Updates via HTMX oder WebSocket.
 
@@ -90,12 +90,12 @@ def live_content(
 
 @register.inclusion_tag("insight_ui/components/infinite_scroll.html")
 def infinite_scroll(
-    items: list[Any] | None = None,
+    items: List[Any] = None,
     next_url: str = "",
     has_next: bool = True,
     threshold: int = 100,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert einen Container für Infinite Scroll.
 
@@ -124,10 +124,10 @@ def infinite_scroll(
 @register.inclusion_tag("insight_ui/components/language_selector.html")
 def language_selector(
     current_language: str = "",
-    available_languages: list[dict[str, str]] | None = None,
+    available_languages: List[Dict[str, str]] = None,
     theme: str = "light",
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert einen barrierefreien Sprachauswähler.
 
@@ -164,7 +164,7 @@ def alert(
     type: str = "info",
     dismissible: bool = True,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Benachrichtigung.
 
@@ -188,11 +188,11 @@ def alert(
 @register.inclusion_tag("insight_ui/components/sidebar.html")
 def sidebar(
     title: str = "",
-    items: list[dict[str, Any]] | None = None,
+    items: List[Dict[str, Any]] = None,
     theme: str = "light",
     collapsible: bool = False,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Seitennavigation.
 
@@ -220,9 +220,9 @@ def sidebar(
 
 @register.inclusion_tag("insight_ui/components/breadcrumbs.html")
 def breadcrumbs(
-    items: list[dict[str, Any]] | None = None,
+    items: List[Dict[str, Any]] = None,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Breadcrumb-Navigation.
 
@@ -244,12 +244,12 @@ def breadcrumbs(
 
 @register.inclusion_tag("insight_ui/components/table.html")
 def table(
-    headers: list[str] | None = None,
-    rows: list[list[Any]] | None = None,
+    headers: List[str] = None,
+    rows: List[List[Any]] = None,
     caption: str = "",
     theme: str = "light",
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Tabelle.
 
@@ -284,9 +284,9 @@ def modal(
     content: str = "",
     description: str = "",
     theme: str = "light",
-    actions: list[dict[str, Any]] | None = None,
+    actions: List[Dict[str, Any]] = None,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert ein barrierefreies Modal-Dialog.
 
@@ -322,10 +322,10 @@ def card(
     subtitle: str = "",
     content: str = "",
     theme: str = "light",
-    image: dict[str, str] | None = None,
-    actions: list[dict[str, Any]] | None = None,
+    image: Dict[str, str] = None,
+    actions: List[Dict[str, Any]] = None,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert eine barrierefreie Karte.
 
@@ -357,13 +357,13 @@ def card(
 
 @register.inclusion_tag("insight_ui/components/form.html")
 def form(
-    fields: list[dict[str, Any]] | None = None,
+    fields: List[Dict[str, Any]] = None,
     title: str = "",
     description: str = "",
     action: str = "",
     method: str = "post",
     theme: str = "light",
-    actions: list[dict[str, Any]] | None = None,
+    actions: List[Dict[str, Any]] = None,
     htmx_url: str = "",
     htmx_method: str = "post",
     htmx_target: str = "",
@@ -372,7 +372,7 @@ def form(
     htmx_confirm: str = "",
     htmx_boost: bool = False,
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert ein barrierefreies Formular mit HTMX-Unterstützung.
 
@@ -435,7 +435,7 @@ def form(
 def footer(
     theme: str = "light",
     **kwargs: Any,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """
     Rendert einen barrierefreien Footer.
 
