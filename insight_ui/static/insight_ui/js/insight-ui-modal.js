@@ -5,7 +5,7 @@ InsightUI.Modal = {
         const targetId = this.getAttribute('data-insight-target');
         const modal = document.getElementById(targetId);
         if (modal) {
-          modal.classList.remove('hidden');
+          modal.style.display = 'block';
           modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeButton => {
             closeButton.addEventListener('click', function () {
               modal.classList.add('hidden');
