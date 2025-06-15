@@ -1,0 +1,19 @@
+{% load i18n %}
+<div class="insight-language-selector">
+  <label for="language-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    {% trans 'Sprache auswählen' %}
+  </label>
+  <select 
+    id="language-select" 
+    name="language" 
+    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+    aria-label="{% trans 'Sprache ändern' %}">
+    {% for code, name in LANGUAGES %}
+      <option 
+        value="{{ code }}"
+        {% if LANGUAGE_CODE == code %}selected{% endif %}>
+        {{ name }}
+      </option>
+    {% endfor %}
+  </select>
+</div>
