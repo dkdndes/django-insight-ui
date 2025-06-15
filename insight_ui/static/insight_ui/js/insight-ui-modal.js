@@ -6,8 +6,10 @@ InsightUI.Modal = {
         const modal = document.getElementById(targetId);
         if (modal) {
           modal.classList.remove('hidden');
-          modal.querySelector('[data-insight-dismiss="modal"]').addEventListener('click', function () {
-            modal.classList.add('hidden');
+          modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeButton => {
+            closeButton.addEventListener('click', function () {
+              modal.classList.add('hidden');
+            });
           });
           InsightUI.utils.trapFocus(modal);
         }
