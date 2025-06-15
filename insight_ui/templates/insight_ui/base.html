@@ -6,8 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django Insight UI base.hml{% endblock %}</title>
-    
+    <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
+
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -27,33 +27,25 @@
             }
         }
     </script>
-    
-    <!-- Django CSRF Token für JavaScript -->
-    {% csrf_token %}
-    
+
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
+
     <!-- HTMX CDN -->
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    
-    <!-- Insight UI CSS (ergänzend zu TailwindCSS) -->
+    <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Insight UI CSS -->
     <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
     {% endif %}
-    
+
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
-    <!-- CSRF-Token für JavaScript -->
-    {% csrf_token %}
-    
-    <!-- Navbar mit Sprachauswahl und Sidebar-Toggles -->
+<body data-theme="light" class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
+    <!-- Navbar -->
     <div class="navbar-container">
         {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
-        
-        <!-- Sidebar Toggle Buttons in der Navbar -->
         <div class="absolute right-20 top-4 flex space-x-2">
             <button id="toggle-right-sidebar" class="p-2 rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,17 +54,14 @@
             </button>
         </div>
     </div>
-    
+
     <div class="flex flex-1 relative">
-        <!-- Main Content -->
         <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
             {% block content %}{% endblock %}
         </main>
-        
-        <!-- Rechter Hover-Bereich für Sidebar -->
+
         <div id="right-sidebar-hover-area" class="fixed right-0 top-0 w-8 h-full z-10"></div>
-        
-        <!-- Right Sidebar -->
+
         <aside id="right-sidebar" class="bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 pt-16">
             <div class="p-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Zusätzliche Informationen' %}</h3>
@@ -81,7 +70,6 @@
                         <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Aktuelle Version' %}</h4>
                         <p class="text-sm text-gray-600 dark:text-gray-300">Django Insight UI v0.1.0</p>
                     </div>
-                    
                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Schnellzugriff' %}</h4>
                         <ul class="space-y-2 text-sm">
@@ -90,7 +78,6 @@
                             <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">{% trans 'Einstellungen' %}</a></li>
                         </ul>
                     </div>
-                    
                     <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Hilfe &amp; Support' %}</h4>
                         <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{% trans 'Haben Sie Fragen oder Probleme?' %}</p>
@@ -105,33 +92,35 @@
             </div>
         </aside>
     </div>
-    
-    <!-- Footer -->
+
     {% footer %}
-    
-    <!-- Sprachformular für Django -->
+
     <form id="language-form" method="post" action="{% url 'set_language' %}" style="display: none;">
         {% csrf_token %}
         <input name="next" type="hidden" value="{{ request.get_full_path }}" />
         <input name="language" type="hidden" />
     </form>
-    
-    <!-- Insight UI JavaScript -->
-    <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
-    
+
+    <!-- Insight UI Modular JavaScript -->
+    <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-navbar.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-alert.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-form.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+
     <!-- HTMX Extensions -->
-    <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
-    
-    {% block extra_scripts %}
-    <script src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
-    {% endblock %}
-    
+    <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+
+    {% block extra_scripts %}{% endblock %}
+
     <script>
-        // Sprach-Wechsel-Funktion
         function changeLanguage(languageCode) {
             const form = document.getElementById('language-form');
-            const languageInput = form.querySelector('input[name="language"]');
-            languageInput.value = languageCode;
+            const input = form.querySelector('input[name="language"]');
+            input.value = languageCode;
             form.submit();
         }
     </script>
