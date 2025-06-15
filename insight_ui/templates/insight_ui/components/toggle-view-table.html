@@ -1,0 +1,9 @@
+{% load insight_tags %}
+{% load i18n %}
+
+<!-- Tabellenansicht -->
+<div id="switchable-view" hx-target="#switchable-view" hx-swap="outerHTML">
+  <div class="insight-table-view">
+    {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
+  </div>
+</div>
