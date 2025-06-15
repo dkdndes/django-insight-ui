@@ -1,0 +1,1 @@
+InsightUI.Modal = { init: function () { /* Modal logic here */ } };
