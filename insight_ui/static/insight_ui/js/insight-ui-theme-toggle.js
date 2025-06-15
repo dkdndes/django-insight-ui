@@ -1,0 +1,1 @@
+InsightUI.ThemeToggle = { init: function () { /* Theme toggle logic */ } };
