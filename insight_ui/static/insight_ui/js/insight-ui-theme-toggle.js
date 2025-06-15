@@ -10,8 +10,10 @@ InsightUI.ThemeToggle = {
     function setTheme(theme) {
       if (theme === 'dark') {
         root.classList.add('dark');
+        root.setAttribute('data-theme', 'dark');
       } else {
         root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
       }
       localStorage.setItem(themeKey, theme);
     }
