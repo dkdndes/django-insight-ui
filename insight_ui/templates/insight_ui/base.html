@@ -122,7 +122,9 @@
     <!-- HTMX Extensions -->
     <script src="{% static 'insight_ui/js/htmx-extensions.js' %}"></script>
     
-    {% block extra_scripts %}{% endblock %}
+    {% block extra_scripts %}
+    <script src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+    {% endblock %}
     
     <script>
         // Sprach-Wechsel-Funktion
@@ -132,131 +134,6 @@
             languageInput.value = languageCode;
             form.submit();
         }
-        
-        // Linke und Rechte Sidebar Funktionalität
-        document.addEventListener('DOMContentLoaded', function() {
-            // Rechte Sidebar
-            const rightSidebar = document.getElementById('right-sidebar');
-            const rightSidebarToggle = document.getElementById('right-sidebar-toggle');
-            const rightOpenIcon = document.getElementById('right-sidebar-open-icon');
-            const rightCloseIcon = document.getElementById('right-sidebar-close-icon');
-            
-            // Rechte Sidebar Funktionalität mit Hover
-            if (rightSidebar) {
-                const rightSidebarHoverArea = document.getElementById('right-sidebar-hover-area');
-                const toggleRightSidebar = document.getElementById('toggle-right-sidebar');
-                
-                // Initialer Zustand
-                rightSidebar.classList.remove('open');
-                document.body.classList.remove('right-sidebar-open');
-                
-                // Hover-Funktionalität
-                if (rightSidebarHoverArea) {
-                    // Verzögerung für das Öffnen und Schließen
-                    let rightOpenTimeout, rightCloseTimeout;
-                    
-                    rightSidebarHoverArea.addEventListener('mouseenter', function() {
-                        clearTimeout(rightCloseTimeout);
-                        rightOpenTimeout = setTimeout(function() {
-                            if (!rightSidebar.classList.contains('open')) {
-                                rightSidebar.classList.add('open');
-                                document.body.classList.add('right-sidebar-open');
-                            }
-                        }, 100); // Sehr kurze Verzögerung vor dem Öffnen
-                    });
-                    
-                    rightSidebarHoverArea.addEventListener('mouseleave', function(e) {
-                        clearTimeout(rightOpenTimeout);
-                        // Nur schließen, wenn die Maus nicht zur Sidebar geht
-                        if (e.relatedTarget !== rightSidebar) {
-                            rightCloseTimeout = setTimeout(function() {
-                                rightSidebar.classList.remove('open');
-                                document.body.classList.remove('right-sidebar-open');
-                            }, 300); // Mittlere Verzögerung vor dem Schließen
-                        }
-                    });
-                    
-                    // Maus verlässt die Sidebar
-                    rightSidebar.addEventListener('mouseleave', function(e) {
-                        clearTimeout(rightOpenTimeout);
-                        // Nur schließen, wenn die Maus nicht zum Hover-Bereich geht
-                        if (e.relatedTarget !== rightSidebarHoverArea) {
-                            rightCloseTimeout = setTimeout(function() {
-                                rightSidebar.classList.remove('open');
-                                document.body.classList.remove('right-sidebar-open');
-                            }, 300); // Mittlere Verzögerung vor dem Schließen
-                        }
-                    });
-                    
-                    // Maus betritt die Sidebar
-                    rightSidebar.addEventListener('mouseenter', function() {
-                        clearTimeout(rightCloseTimeout);
-                    });
-                }
-                
-                // Button in der Navbar
-                if (toggleRightSidebar) {
-                    toggleRightSidebar.addEventListener('click', function() {
-                        rightSidebar.classList.toggle('open');
-                        document.body.classList.toggle('right-sidebar-open');
-                    });
-                }
-                
-                // Schließen bei Escape-Taste
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && rightSidebar.classList.contains('open')) {
-                        rightSidebar.classList.remove('open');
-                        document.body.classList.remove('right-sidebar-open');
-                    }
-                });
-            }
-            
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.InsightUI) {
-                InsightUI.ThemeToggle.init();
-                InsightUI.Navbar.init();
-                InsightUI.Modal.init();
-                InsightUI.Alert.init();
-                InsightUI.Form.init();
-                InsightUI.Sidebar.init();
-            }
-
-            // Theme Toggle Button Logik
-            const themeToggleBtn = document.querySelector('.insight-theme-toggle');
-            if (!themeToggleBtn) return;
-
-            // Prüfe, ob Dark Mode aktiv ist
-            function isDarkMode() {
-                return document.documentElement.classList.contains('dark');
-            }
-
-            // Umschalten des Dark Mode
-            function toggleDarkMode() {
-                if (isDarkMode()) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('theme', 'dark');
-                }
-            }
-
-            // Initiale Einstellung aus localStorage oder Systempräferenz
-            (function initTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            })();
-
-            themeToggleBtn.addEventListener('click', function() {
-                toggleDarkMode();
-            });
-        });
     </script>
 </body>
 </html>
