@@ -8,7 +8,7 @@ from django.views.i18n import set_language
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("i18n/setlang/", set_language, name="set_language"),
-    path("insight_ui/", include("insight_ui.urls")),
+    path("", include("insight_ui.urls")),
 ]
 
 urlpatterns += i18n_patterns(

@@ -169,55 +169,12 @@
         </div>
     </section>
 
-    <!-- Ansicht mit Umschalter (HTMX) -->
-    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
-        <div class="flex items-center space-x-2">
-            <button 
-                hx-get="{% url 'toggle_view' %}?view=table"
-                hx-target="#switchable-view"
-                hx-swap="outerHTML"
-                class="px-3 py-1 rounded border text-sm font-medium"
-                hx-boost="true"
-                {% if current_view == 'table' %}
-                    disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Tabelle ist aktuell' %}"
-                    style="color: #9ca3af; cursor: not-allowed;"
-                {% else %}
-                    hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"
-                {% endif %}
-            >
-                {% trans 'Tabelle' %}
-            </button>
-            <button 
-                hx-get="{% url 'toggle_view' %}?view=card"
-                hx-target="#switchable-view"
-                hx-swap="outerHTML"
-                class="px-3 py-1 rounded border text-sm font-medium"
-                hx-boost="true"
-                {% if current_view == 'card' %}
-                    disabled aria-disabled="true" aria-pressed="true" aria-label="{% trans 'Kartenansicht ist aktuell' %}"
-                    style="color: #9ca3af; cursor: not-allowed;"
-                {% else %}
-                    hx-trigger="click changed delay:500ms" hx-indicator="#loading-indicator"
-                {% endif %}
-            >
-                {% trans 'Karten' %}
-            </button>
-        </div>
-    </div>
+    <!-- Pagination Demo -->
 
-    <!-- Der Bereich wird per HTMX ersetzt -->
-    <div id="switchable-view" hx-target="#switchable-view" hx-swap="outerHTML">
-        {% if current_view == 'table' %}
-            {% include 'insight_ui/components/table_view.html' %}
-        {% elif current_view == 'card' %}
-            {% include 'insight_ui/components/card_view.html' %}
-        {% else %}
-            {% include 'insight_ui/components/table_view.html' %}
-        {% endif %}
-    </div>
-</section>
+    <!-- Table-Card Toggle View Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        {% include "insight_ui/components/toggle-view.html" %}
+    </section>
 
     <!-- Infinite Scroll Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">

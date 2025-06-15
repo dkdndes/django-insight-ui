@@ -19,7 +19,7 @@ def get_storybook_context():
     return {
         "nav_links": [
             {"text": _("Startseite"), "url": "/", "active": True},
-            {"text": _("Komponenten"), "url": "/components/", "active": False},
+            {"text": _("Storybook"), "url": "/components/", "active": False},
             {"text": _("Dokumentation"), "url": "/docs/", "active": False},
         ],
         "breadcrumb_items": [
@@ -325,7 +325,7 @@ def normal_form_submit(request):
     if errors:
         logger.warning(f"Formular-Validierungsfehler: {errors}")
         # Bei Fehlern die komplette Seite mit Fehlermeldungen rendern
-        context = get_index_context()
+        context = get_storybook_context()
         context["form_errors"] = errors
         context["form_data"] = {"name": name, "email": email, "message": message}
         return render(request, "index.html", context)
@@ -337,7 +337,7 @@ def normal_form_submit(request):
     logger.info("Normales Formular erfolgreich verarbeitet")
 
     # Bei erfolgreichem Submit die komplette Seite mit Erfolgsmeldung rendern
-    context = get_index_context()
+    context = get_storybook_context()
     context["form_success"] = {
         "message": _("Normales Formular erfolgreich übermittelt!"),
         "name": name,
@@ -460,7 +460,7 @@ async def log_form_input_async(name, email, message, logger) -> None:
 
 @require_http_methods(["GET"])
 def component_demo_view(request, component_name):
-    """Einzelne Komponenten-Demo für HTMX"""
+    """Einzelne Storybook-Demo für HTMX"""
     component_templates = {
         "alert": "insight_ui/components/alert.html",
         "card": "insight_ui/components/card.html",
@@ -571,14 +571,36 @@ def get_component_context(component_name):
 @require_GET
 def toggle_view(request):
     view = request.GET.get("view", "table")
-    context = get_storybook_context()
-    context["current_view"] = view
+    context = {
+        "current_view": view
+    }
+
+    # Gemeinsame Daten (z. B. aus einem Model simuliert)
+    context["cards"] = [
+        {
+            "title": "Karte 1",
+            "subtitle": "Einführung",
+            "content": "Dies ist der erste Eintrag.",
+            "actions": [
+                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                {"text": "Teilen", "url": "#", "type": "secondary"},
+            ]
+        },
+        {
+            "title": "Karte 2",
+            "subtitle": "Details",
+            "content": "Dies ist der zweite Eintrag.",
+            "actions": [
+                {"text": "Bearbeiten", "url": "#", "type": "primary"}
+            ]
+        },
+    ]
+    context["table_headers"] = ["Name", "Status", "Aktion"]
+    context["table_rows"] = [
+        ["Peter", "Aktiv", "<a href='#'>Details</a>"],
+        ["Anna", "Inaktiv", "<a href='#'>Bearbeiten</a>"],
+    ]
+
     if view == "card":
-        # Beispiel: andere Daten für Kartenansicht
-        context["table_headers"] = []
-        context["table_rows"] = []
-        context["card_actions"] = [
-            {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-            {"text": "Teilen", "url": "#", "type": "secondary"},
-        ]
-    return render(request, "insight_ui/components/storybook.html", context)
+        return render(request, "insight_ui/components/toggle-view-card.html", context)
+    return render(request, "insight_ui/components/toggle-view-table.html", context)

@@ -9,9 +9,29 @@
 <nav role="navigation" aria-label="{% trans 'Hauptnavigation' %}" class="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-200 dark:border-gray-700" {% if id %}id="{{ id }}"{% endif %}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
+      
       <!-- Desktop Navigation -->
       {% if links %}
       <div class="hidden md:flex flex-1 justify-center">
+
+        <!-- Brand Logo -->
+        <div class="flex items-left space-x-4">
+          {% if brand %}
+            <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-left space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+              {% if brand_logo %}
+                <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8 rounded-full" />
+              {% else %}
+                <!-- Platzhalter brand_logo, not Profile_Head -->
+                <svg class="h-8 w-8 rounded-full text-gray-400 dark:text-gray-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              {% endif %}
+              <span>{{ brand }}</span>
+            </a>
+          {% endif %}
+        </div>
+
+        <!-- Navigation Links -->
         <ul class="flex space-x-6">
           {% for link in links %}
             <li>
@@ -41,22 +61,6 @@
       </div>
       {% endif %}
 
-      <!-- Brand -->
-      <div class="flex items-center space-x-4">
-        {% if brand %}
-          <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-            {% if brand_logo %}
-              <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8 rounded-full" />
-            {% else %}
-              <!-- Platzhalter-Icon für Benutzer (Personen-Kopf) -->
-              <svg class="h-8 w-8 rounded-full text-gray-400 dark:text-gray-600" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
-            {% endif %}
-            <span>{{ brand }}</span>
-          </a>
-        {% endif %}
-      </div>
 
       <!-- Mobile menu button -->
       <div class="md:hidden flex items-center space-x-2">

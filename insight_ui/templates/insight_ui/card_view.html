@@ -1,8 +1,0 @@
-{% load insight_tags %}
-{% load i18n %}
-
-<div class="insight-card-view grid grid-cols-1 md:grid-cols-2 gap-6">
-  {% for card in cards %}
-    {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
-  {% endfor %}
-</div>
