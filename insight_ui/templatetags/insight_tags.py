@@ -191,6 +191,7 @@ def sidebar(
     items: List[Dict[str, Any]] = None,
     theme: str = "light",
     collapsible: bool = False,
+    options: dict = None,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
@@ -201,20 +202,24 @@ def sidebar(
         items: Eine Liste von Dictionaries mit Navigation-Elementen
         theme: Das Farbschema ('light', 'dark', 'high-contrast')
         collapsible: Ob die Sidebar einklappbar sein soll
-        **kwargs: Zusätzliche Optionen für die Sidebar
+        options: Zusätzliche Optionen für die Sidebar
+        **kwargs: Weitere Optionen
 
     Returns:
         Dict mit Kontext-Variablen für das Template
     """
     if items is None:
         items = []
+    if options is None:
+        options = {}
+    options = {**options, **kwargs}
 
     return {
         "title": title,
         "items": items,
         "theme": theme,
         "collapsible": collapsible,
-        "options": kwargs,
+        "options": options,
     }
 
 
