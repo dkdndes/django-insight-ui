@@ -602,5 +602,5 @@ def toggle_view(request):
     ]
 
     if view == "card":
-        return render(request, "insight_ui/components/toggle-view-card.html", context)
+        return render(request, "insight_ui/components/toggle-view-cards.html", context)
     return render(request, "insight_ui/components/toggle-view-table.html", context)
