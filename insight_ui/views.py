@@ -568,43 +568,62 @@ def get_component_context(component_name):
     return contexts.get(component_name, {})
 
 
+import random
+
+def generate_random_payload():
+    """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
+    count = random.randint(3, 7)  # zufällige Anzahl zwischen 3 und 7
+    entries = []
+    for i in range(1, count + 1):
+        entries.append({
+            "title": f"Karte {i}",
+            "subtitle": f"Untertitel {i}",
+            "content": f"Dies ist der Inhalt von Eintrag {i}.",
+            "actions": [
+                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                {"text": "Teilen", "url": "#", "type": "secondary"},
+            ],
+            "name": f"Name {i}",
+            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
+            "action_link": f"<a href='#'>Details {i}</a>",
+        })
+    return entries
+
+def map_payload_to_cards(payload):
+    """Mappt Payload-Daten auf Karten-Darstellung."""
+    cards = []
+    for item in payload:
+        cards.append({
+            "title": item["title"],
+            "subtitle": item["subtitle"],
+            "content": item["content"],
+            "actions": item["actions"],
+        })
+    return cards
+
+def map_payload_to_table(payload):
+    """Mappt Payload-Daten auf Tabellen-Darstellung."""
+    headers = ["Name", "Status", "Aktion"]
+    rows = []
+    for item in payload:
+        rows.append([item["name"], item["status"], item["action_link"]])
+    return headers, rows
+
 @require_GET
 def toggle_view(request):
     view = request.GET.get("view", "table")
 
-    # Gemeinsame simulierte Daten als Payload
-    payload = {
-        "cards": [
-            {
-                "title": "Karte 1",
-                "subtitle": "Einführung",
-                "content": "Dies ist der erste Eintrag.",
-                "actions": [
-                    {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                    {"text": "Teilen", "url": "#", "type": "secondary"},
-                ]
-            },
-            {
-                "title": "Karte 2",
-                "subtitle": "Details",
-                "content": "Dies ist der zweite Eintrag.",
-                "actions": [
-                    {"text": "Bearbeiten", "url": "#", "type": "primary"}
-                ]
-            },
-        ],
-        "table_headers": ["Name", "Status", "Aktion"],
-        "table_rows": [
-            ["Peter", "Aktiv", "<a href='#'>Details</a>"],
-            ["Anna", "Inaktiv", "<a href='#'>Bearbeiten</a>"],
-        ],
-    }
+    payload = generate_random_payload()
 
     context = {
         "current_view": view,
-        "payload": payload,
     }
 
     if view == "card":
+        context["cards"] = map_payload_to_cards(payload)
         return render(request, "insight_ui/components/toggle-view-cards.html", context)
-    return render(request, "insight_ui/components/toggle-view-table.html", context)
+    else:
+        headers, rows = map_payload_to_table(payload)
+        context["table_headers"] = headers
+        context["table_rows"] = rows
+        return render(request, "insight_ui/components/toggle-view-table.html", context)
