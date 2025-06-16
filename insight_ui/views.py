@@ -572,37 +572,37 @@ def get_component_context(component_name):
 def toggle_view(request):
     view = request.GET.get("view", "table")
 
-    # Gemeinsame Daten (z. B. aus einem Model simuliert)
-    cards = [
-        {
-            "title": "Karte 1",
-            "subtitle": "Einführung",
-            "content": "Dies ist der erste Eintrag.",
-            "actions": [
-                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                {"text": "Teilen", "url": "#", "type": "secondary"},
-            ]
-        },
-        {
-            "title": "Karte 2",
-            "subtitle": "Details",
-            "content": "Dies ist der zweite Eintrag.",
-            "actions": [
-                {"text": "Bearbeiten", "url": "#", "type": "primary"}
-            ]
-        },
-    ]
-    table_headers = ["Name", "Status", "Aktion"]
-    table_rows = [
-        ["Peter", "Aktiv", "<a href='#'>Details</a>"],
-        ["Anna", "Inaktiv", "<a href='#'>Bearbeiten</a>"],
-    ]
+    # Gemeinsame simulierte Daten als Payload
+    payload = {
+        "cards": [
+            {
+                "title": "Karte 1",
+                "subtitle": "Einführung",
+                "content": "Dies ist der erste Eintrag.",
+                "actions": [
+                    {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                    {"text": "Teilen", "url": "#", "type": "secondary"},
+                ]
+            },
+            {
+                "title": "Karte 2",
+                "subtitle": "Details",
+                "content": "Dies ist der zweite Eintrag.",
+                "actions": [
+                    {"text": "Bearbeiten", "url": "#", "type": "primary"}
+                ]
+            },
+        ],
+        "table_headers": ["Name", "Status", "Aktion"],
+        "table_rows": [
+            ["Peter", "Aktiv", "<a href='#'>Details</a>"],
+            ["Anna", "Inaktiv", "<a href='#'>Bearbeiten</a>"],
+        ],
+    }
 
     context = {
         "current_view": view,
-        "cards": cards,
-        "table_headers": table_headers,
-        "table_rows": table_rows,
+        "payload": payload,
     }
 
     if view == "card":
