@@ -154,6 +154,14 @@ def storybook_view(request):
     # Beispieldaten für die Komponenten
     context = get_storybook_context()
 
+    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
+    payload = PayloadGenerator.generate_entries()
+    headers, rows = DataMapper.to_table(payload)
+    context["toggle_table_headers"] = headers
+    context["toggle_table_rows"] = rows
+    context["toggle_cards"] = DataMapper.to_cards(payload)
+    context["toggle_current_view"] = "table"
+
     return render(request, "index.html", context)
 
 
