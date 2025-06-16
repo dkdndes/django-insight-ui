@@ -571,12 +571,9 @@ def get_component_context(component_name):
 @require_GET
 def toggle_view(request):
     view = request.GET.get("view", "table")
-    context = {
-        "current_view": view
-    }
 
     # Gemeinsame Daten (z. B. aus einem Model simuliert)
-    context["cards"] = [
+    cards = [
         {
             "title": "Karte 1",
             "subtitle": "Einführung",
@@ -595,11 +592,18 @@ def toggle_view(request):
             ]
         },
     ]
-    context["table_headers"] = ["Name", "Status", "Aktion"]
-    context["table_rows"] = [
+    table_headers = ["Name", "Status", "Aktion"]
+    table_rows = [
         ["Peter", "Aktiv", "<a href='#'>Details</a>"],
         ["Anna", "Inaktiv", "<a href='#'>Bearbeiten</a>"],
     ]
+
+    context = {
+        "current_view": view,
+        "cards": cards,
+        "table_headers": table_headers,
+        "table_rows": table_rows,
+    }
 
     if view == "card":
         return render(request, "insight_ui/components/toggle-view-cards.html", context)
