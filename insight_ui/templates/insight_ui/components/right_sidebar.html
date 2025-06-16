@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<aside role="complementary" aria-label="{% trans 'Rechte Seitennavigation' %}" class="insight-sidebar insight-sidebar--right insight-sidebar--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<aside role="complementary" aria-label="{% trans 'Rechte Seitennavigation' %}" class="insight-sidebar insight-sidebar--right insight-sidebar--{{ theme }}" data-insight-sidebar {% if options.id %}id="{{ options.id }}"{% endif %}>
   <div class="insight-sidebar__container">
     <!-- Sidebar Header -->
     {% if title %}
