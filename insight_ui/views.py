@@ -13,6 +13,12 @@ from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
+
+def page1_view(request):
+    return render(request, 'insight_ui/page1.html')
+
+def page2_view(request):
+    return render(request, 'insight_ui/page2.html')
 from django_htmx.http import HttpResponseClientRedirect
 
 
