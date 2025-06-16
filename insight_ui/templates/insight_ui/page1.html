@@ -1,0 +1,17 @@
+{% load insight_tags %}
+{% load i18n %}
+
+{% block navbar %}
+<div class="navbar-container">
+    {% navbar brand="Django Insight UI" links=nav_links show_language_selector=True show_theme_toggle=True %}
+</div>
+{% endblock navbar %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">{% trans 'Seite 1' %}</h1>
+    <p class="text-lg text-gray-700 dark:text-gray-300">
+        {% trans 'Dies ist eine leere Seite 1.' %}
+    </p>
+</div>
+{% endblock content %}
