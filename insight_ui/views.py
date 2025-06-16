@@ -144,27 +144,6 @@ def get_storybook_context():
     }
 
 
-def storybook_view(request):
-    """Hauptseite mit allen Insight UI Komponenten"""
-
-    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
-    if request.method == "POST":
-        return normal_form_submit(request)
-
-    # Beispieldaten für die Komponenten
-    context = get_storybook_context()
-
-    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
-    payload = PayloadGenerator.generate_entries()
-    headers, rows = DataMapper.to_table(payload)
-    context["toggle_table_headers"] = headers
-    context["toggle_table_rows"] = rows
-    context["toggle_cards"] = DataMapper.to_cards(payload)
-    context["toggle_current_view"] = "table"
-
-    return render(request, "index.html", context)
-
-
 @require_http_methods(["GET"])
 def live_data_view(request):
     """HTMX Endpoint für Live-Daten"""
@@ -577,107 +556,96 @@ def get_component_context(component_name):
 
     return contexts.get(component_name, {})
 
+def storybook_view(request):
+    """Hauptseite mit allen Insight UI Komponenten"""
 
-class PayloadGenerator:
-    """Handles generation of sample data."""
-    
-    @staticmethod
-    def generate_entries(min_count: int = 3, max_count: int = 7) -> list[dict[str, any]]:
-        """Generate a random number of sample entries."""
-        count = random.randint(min_count, max_count)
-        return [
-            {
-                "id": i,
-                "title": f"Element {i}",
-                "subtitle": f"Subtitle {i}",
-                "content": f"This is the content of entry {i}.",
-                "name": f"Name {i}",
-                "status": "active" if i % 2 == 0 else "inactive",
-                "actions": [
-                    {"text": "Learn more", "url": f"/details/{i}", "type": "primary"},
-                    {"text": "Share", "url": f"/share/{i}", "type": "secondary"},
-                ],
-            }
-            for i in range(1, count + 1)
-        ]
+    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
+    if request.method == "POST":
+        return normal_form_submit(request)
 
-class DataMapper:
-    """Maps payload data to different view formats."""
-    
-    CONTENT_TRUNCATE_LENGTH = 50
-    
-    @classmethod
-    def to_cards(cls, payload: list[dict[str, any]]) -> list[dict[str, any]]:
-        """Map payload data to card representation."""
-        return [
-            {
-                "id": item["id"],
-                "title": item["title"],
-                "subtitle": item["subtitle"],
-                "content": item["content"],
-                "actions": item["actions"],
-                "status": item["status"],
-            }
-            for item in payload
-        ]
-    
-    @classmethod
-    def to_table(cls, payload: list[dict[str, any]]) -> tuple[List[str], List[List[str]]]:
-        """Map payload data to table representation."""
-        headers = ["Title", "Status", "Content", "Actions"]
-        rows = []
-        
-        for item in payload:
-            content = cls._truncate_content(item["content"])
-            actions_html = cls._generate_actions_html(item)
-            
-            rows.append([
-                item["title"],
-                item["status"].title(),
-                content,
-                actions_html
-            ])
-        
-        return headers, rows
-    
-    @classmethod
-    def _truncate_content(cls, content: str) -> str:
-        """Truncate content if it exceeds the maximum length."""
-        if len(content) > cls.CONTENT_TRUNCATE_LENGTH:
-            return content[:cls.CONTENT_TRUNCATE_LENGTH] + "..."
-        return content
-    
-    @classmethod
-    def _generate_actions_html(cls, item: dict[str, any]) -> str:
-        """Generate HTML for action links."""
-        primary_action = next(
-            (action for action in item["actions"] if action["type"] == "primary"), 
-            None
-        )
-        if primary_action:
-            return f'<a href="{primary_action["url"]}" class="btn btn-primary">{primary_action["text"]}</a>'
-        return f'<a href="/details/{item["id"]}" class="btn btn-outline">Details</a>'
+    # Beispieldaten für die Komponenten
+    context = get_storybook_context()
 
+    return render(request, "index.html", context)
+
+def storybook_view(request):
+    """Hauptseite mit allen Insight UI Komponenten"""
+
+    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
+    if request.method == "POST":
+        return normal_form_submit(request)
+
+    # Beispieldaten für die Komponenten
+    context = get_storybook_context()
+
+    # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
+    payload = generate_random_payload()
+    headers, rows = map_payload_to_table(payload)
+    context["table_headers"] = headers
+    context["table_rows"] = rows
+    context["toggle_current_view"] = "table"
+    
+    return render(request, "index.html", context)
+
+def generate_random_payload():
+    """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
+    count = random.randint(3, 7)  # zufällige Anzahl zwischen 3 und 7
+    entries = []
+    for i in range(1, count + 1):
+        entries.append({
+            "title": f"Element {i}",
+            "subtitle": f"Untertitel {i}",
+            "content": f"Dies ist der Inhalt von Eintrag {i}.",
+            "actions": [
+                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                {"text": "Teilen", "url": "#", "type": "secondary"},
+            ],
+            "name": f"Name {i}",
+            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
+            "action_link": f"<a href='#'>Details {i}</a>",
+        })
+    return entries
+
+def map_payload_to_cards(payload):
+    """Mappt Payload-Daten auf Karten-Darstellung."""
+    elements = []
+    for item in payload:
+        elements.append({
+            "title": item["title"],
+            "subtitle": item["subtitle"],
+            "content": item["content"],
+            "actions": item["actions"],
+        })
+    return elements
+
+def map_payload_to_table(payload):
+    """Mappt Payload-Daten auf Tabellen-Darstellung."""
+    headers = ["title", "status", "content", "action_link"]
+    rows = []
+    for item in payload:
+        content = item["content"]
+        if len(content) > 10:
+            content = content[:10] + "..."
+        rows.append([item["title"], item["status"], content, item["action_link"]])
+    return headers, rows
 
 @require_GET
 def toggle_view(request):
     view = request.GET.get("view", "table")
 
-    # payload = generate_random_payload()
-    # Generate sample data
-    payload = PayloadGenerator.generate_entries()
-
+    payload = generate_random_payload()
+    
     context = {
         "current_view": view,
     }
 
     # Initial Daten für Tabelle bereitstellen, wenn Ansicht "table" ist
     if view == "table":
-        headers, rows = DataMapper.to_table(payload)
+        headers, rows = map_payload_to_table(payload)
         context["table_headers"] = headers
         context["table_rows"] = rows
     elif view == "card":
-        context["cards"] = DataMapper.to_cards(payload)
+        context["cards"] = map_payload_to_cards(payload)
 
     if view == "card":
         return render(request, "insight_ui/components/toggle-view-cards.html", context)
