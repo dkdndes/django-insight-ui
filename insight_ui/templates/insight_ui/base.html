@@ -56,35 +56,40 @@
 
         <div id="right-sidebar-hover-area" class="fixed right-0 top-0 w-8 h-full z-10"></div>
 
-        <aside id="right-sidebar" class="bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 pt-16">
-            <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Zusätzliche Informationen' %}</h3>
-                <div class="space-y-4">
-                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Aktuelle Version' %}</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-300">Insight UI v0.1.0</p>
-                    </div>
-                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Schnellzugriff' %}</h4>
-                        <ul class="space-y-2 text-sm">
-                            <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">{% trans 'Dokumentation' %}</a></li>
-                            <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">{% trans 'Komponenten' %}</a></li>
-                            <li><a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">{% trans 'Einstellungen' %}</a></li>
-                        </ul>
-                    </div>
-                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <h4 class="font-medium text-gray-900 dark:text-white mb-2">{% trans 'Hilfe &amp; Support' %}</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{% trans 'Haben Sie Fragen oder Probleme?' %}</p>
-                        <a href="#" class="inline-flex items-center text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {% trans 'Support kontaktieren' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        {% with sidebar_items=[
+            {
+                "text": "Dokumentation",
+                "url": "#",
+                "icon": "",
+                "active": False
+            },
+            {
+                "text": "Komponenten",
+                "url": "#",
+                "icon": "",
+                "active": False
+            },
+            {
+                "text": "Einstellungen",
+                "url": "#",
+                "icon": "",
+                "active": False
+            },
+            {
+                "text": "Support kontaktieren",
+                "url": "#",
+                "icon": "<svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4 mr-1' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>",
+                "active": False
+            }
+        ] %}
+            {% sidebar 
+                title="Zusätzliche Informationen"
+                items=sidebar_items
+                theme="light"
+                collapsible=True
+                options={"id": "right-sidebar"}
+            %}
+        {% endwith %}
     </div>
 
     {% footer %}
