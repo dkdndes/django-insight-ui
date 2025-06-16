@@ -603,10 +603,13 @@ def map_payload_to_cards(payload):
 
 def map_payload_to_table(payload):
     """Mappt Payload-Daten auf Tabellen-Darstellung."""
-    headers = ["title", "status", "action_link"]
+    headers = ["title", "status", "content", "action_link"]
     rows = []
     for item in payload:
-        rows.append([item["title"], item["status"], item["action_link"]])
+        content = item["content"]
+        if len(content) > 10:
+            content = content[:10] + "..."
+        rows.append([item["title"], item["status"], content, item["action_link"]])
     return headers, rows
 
 @require_GET
