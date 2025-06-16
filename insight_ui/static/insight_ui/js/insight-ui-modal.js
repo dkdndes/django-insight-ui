@@ -8,7 +8,7 @@ InsightUI.Modal = {
           modal.style.display = 'block';
           modal.querySelectorAll('[data-insight-dismiss="modal"]').forEach(closeButton => {
             closeButton.addEventListener('click', function () {
-              modal.classList.add('hidden');
+              modal.style.display = 'none';
             });
           });
           InsightUI.utils.trapFocus(modal);
