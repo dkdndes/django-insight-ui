@@ -99,6 +99,12 @@
         {% endif %}
         
         {% include "insight_ui/components/theme_toggle.html" %}
+        
+        <form id="language-form" method="post" action="{% url 'set_language' %}" style="display: none;">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}" />
+            <input name="language" type="hidden" />
+        </form>
       </div>
     </div>
 
