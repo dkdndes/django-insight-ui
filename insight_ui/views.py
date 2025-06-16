@@ -663,7 +663,6 @@ class DataMapper:
 def toggle_view(request):
     view = request.GET.get("view", "table")
 
-    # payload = generate_random_payload()
     # Generate sample data
     payload = PayloadGenerator.generate_entries()
 
