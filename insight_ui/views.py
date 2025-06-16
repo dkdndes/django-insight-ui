@@ -1,7 +1,9 @@
 import asyncio
 import logging
 import time
+import random
 from datetime import datetime
+from typing import List
 
 from asgiref.sync import sync_to_async
 from django.http import HttpResponse, JsonResponse
@@ -11,7 +13,7 @@ from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
-from django_htmx.http import HttpResponseClientRedirect, HttpResponseLocation
+from django_htmx.http import HttpResponseClientRedirect
 
 
 def get_storybook_context():
@@ -568,55 +570,94 @@ def get_component_context(component_name):
     return contexts.get(component_name, {})
 
 
-import random
+class PayloadGenerator:
+    """Handles generation of sample data."""
+    
+    @staticmethod
+    def generate_entries(min_count: int = 3, max_count: int = 7) -> list[dict[str, any]]:
+        """Generate a random number of sample entries."""
+        count = random.randint(min_count, max_count)
+        return [
+            {
+                "id": i,
+                "title": f"Element {i}",
+                "subtitle": f"Subtitle {i}",
+                "content": f"This is the content of entry {i}.",
+                "name": f"Name {i}",
+                "status": "active" if i % 2 == 0 else "inactive",
+                "actions": [
+                    {"text": "Learn more", "url": f"/details/{i}", "type": "primary"},
+                    {"text": "Share", "url": f"/share/{i}", "type": "secondary"},
+                ],
+            }
+            for i in range(1, count + 1)
+        ]
 
-def generate_random_payload():
-    """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
-    count = random.randint(3, 7)  # zufällige Anzahl zwischen 3 und 7
-    entries = []
-    for i in range(1, count + 1):
-        entries.append({
-            "title": f"Karte {i}",
-            "subtitle": f"Untertitel {i}",
-            "content": f"Dies ist der Inhalt von Eintrag {i}.",
-            "actions": [
-                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                {"text": "Teilen", "url": "#", "type": "secondary"},
-            ],
-            "name": f"Name {i}",
-            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
-            "action_link": f"<a href='#'>Details {i}</a>",
-        })
-    return entries
+class DataMapper:
+    """Maps payload data to different view formats."""
+    
+    CONTENT_TRUNCATE_LENGTH = 50
+    
+    @classmethod
+    def to_cards(cls, payload: list[dict[str, any]]) -> list[dict[str, any]]:
+        """Map payload data to card representation."""
+        return [
+            {
+                "id": item["id"],
+                "title": item["title"],
+                "subtitle": item["subtitle"],
+                "content": item["content"],
+                "actions": item["actions"],
+                "status": item["status"],
+            }
+            for item in payload
+        ]
+    
+    @classmethod
+    def to_table(cls, payload: list[dict[str, any]]) -> tuple[List[str], List[List[str]]]:
+        """Map payload data to table representation."""
+        headers = ["Title", "Status", "Content", "Actions"]
+        rows = []
+        
+        for item in payload:
+            content = cls._truncate_content(item["content"])
+            actions_html = cls._generate_actions_html(item)
+            
+            rows.append([
+                item["title"],
+                item["status"].title(),
+                content,
+                actions_html
+            ])
+        
+        return headers, rows
+    
+    @classmethod
+    def _truncate_content(cls, content: str) -> str:
+        """Truncate content if it exceeds the maximum length."""
+        if len(content) > cls.CONTENT_TRUNCATE_LENGTH:
+            return content[:cls.CONTENT_TRUNCATE_LENGTH] + "..."
+        return content
+    
+    @classmethod
+    def _generate_actions_html(cls, item: dict[str, any]) -> str:
+        """Generate HTML for action links."""
+        primary_action = next(
+            (action for action in item["actions"] if action["type"] == "primary"), 
+            None
+        )
+        if primary_action:
+            return f'<a href="{primary_action["url"]}" class="btn btn-primary">{primary_action["text"]}</a>'
+        return f'<a href="/details/{item["id"]}" class="btn btn-outline">Details</a>'
 
-def map_payload_to_cards(payload):
-    """Mappt Payload-Daten auf Karten-Darstellung."""
-    cards = []
-    for item in payload:
-        cards.append({
-            "title": item["title"],
-            "subtitle": item["subtitle"],
-            "content": item["content"],
-            "actions": item["actions"],
-        })
-    return cards
-
-def map_payload_to_table(payload):
-    """Mappt Payload-Daten auf Tabellen-Darstellung."""
-    headers = ["title", "status", "content", "action_link"]
-    rows = []
-    for item in payload:
-        content = item["content"]
-        if len(content) > 10:
-            content = content[:10] + "..."
-        rows.append([item["title"], item["status"], content, item["action_link"]])
-    return headers, rows
 
 @require_GET
 def toggle_view(request):
     view = request.GET.get("view", "table")
 
-    payload = generate_random_payload()
+    # payload = generate_random_payload()
+    # Generate sample data
+    payload = PayloadGenerator.generate_entries()
 
     context = {
         "current_view": view,
