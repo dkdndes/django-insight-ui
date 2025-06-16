@@ -665,11 +665,11 @@ def toggle_view(request):
 
     # Initial Daten für Tabelle bereitstellen, wenn Ansicht "table" ist
     if view == "table":
-        headers, rows = map_payload_to_table(payload)
+        headers, rows = DataMapper.to_table(payload)
         context["table_headers"] = headers
         context["table_rows"] = rows
     elif view == "card":
-        context["cards"] = map_payload_to_cards(payload)
+        context["cards"] = DataMapper.to_cards(payload)
 
     if view == "card":
         return render(request, "insight_ui/components/toggle-view-cards.html", context)
