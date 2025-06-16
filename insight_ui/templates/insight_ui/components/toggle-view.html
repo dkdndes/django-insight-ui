@@ -14,6 +14,7 @@
       <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
       <div class="flex items-center space-x-2">
         <button
+          type="button"
           hx-get="{% url 'toggle_view' %}?view=table"
           hx-target="#switchable-view"
           hx-swap="outerHTML"
@@ -23,6 +24,7 @@
           {% trans 'Tabelle' %}
         </button>
         <button
+          type="button"
           hx-get="{% url 'toggle_view' %}?view=card"
           hx-target="#switchable-view"
           hx-swap="outerHTML"
