@@ -77,7 +77,7 @@
       if (name !== 'htmx:afterSettle') return;
 
       const el = evt.detail.elt;
-      if (!el.hasAttribute('hx-live-update')) return;
+      if (!(el instanceof HTMLElement) || !el.hasAttribute('hx-live-update')) return;
 
       const interval = parseInt(el.getAttribute('data-interval') || '5000', 10);
       const url = el.getAttribute('hx-get');
