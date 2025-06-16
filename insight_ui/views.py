@@ -225,15 +225,15 @@ async def htmx_form_submit(request):
         post_data = await sync_to_async(lambda: dict(request.POST))()
         content_type = request.content_type
 
-        print(f"[HTMX FORM] Empfangene POST-Daten: {post_data}")
+        print(f"[HTMX FORM] Empfangene POST-Daten: {request.POST}")
         print(f"[HTMX FORM] Content-Type: {content_type}")
-        logger.info(f"Empfangene POST-Daten: {post_data}")
+        logger.info(f"Empfangene POST-Daten: {request.POST}")
         logger.info(f"Content-Type: {content_type}")
 
         # Eingabedaten extrahieren
-        name = post_data.get("htmx_name", "")
-        email = post_data.get("htmx_email", "")
-        message = post_data.get("message", "")
+        name = request.POST.get("htmx_name", "")
+        email = request.POST.get("htmx_email", "")
+        message = request.POST.get("message", "")
 
         print(
             f"[HTMX FORM] Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'"
