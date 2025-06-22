@@ -563,17 +563,6 @@ def get_component_context(component_name):
 
     return contexts.get(component_name, {})
 
-    """Hauptseite mit allen Insight UI Komponenten"""
-
-    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
-    if request.method == "POST":
-        return normal_form_submit(request)
-
-    # Beispieldaten für die Komponenten
-    context = get_storybook_context()
-
-    return render(request, "index.html", context)
-
 def storybook_view(request):
     """Hauptseite mit allen Insight UI Komponenten"""
 
