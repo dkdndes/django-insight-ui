@@ -1,0 +1,3 @@
+<svg class="icon">
+  <use xlink:href="{% static 'insight_ui/svg/icons.svg#icon-example' %}"></use>
+</svg>
