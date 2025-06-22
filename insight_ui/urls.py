@@ -1,5 +1,6 @@
 from django.urls import path
 
+from django.conf.urls.i18n import set_language
 from . import views
 
 urlpatterns = [
@@ -17,6 +18,6 @@ urlpatterns = [
         name="component_demo",
     ),
     path("toggle_view/", views.toggle_view, name="toggle_view"),
-    path('change-language/', views.change_language_view, name='change_language'),
+    path("i18n/setlang/", set_language, name="set_language"),
     path("", views.storybook_view, name="storybook_view"),
 ]
