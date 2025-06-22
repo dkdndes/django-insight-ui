@@ -4,6 +4,10 @@
 
 {% block title %}{% trans 'Django Insight UI index.html' %}{% endblock %}
 
+{% load i18n %}
+{% get_available_languages as LANGUAGES %}
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block content %}
     <!-- Layout mit rechter Sidebar -->
     <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
