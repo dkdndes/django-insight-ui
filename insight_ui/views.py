@@ -563,16 +563,6 @@ def get_component_context(component_name):
 
     return contexts.get(component_name, {})
 
-def change_language_view(request):
-    """Ändert die Sprache und gibt die neue URL zurück."""
-    if request.method == "POST":
-        language_code = request.POST.get('language', 'en')
-        activate(language_code)
-        new_url = request.POST.get('next', '/')
-        if language_code != 'de':
-            new_url = f"/{language_code}" + new_url
-        return JsonResponse({'new_url': new_url})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
     """Hauptseite mit allen Insight UI Komponenten"""
 
     # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter

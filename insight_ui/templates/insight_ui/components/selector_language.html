@@ -4,15 +4,14 @@
   <label for="language-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
     {% trans 'Sprache auswählen' %}
   </label>
-  <form id="navbar-language-form" method="post" action="{% url 'change_language' %}" hx-post="{% url 'change_language' %}" hx-target="body" hx-swap="none">
+  <form id="navbar-language-form" method="post" action="{% url 'set_language' %}">
     {% csrf_token %}
     <input name="next" type="hidden" value="{{ request.get_full_path }}" />
-    <input name="language" type="hidden" />
     <select 
       id="language-select" 
       name="language_select" 
       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      onchange="this.form.elements['language'].value=this.value; this.form.submit();"
+      onchange="this.form.submit();"
       aria-label="{% trans 'Sprache ändern' %}">
       {% for language in available_languages %}
         <option value="{{ language.code }}" {% if LANGUAGE_CODE == language.code %}selected{% endif %}>
