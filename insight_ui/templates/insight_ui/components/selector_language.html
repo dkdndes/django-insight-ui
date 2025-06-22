@@ -12,7 +12,7 @@
       id="language-select" 
       name="language_select" 
       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      onchange="this.form.elements['language'].value=this.value; InsightUI.SelectLanguage.changeLanguage(this.value);"
+      onchange="this.form.elements['language'].value=this.value; this.form.submit();"
       aria-label="{% trans 'Sprache ändern' %}">
       {% for language in available_languages %}
         <option value="{{ language.code }}" {% if LANGUAGE_CODE == language.code %}selected{% endif %}>
