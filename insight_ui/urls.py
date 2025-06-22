@@ -17,5 +17,6 @@ urlpatterns = [
         name="component_demo",
     ),
     path("toggle_view/", views.toggle_view, name="toggle_view"),
+    path('change-language/', views.change_language_view, name='change_language'),
     path("", views.storybook_view, name="storybook_view"),
 ]

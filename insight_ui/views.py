@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 from asgiref.sync import sync_to_async
 from django.http import HttpResponse, JsonResponse
+from django.utils.translation import activate
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
@@ -554,7 +555,14 @@ def get_component_context(component_name):
 
     return contexts.get(component_name, {})
 
-def storybook_view(request):
+def change_language_view(request):
+    """Ändert die Sprache und gibt die neue URL zurück."""
+    if request.method == "POST":
+        language_code = request.POST.get('language', 'en')
+        activate(language_code)
+        new_url = f"/{language_code}/" + request.POST.get('next', '')
+        return JsonResponse({'new_url': new_url})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
     """Hauptseite mit allen Insight UI Komponenten"""
 
     # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
