@@ -1,0 +1,9 @@
+{% include "insight_ui/components/modal.html" with id="info-modal" title="Information" %}
+{% block modal_content %}
+  <div class="flex items-center">
+    <svg class="w-6 h-6 text-blue-500 mr-3">
+      <use xlink:href="{% static 'insight_ui/svg/icon-info.svg' %}"></use>
+    </svg>
+    <span>Dies ist eine wichtige Information für den Benutzer.</span>
+  </div>
+{% endblock %}
