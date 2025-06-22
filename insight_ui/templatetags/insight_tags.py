@@ -12,6 +12,7 @@ def navbar(
     brand: str = "",
     links: List[Dict[str, Any]] = None,
     theme: str = "light",
+    show_language_selector: bool = True,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
@@ -33,7 +34,10 @@ def navbar(
         "brand": brand,
         "links": links,
         "theme": theme,
-        "options": kwargs,
+        "options": {
+            **kwargs,
+            "show_language_selector": show_language_selector,
+        },
     }
 
 
