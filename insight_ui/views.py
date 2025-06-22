@@ -1,12 +1,8 @@
 import asyncio
 import logging
-
-logger = logging.getLogger(__name__)
 import random
 import time
 from datetime import datetime
-from typing import List
-
 from asgiref.sync import sync_to_async
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -14,6 +10,8 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
+
+logger = logging.getLogger(__name__)
 
 
 def get_storybook_context():
@@ -631,25 +629,29 @@ def map_payload_to_table(payload):
 
 @require_GET
 def toggle_view(request):
+    """
+    Toggle between table and card views, based on the `view` GET parameter.
+    Loads and maps payload data to the appropriate format.
+    """
     view = request.GET.get("view", "table")
+    valid_views = {"table", "card"}
 
+    if view not in valid_views:
+        logger.warning(f"log: toggle_view – Ungültiger 'view'-Parameter empfangen: {view}. Fallback auf 'table'.")
+        view = "table"
+
+    # Generate the base payload
     payload = generate_random_payload()
-    
-    context = {
-        "current_view": view,
-    }
+    context = {"current_view": view}
 
-    # Initial Daten für Tabelle bereitstellen, wenn Ansicht "table" ist
-    if view == "table":
+    if view == "card":
+        context["cards"] = map_payload_to_cards(payload)
+        logger.info("log: toggle_view – Kartenansicht ausgewählt")
+        return render(request, "insight_ui/components/toggle_view_cards.html", context)
+
+    else:  # default: table view
         headers, rows = map_payload_to_table(payload)
         context["table_headers"] = headers
         context["table_rows"] = rows
-    elif view == "card":
-        context["cards"] = map_payload_to_cards(payload)
-
-    if view == "card":
-        logger.info("log: toggle_view - Kartenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view_cards.html", context)
-    else:
-        logger.info("log: toggle_view - Tabellenansicht ausgewählt")
+        logger.info("log: toggle_view – Tabellenansicht ausgewählt")
         return render(request, "insight_ui/components/toggle_view_table.html", context)
