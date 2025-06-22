@@ -34,6 +34,9 @@
         {% if description %}
           <p id="{{ id }}-description" class="text-gray-600 dark:text-gray-400 mb-4">{{ description }}</p>
         {% endif %}
+        <svg class="w-6 h-6 text-blue-500 mr-3">
+          <use xlink:href="{% static 'svg/' %}{{ icon_file }}"></use>
+        </svg>
         <div class="text-gray-900 dark:text-white">{{ content|safe }}</div>
       </div>
       
