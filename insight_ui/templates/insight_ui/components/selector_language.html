@@ -1,6 +1,4 @@
 {% load i18n %}
-{% get_available_languages as LANGUAGES %}
-{% get_current_language as LANGUAGE_CODE %}
 
 <div class="insight-language-selector relative">
   <label for="language-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -16,9 +14,9 @@
       class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       onchange="this.form.elements['language'].value=this.value; this.form.submit();"
       aria-label="{% trans 'Sprache ändern' %}">
-      {% for code, name in LANGUAGES %}
-        <option value="{{ code }}" {% if LANGUAGE_CODE == code %}selected{% endif %}>
-          {{ name }}
+      {% for language in available_languages %}
+        <option value="{{ language.code }}" {% if LANGUAGE_CODE == language.code %}selected{% endif %}>
+          {{ language.name }}
         </option>
       {% endfor %}
     </select>

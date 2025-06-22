@@ -140,6 +140,14 @@ def get_storybook_context():
             "target": "#form-result",
             "swap": "innerHTML",
         },
+        "available_languages": [
+            {"code": "de", "name": "Deutsch"},
+            {"code": "en", "name": "English"},
+            {"code": "es", "name": "Español"},
+            {"code": "fr", "name": "Français"},
+            {"code": "ar", "name": "العربية"},
+            {"code": "zh", "name": "中文"},
+        ],
     }
 
 
