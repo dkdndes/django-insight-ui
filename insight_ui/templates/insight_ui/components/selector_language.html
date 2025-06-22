@@ -6,7 +6,7 @@
   <label for="language-select" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
     {% trans 'Sprache auswählen' %}
   </label>
-  <form id="navbar-language-form" method="post" action="{% url 'change_language' %}" hx-post="{% url 'change_language' %}" hx-target="body" hx-swap="innerHTML">
+  <form id="navbar-language-form" method="post" action="{% url 'change_language' %}" hx-post="{% url 'change_language' %}" hx-target="body" hx-swap="none">
     {% csrf_token %}
     <input name="next" type="hidden" value="{{ request.get_full_path }}" />
     <input name="language" type="hidden" />

@@ -560,7 +560,9 @@ def change_language_view(request):
     if request.method == "POST":
         language_code = request.POST.get('language', 'en')
         activate(language_code)
-        new_url = f"/{language_code}/" + request.POST.get('next', '')
+        new_url = request.POST.get('next', '/')
+        if language_code != 'de':
+            new_url = f"/{language_code}" + new_url
         return JsonResponse({'new_url': new_url})
     return JsonResponse({'error': 'Invalid request'}, status=400)
     """Hauptseite mit allen Insight UI Komponenten"""
