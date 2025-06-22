@@ -31,67 +31,66 @@
 
     {% comment %} Modal Demo {% endcomment %}
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
         {% trans "Modal-Dialoge" %}
         </h2>
-    
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Standard -->
-        <button type="button"
-                class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="demo-modal">
-            {% trans "Standard Modal" %}
-        </button>
-    
-        <!-- Info -->
-        <button type="button"
-                class="bg-insight-info hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="info-modal">
-            {% trans "Info Modal" %}
-        </button>
-    
-        <!-- Erfolg -->
-        <button type="button"
-                class="bg-insight-success hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="success-modal">
-            {% trans "Erfolgsmodal" %}
-        </button>
-    
-        <!-- Warnung -->
-        <button type="button"
-                class="bg-insight-warning hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="warning-modal">
-            {% trans "Warnung Modal" %}
-        </button>
-    
-        <!-- Fehler -->
-        <button type="button"
-                class="bg-insight-error hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="error-modal">
-            {% trans "Fehler Modal" %}
-        </button>
-    
-        <!-- Bestätigung -->
-        <button type="button"
-                class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md"
-                data-insight-toggle="modal"
-                data-insight-target="confirm-modal">
-            {% trans "Bestätigung Modal" %}
-        </button>
+            <!-- Modal Trigger Buttons -->
+            <!-- Standard -->
+            <button type="button"
+                    class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="demo-modal">
+                {% trans "Standard Modal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_demo.html" with description="Dies ist ein Beispiel-Modal mit Standard-Styling!" %}
+
+            <!-- Info -->
+            <button type="button"
+                    class="bg-insight-info hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="info-modal">
+                {% trans "Info Modal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_info.html" with description="Bitte bestätigen Sie Ihre Information." %}
+
+            <!-- Erfolg -->
+            <button type="button"
+                    class="bg-insight-success hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="success-modal">
+                {% trans "Erfolgsmodal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_success.html" with description="Bitte bestätigen Sie Ihren Erfolg." %}
+        
+            <!-- Warnung -->
+            <button type="button"
+                    class="bg-insight-warning hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="warning-modal">
+                {% trans "Warnung Modal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_warning.html" with description="Bitte bestätigen Sie diese Warnung." %}
+        
+            <!-- Fehler -->
+            <button type="button"
+                    class="bg-insight-error hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="error-modal">
+                {% trans "Fehler Modal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_error.html" with description="Bitte bestätigen Sie die Fehlerinformation." %}
+        
+            <!-- Bestätigung -->
+            <button type="button"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md"
+                    data-insight-toggle="modal"
+                    data-insight-target="confirm-modal">
+                {% trans "Bestätigung Modal" %}
+            </button>
+            {% include "insight_ui/components/modals/modal_confirm.html" with description="Bitte bestätigen Sie Ihre Aktion." %}
         </div>
-    
-        <!-- Modal Includes -->
-        {% include "insight_ui/components/modals/modal_demo.html" %}
-        {% include "insight_ui/components/modals/modal_info.html" %}
-        {% include "insight_ui/components/modals/modal_success.html" %}
-        {% include "insight_ui/components/modals/modal_warning.html" %}
-        {% include "insight_ui/components/modals/modal_error.html" %}
-        {% include "insight_ui/components/modals/modal_confirm.html" %}
     </section>
 
     <!-- Form Demo -->

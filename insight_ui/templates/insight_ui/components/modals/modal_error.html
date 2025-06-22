@@ -1,10 +1,2 @@
 {% load static i18n %}
 {% include "insight_ui/components/modal.html" with id="error-modal" title=_("Fehler aufgetreten") %}
-{% block modal_content %}
-  <div class="flex items-center">
-    <svg class="w-6 h-6 text-red-500 mr-3">
-      <use xlink:href="{% static 'insight_ui/svg/icon-error.svg' %}"></use>
-    </svg>
-    <span>{% trans "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut." %}</span>
-  </div>
-{% endblock %}

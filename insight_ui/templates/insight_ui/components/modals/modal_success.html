@@ -1,10 +1,2 @@
 {% load static i18n %}
 {% include "insight_ui/components/modal.html" with id="success-modal" title=_("Erfolgreich!") %}
-{% block modal_content %}
-  <div class="flex items-center">
-    <svg class="w-6 h-6 text-green-500 mr-3">
-      <use xlink:href="{% static 'insight_ui/svg/icon-success.svg' %}"></use>
-    </svg>
-    <span>{% trans "Die Aktion wurde erfolgreich ausgeführt!" %}</span>
-  </div>
-{% endblock %}

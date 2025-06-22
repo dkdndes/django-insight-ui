@@ -1,10 +1,3 @@
 {% load static i18n %}
 {% include "insight_ui/components/modal.html" with id="warning-modal" title=_("Achtung!") %}
-{% block modal_content %}
-  <div class="flex items-center">
-    <svg class="w-6 h-6 text-yellow-500 mr-3">
-      <use xlink:href="{% static 'insight_ui/svg/icon-warning.svg' %}"></use>
-    </svg>
-    <span>{% trans "Bitte überprüfen Sie Ihre Eingaben vor dem Fortfahren." %}</span>
-  </div>
-{% endblock %}
+
