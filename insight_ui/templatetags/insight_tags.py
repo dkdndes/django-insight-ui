@@ -13,6 +13,7 @@ def navbar(
     links: List[Dict[str, Any]] = None,
     theme: str = "light",
     show_language_selector: bool = True,
+    show_language_selector: bool = True,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
