@@ -1,7 +1,7 @@
 import asyncio
 import logging
-import time
 import random
+import time
 from datetime import datetime
 from typing import List
 
@@ -9,11 +9,9 @@ from asgiref.sync import sync_to_async
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.template.response import TemplateResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
-from django_htmx.http import HttpResponseClientRedirect
 
 
 def get_storybook_context():
@@ -648,6 +646,8 @@ def toggle_view(request):
         context["cards"] = map_payload_to_cards(payload)
 
     if view == "card":
-        return render(request, "insight_ui/components/toggle-view-cards.html", context)
+        logger.info("log: toggle_view - Kartenansicht ausgewählt")
+        return render(request, "insight_ui/components/toggle_view_cards.html", context)
     else:
-        return render(request, "insight_ui/components/toggle-view-table.html", context)
+        logger.info("log: toggle_view - Tabellenansicht ausgewählt")
+        return render(request, "insight_ui/components/toggle_view_table.html", context)
