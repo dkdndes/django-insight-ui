@@ -100,3 +100,8 @@ DJANGO_SETTINGS_MODULE = "core.settings"
 python_files = "test_*.py"
 testpaths = ["core"]
 
+[tool.uv.workspace]
+members = [
+    "utils",
+]
+
