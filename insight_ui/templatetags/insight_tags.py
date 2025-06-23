@@ -46,18 +46,16 @@ def live_content(
     url: str = "",
     theme: str = "light",
     interval: int = None,
-    websocket_url: str = "",
     initial_content: str = "",
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
-    Rendert einen Container für Live-Updates via HTMX oder WebSocket.
+    Rendert einen Container für Live-Updates via HTMX.
 
     Args:
         url: Die URL für HTMX-Updates
         theme: Das Farbschema ('light', 'dark', 'high-contrast')
         interval: Intervall für automatische Updates in Millisekunden
-        websocket_url: WebSocket-URL für Live-Updates
         initial_content: Initialer Inhalt
         **kwargs: Zusätzliche Optionen
 
@@ -65,7 +63,6 @@ def live_content(
         Dict mit Kontext-Variablen für das Template
     """
     htmx_config = {}
-    websocket_config = {}
 
     if url:
         htmx_config = {
@@ -76,19 +73,41 @@ def live_content(
         if interval:
             htmx_config["interval"] = interval
 
-    if websocket_url:
-        websocket_config = {
-            "url": websocket_url,
-        }
-
     return {
         "theme": theme,
         "initial_content": initial_content,
         "options": {
             **kwargs,
             "htmx": htmx_config if htmx_config else None,
-            "websocket": websocket_config if websocket_config else None,
         },
+    }
+
+@register.inclusion_tag("insight_ui/components/websocket.html")
+def insight_websocket(
+    id: str = "insight-websocket",
+    ws_url: str = "",
+    initial_content: str = "",
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    """
+    Rendert eine WebSocket-Komponente.
+
+    Args:
+        id: Die ID des WebSocket-Containers
+        ws_url: Die WebSocket-URL
+        initial_content: Initialer Inhalt
+        **kwargs: Zusätzliche Optionen
+
+    Returns:
+        Dict mit Kontext-Variablen für das Template
+    """
+    return {
+        "options": {
+            "id": id,
+            "ws_url": ws_url,
+            "initial_content": initial_content,
+            **kwargs,
+        }
     }
 
 
