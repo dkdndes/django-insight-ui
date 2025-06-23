@@ -174,17 +174,17 @@
   // 🛠️ Auto-Init All Extensions + WebSocket Binding
   // ----------------------------------------
   document.addEventListener('DOMContentLoaded', function () {
-    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'websocket'];
+    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'insight-websocket'];
 
     // Initialisiere WebSocket-Komponenten
     document.querySelectorAll('[data-ws-url][data-ws-target]').forEach(function(elt) {
-      if (typeof htmx !== "undefined" && htmx.findExt && htmx.findExt(elt, 'websocket')) {
+      if (typeof htmx !== "undefined" && htmx.findExt && htmx.findExt(elt, 'insight-websocket')) {
         // Extension wird automatisch initialisiert
         return;
       }
       // Fallback: manuell initialisieren
       htmx.findAllExtensions().forEach(function(ext) {
-        if (ext.name === 'websocket' && ext.init) {
+        if (ext.name === 'insight-websocket' && ext.init) {
           ext.init(elt);
         }
       });
