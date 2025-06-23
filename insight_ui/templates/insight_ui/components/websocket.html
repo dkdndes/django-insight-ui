@@ -4,12 +4,12 @@
   class="insight-live-content insight-live-content--default"
   hx-ext="live-updates,progressive-enhancement"
   data-ws-url="{{ options.ws_url }}"
-  data-ws-target="#{{ options.id|default:'insight-websocket' }}-output"
+  data-ws-target="#insight-websocket-output"
 >
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
     {% trans "WebSocket Live-Komponente" %}
   </h3>
-  <div id="{{ options.id|default:'insight-websocket' }}-output" class="text-gray-800 dark:text-gray-200">
+  <div id="insight-websocket-output" class="text-gray-800 dark:text-gray-200">
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
