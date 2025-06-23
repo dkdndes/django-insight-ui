@@ -118,7 +118,7 @@
   // ----------------------------------------
   // 🛠️ HTMX Extension: WebSocket Support
   // ----------------------------------------
-  htmx.defineExtension('websocket', {
+  htmx.defineExtension('insight-websocket', {
     init: function(elt) {
       const wsUrl = elt.getAttribute('data-ws-url');
       const wsTarget = elt.getAttribute('data-ws-target');
@@ -131,7 +131,7 @@
       elt._insightWebSocket = ws;
 
       ws.onopen = function () {
-        console.log('WebSocket connected:', wsUrl);
+        console.log('[InsightUI][WebSocket] WebSocket connected:', wsUrl);
       };
 
       ws.onmessage = function (event) {
@@ -161,11 +161,11 @@
       };
 
       ws.onclose = function () {
-        console.log('WebSocket disconnected:', wsUrl);
+        console.log('[InsightUI][WebSocket] WebSocket disconnected:', wsUrl);
       };
 
       ws.onerror = function (err) {
-        console.error('WebSocket error:', err);
+        console.error('[InsightUI][WebSocket] WebSocket error:', err);
       };
     }
   });
