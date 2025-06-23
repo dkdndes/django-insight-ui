@@ -120,6 +120,9 @@
   // ----------------------------------------
   htmx.defineExtension('insight-websocket', {
     init: function(elt) {
+      // Defensive: Stelle sicher, dass elt ein echtes Element ist
+      if (!(elt instanceof Element) || typeof elt.getAttribute !== "function") return;
+
       const wsUrl = elt.getAttribute('data-ws-url');
       const wsTarget = elt.getAttribute('data-ws-target');
       if (!wsUrl || !wsTarget) return;
