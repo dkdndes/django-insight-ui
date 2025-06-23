@@ -1,7 +1,8 @@
 {% load i18n %}
 <div 
   id="{{ options.id|default:'insight-websocket' }}"
-  class="insight-websocket-component bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+  class="insight-live-content insight-live-content--default"
+  hx-ext="live-updates,progressive-enhancement"
   data-ws-url="{{ options.ws_url }}"
   data-ws-target="#{{ options.id|default:'insight-websocket' }}-output"
 >

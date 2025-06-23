@@ -90,7 +90,7 @@ def insight_websocket(
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
-    Rendert eine WebSocket-Komponente.
+    Rendert eine WebSocket-Komponente für HTMX-Extension.
 
     Args:
         id: Die ID des WebSocket-Containers
