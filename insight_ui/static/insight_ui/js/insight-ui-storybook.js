@@ -1,0 +1,1 @@
+InsightUI.Storybook = { init: function () { /* Storybook logic here */ } };
