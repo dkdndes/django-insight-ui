@@ -8,9 +8,6 @@ window.InsightUI = window.InsightUI || {};
 
 InsightUI.ThemeToggle = {
   init: function () {
-    const toggleButton = document.querySelector('[data-theme-toggle]');
-    if (!toggleButton) return;
-
     const root = document.documentElement;
     const themeKey = 'insight-ui-theme';
 
@@ -33,9 +30,13 @@ InsightUI.ThemeToggle = {
       }
     }
 
-    toggleButton.addEventListener('click', function () {
-      const isDark = root.classList.contains('dark');
-      setTheme(isDark ? 'light' : 'dark');
+    // Alle Theme-Toggle-Buttons initialisieren
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(toggleButton) {
+      toggleButton.addEventListener('click', function (e) {
+        e.stopPropagation(); // verhindert Event-Bubbling
+        const isDark = root.classList.contains('dark');
+        setTheme(isDark ? 'light' : 'dark');
+      });
     });
 
     if (!root.hasAttribute('data-theme')) {
