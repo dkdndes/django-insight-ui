@@ -152,8 +152,8 @@
           if (typeof data === "object" && data.content) {
             target.innerHTML = data.content;
           } else if (typeof data === "object") {
-            // Zeige JSON als hübsch formatierten Codeblock an
-            target.innerHTML = "<pre style='white-space:pre-wrap;word-break:break-all;'>" + JSON.stringify(data, null, 2) + "</pre>";
+            // Zeige JSON als Text (kein <pre>), um [object Object] zu vermeiden
+            target.innerText = typeof data === "string" ? data : JSON.stringify(data, null, 2);
           } else {
             target.innerText = typeof data === "string" ? data : JSON.stringify(data);
           }
