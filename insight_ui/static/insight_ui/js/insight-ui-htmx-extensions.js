@@ -116,10 +116,70 @@
   });
 
   // ----------------------------------------
-  // 🛠️ Auto-Init All Extensions
+  // 🛠️ HTMX Extension: WebSocket Support
+  // ----------------------------------------
+  htmx.defineExtension('websocket', {
+    init: function(elt) {
+      const wsUrl = elt.getAttribute('data-ws-url');
+      const wsTarget = elt.getAttribute('data-ws-target');
+      if (!wsUrl || !wsTarget) return;
+
+      // Verhindere doppelte Verbindungen
+      if (elt._insightWebSocket) return;
+
+      const ws = new WebSocket(wsUrl);
+      elt._insightWebSocket = ws;
+
+      ws.onopen = function () {
+        console.log('WebSocket connected:', wsUrl);
+      };
+
+      ws.onmessage = function (event) {
+        let data = event.data;
+        try {
+          data = JSON.parse(event.data);
+        } catch (e) {
+          // Fallback: plain text
+        }
+        const target = document.querySelector(wsTarget);
+        if (target) {
+          if (typeof data === "object" && data.content) {
+            target.innerHTML = data.content;
+          } else {
+            target.innerText = typeof data === "string" ? data : JSON.stringify(data);
+          }
+        }
+      };
+
+      ws.onclose = function () {
+        console.log('WebSocket disconnected:', wsUrl);
+      };
+
+      ws.onerror = function (err) {
+        console.error('WebSocket error:', err);
+      };
+    }
+  });
+
+  // ----------------------------------------
+  // 🛠️ Auto-Init All Extensions + WebSocket Binding
   // ----------------------------------------
   document.addEventListener('DOMContentLoaded', function () {
-    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement'];
+    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'websocket'];
+
+    // Initialisiere WebSocket-Komponenten
+    document.querySelectorAll('[data-ws-url][data-ws-target]').forEach(function(elt) {
+      if (typeof htmx !== "undefined" && htmx.findExt && htmx.findExt(elt, 'websocket')) {
+        // Extension wird automatisch initialisiert
+        return;
+      }
+      // Fallback: manuell initialisieren
+      htmx.findAllExtensions().forEach(function(ext) {
+        if (ext.name === 'websocket' && ext.init) {
+          ext.init(elt);
+        }
+      });
+    });
   });
 })();
 
