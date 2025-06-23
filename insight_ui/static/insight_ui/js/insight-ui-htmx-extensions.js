@@ -136,11 +136,16 @@
 
       ws.onmessage = function (event) {
         let data = event.data;
+        let isValidJson = false;
         console.log('[InsightUI][WebSocket] Nachricht empfangen:', event.data);
         try {
           data = JSON.parse(event.data);
+          isValidJson = true;
         } catch (e) {
           // Fallback: plain text
+        }
+        if (!isValidJson) {
+          console.warn('[InsightUI][WebSocket] Ungültiges JSON empfangen:', event.data);
         }
         const target = document.querySelector(wsTarget);
         if (target) {
