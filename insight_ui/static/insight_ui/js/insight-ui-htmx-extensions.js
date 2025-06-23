@@ -116,96 +116,10 @@
   });
 
   // ----------------------------------------
-  // 📡 InsightUI WebSocket Support
+  // 🛠️ Auto-Init All Extensions
   // ----------------------------------------
-  InsightUI.WebSocket = {
-    connections: new Map(),
-
-    connect: function (url, options = {}) {
-      if (this.connections.has(url)) return this.connections.get(url);
-
-      const ws = new WebSocket(url);
-      this.connections.set(url, ws);
-
-      ws.onopen = (e) => {
-        console.log('WebSocket connected:', url);
-        options.onOpen?.(e);
-      };
-
-      ws.onmessage = (e) => {
-        try {
-          const data = JSON.parse(e.data);
-
-          // HTMX-style content update
-          if (data.target && data.content) {
-            const targetEl = document.querySelector(data.target);
-            if (targetEl) {
-              const swap = data.swap || 'innerHTML';
-              htmx.swap(targetEl, data.content, { swapStyle: swap });
-            }
-          }
-
-          // Custom event dispatch
-          if (data.event) {
-            document.dispatchEvent(new CustomEvent(data.event, { detail: data.payload }));
-          }
-
-          options.onMessage?.(data);
-        } catch (err) {
-          console.error('WebSocket message error:', err);
-        }
-      };
-
-      ws.onclose = (e) => {
-        console.log('WebSocket disconnected:', url);
-        this.connections.delete(url);
-        options.onClose?.(e);
-      };
-
-      ws.onerror = (e) => {
-        console.error('WebSocket error:', e);
-        options.onError?.(e);
-      };
-
-      return ws;
-    },
-
-    send: function (url, data) {
-      const ws = this.connections.get(url);
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(data));
-      }
-    },
-
-    disconnect: function (url) {
-      const ws = this.connections.get(url);
-      if (ws) {
-        ws.close();
-        this.connections.delete(url);
-      }
-    }
-  };
-
-  // ----------------------------------------
-  // 🛠️ Auto-Init All Extensions + WebSocket Binding
-  // ----------------------------------------
-  document.addEventListener('DOMContentLoaded', function () {    // Register extensions for HTMX
+  document.addEventListener('DOMContentLoaded', function () {
     htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement'];
-
-    // Optional auto-bind WebSocket elements
-    document.querySelectorAll('[data-ws-url]').forEach(el => {
-      const url = el.getAttribute('data-ws-url');
-      const targetSelector = el.getAttribute('data-ws-target') || `#${el.id}`;
-
-      InsightUI.WebSocket.connect(url, {
-        onMessage: function (data) {
-          const targetEl = document.querySelector(targetSelector);
-          if (targetEl && data.content) {
-            targetEl.innerHTML = data.content;
-          }
-        }
-      });
-    });
   });
 })();
 
