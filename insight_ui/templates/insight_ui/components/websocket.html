@@ -2,9 +2,12 @@
 <div 
   id="{{ options.id|default:'insight-websocket' }}"
   class="insight-live-content insight-live-content--default"
-  hx-ext="live-updates,progressive-enhancement"
-  data-ws-url="{{ options.ws_url }}"
-  data-ws-target="#insight-websocket-output"
+  hx-ext="ws"
+  ws-connect="{{ options.ws_url }}"
+  ws-reconnect="true"
+  ws-reconnect-delay="5000"
+  hx-trigger="ws:message"
+  hx-swap="innerHTML"
 >
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
     {% trans "WebSocket Live-Komponente" %}

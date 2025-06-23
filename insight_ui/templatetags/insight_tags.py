@@ -90,11 +90,11 @@ def insight_websocket(
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
-    Rendert eine WebSocket-Komponente für HTMX-Extension.
+    Rendert eine WebSocket-Komponente als Wrapper für die htmx v2 ws-Extension.
 
     Args:
         id: Die ID des WebSocket-Containers
-        ws_url: Die WebSocket-URL
+        ws_url: Die WebSocket-URL (z.B. ws://localhost:8765)
         initial_content: Initialer Inhalt
         **kwargs: Zusätzliche Optionen
 
