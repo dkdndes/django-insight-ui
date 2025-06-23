@@ -118,80 +118,13 @@
   // ----------------------------------------
   // 🛠️ HTMX Extension: WebSocket Support
   // ----------------------------------------
-  htmx.defineExtension('insight-websocket', {
-    init: function(elt) {
-      // Defensive: Stelle sicher, dass elt ein echtes Element ist
-      if (!(elt instanceof Element) || typeof elt.getAttribute !== "function") return;
-
-      const wsUrl = elt.getAttribute('data-ws-url');
-      const wsTarget = elt.getAttribute('data-ws-target');
-      if (!wsUrl || !wsTarget) return;
-
-      // Verhindere doppelte Verbindungen
-      if (elt._insightWebSocket) return;
-
-      const ws = new WebSocket(wsUrl);
-      elt._insightWebSocket = ws;
-
-      ws.onopen = function () {
-        console.log('[InsightUI][WebSocket] WebSocket connected:', wsUrl);
-      };
-
-      ws.onmessage = function (event) {
-        let data = event.data;
-        let isValidJson = false;
-        console.log('[InsightUI][WebSocket] Nachricht empfangen:', event.data);
-        try {
-          data = JSON.parse(event.data);
-          isValidJson = true;
-        } catch (e) {
-          // Fallback: plain text
-        }
-        if (!isValidJson) {
-          console.warn('[InsightUI][WebSocket] Ungültiges JSON empfangen:', event.data);
-        }
-        const target = document.querySelector(wsTarget);
-        if (target) {
-          if (typeof data === "object" && data.content) {
-            target.innerHTML = data.content;
-          } else if (typeof data === "object") {
-            // Zeige JSON als Text (kein <pre>), um [object Object] zu vermeiden
-            target.innerText = typeof data === "string" ? data : JSON.stringify(data, null, 2);
-          } else {
-            target.innerText = typeof data === "string" ? data : JSON.stringify(data);
-          }
-        }
-      };
-
-      ws.onclose = function () {
-        console.log('[InsightUI][WebSocket] WebSocket disconnected:', wsUrl);
-      };
-
-      ws.onerror = function (err) {
-        console.error('[InsightUI][WebSocket] WebSocket error:', err);
-      };
-    }
-  });
+  // Entfernt: Eigene WebSocket-Extension, da jetzt die offizielle htmx ws-Extension genutzt wird.
 
   // ----------------------------------------
-  // 🛠️ Auto-Init All Extensions + WebSocket Binding
+  // 🛠️ Auto-Init All Extensions
   // ----------------------------------------
   document.addEventListener('DOMContentLoaded', function () {
-    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'insight-websocket'];
-
-    // Initialisiere WebSocket-Komponenten
-    document.querySelectorAll('[data-ws-url][data-ws-target]').forEach(function(elt) {
-      if (typeof htmx !== "undefined" && htmx.findExt && htmx.findExt(elt, 'insight-websocket')) {
-        // Extension wird automatisch initialisiert
-        return;
-      }
-      // Fallback: manuell initialisieren
-      htmx.findAllExtensions().forEach(function(ext) {
-        if (ext.name === 'insight-websocket' && ext.init) {
-          ext.init(elt);
-        }
-      });
-    });
+    htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'ws'];
   });
 })();
 
