@@ -78,7 +78,7 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body data-theme="light" class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
+<body{% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %} class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
     <div class="navbar-container">
     {% block navbar %}
     {% endblock navbar %}

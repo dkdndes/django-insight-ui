@@ -29,8 +29,14 @@ InsightUI.ThemeToggle = {
     if (savedTheme === 'dark' || savedTheme === 'light') {
       setTheme(savedTheme);
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      // Prüfe, ob <html> bereits ein data-theme Attribut hat (z.B. durch Server-Rendering/Storybook)
+      const htmlTheme = root.getAttribute('data-theme');
+      if (htmlTheme === 'dark' || htmlTheme === 'light') {
+        setTheme(htmlTheme);
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+      }
     }
 
     // Toggle-Button Event
