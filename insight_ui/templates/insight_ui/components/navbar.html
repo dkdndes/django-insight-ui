@@ -93,7 +93,7 @@
                         {% get_available_languages as LANGUAGES %}
                         {% get_current_language as LANGUAGE_CODE %}
                         {% for code, name in LANGUAGES %}
-                            <option value="{{ code }}"{% if LANGUAGE_CODE == code %} selected{% endif %}>
+                            <option value="{{ code }}"{% if LANGUAGE_CODE == code %} selected="selected"{% endif %}>
                                 {{ name }}
                             </option>
                         {% endfor %}
