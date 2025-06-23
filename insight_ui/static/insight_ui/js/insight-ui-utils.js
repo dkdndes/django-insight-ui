@@ -2,7 +2,8 @@
  * Insight UI - Shared Utilities
  */
 window.InsightUI = window.InsightUI || {};
-window.utils = window.utils || {
+window.InsightUI = window.InsightUI || {};
+window.InsightUI.utils = window.InsightUI.utils || {
   on: function(el, evt, selectorOrHandler, handler) {
     if (typeof selectorOrHandler === "function") {
       el.addEventListener(evt, selectorOrHandler);
