@@ -136,6 +136,7 @@
 
       ws.onmessage = function (event) {
         let data = event.data;
+        console.log('[InsightUI][WebSocket] Nachricht empfangen:', event.data);
         try {
           data = JSON.parse(event.data);
         } catch (e) {
