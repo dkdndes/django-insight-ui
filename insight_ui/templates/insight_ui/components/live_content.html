@@ -14,10 +14,6 @@
     hx-ext="live-updates,progressive-enhancement"
     data-loading-class="insight-live-content--loading"
   {% endif %}
-  {% if options.websocket %}
-    data-ws-url="{{ options.websocket.url }}"
-    data-ws-target="#{{ options.id }}"
-  {% endif %}>
   
   <!-- Loading Spinner -->
   <div class="htmx-spinner insight-live-content__spinner" style="display: none;">
