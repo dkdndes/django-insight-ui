@@ -11,25 +11,25 @@
     <div class="flex justify-between items-center h-16">
       
       <!-- Desktop Navigation -->
-      {% if links %}
       <div class="hidden md:flex flex-1 justify-center">
-
         <!-- Brand Logo -->
-        <div class="flex items-left space-x-4"> <!-- Brand Logo -->
-          {% if brand %}
-            <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-left space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-              {% if brand_logo %}
-                <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8 rounded-full" />
-              {% else %}
-                <!-- Platzhalter brand_logo, not Profile_Head -->
-                <img src="{% static 'insight_ui/svg/logo.svg' %}" class="h-8 w-8 rounded-full text-gray-400 dark:text-gray-600" alt="Brand Icon" aria-hidden="true" />
-              {% endif %}
-              <span>{{ brand }}</span>
-            </a>
-          {% endif %}
+        {% if brand %}
+        <div class="flex items-left space-x-4">
+          <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-left space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+            {% if brand_logo %}
+              <img src="{{ brand_logo }}" alt="{{ brand }}" class="h-8 w-8 rounded-full" />
+            {% else %}
+              <!-- Platzhalter brand_logo, not Profile_Head -->
+              <img src="{% static 'insight_ui/svg/logo.svg' %}" class="h-8 w-8 rounded-full text-gray-400 dark:text-gray-600" alt="Brand Icon" aria-hidden="true" />
+            {% endif %}
+            <span>{{ brand }}</span>
+          </a>
         </div>
+        {% endif %}
 
-        <ul class="flex space-x-6"><!-- Navigation Links -->
+        <!-- Navigation Links -->
+        {% if links %}
+        <ul class="flex space-x-6">
           {% for link in links %}
             <li>
               {% if link.type == 'button' %}
@@ -55,8 +55,8 @@
             </li>
           {% endfor %}
         </ul>
+        {% endif %}
       </div>
-      {% endif %}
 
       <!-- Mobile menu button -->
       <div class="md:hidden flex items-center space-x-2">
