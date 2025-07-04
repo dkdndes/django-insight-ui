@@ -85,7 +85,7 @@ InsightUI.WebSocket = {
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
         statusElement.textContent = 'Verbunden';
-        statusElement.className = 'text-green-600 dark:text-green-400';
+        statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--connected';
         console.log('✅ Status-Element aktualisiert: Verbunden');
       } else {
         console.warn('⚠️ Status-Element nicht gefunden für WebSocket:', wsElement.id);
@@ -106,7 +106,7 @@ InsightUI.WebSocket = {
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
         statusElement.textContent = 'Verbindung getrennt';
-        statusElement.className = 'text-red-600 dark:text-red-400';
+        statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--disconnected';
         console.log('✅ Status-Element aktualisiert: Verbindung getrennt');
       }
     });
@@ -124,7 +124,7 @@ InsightUI.WebSocket = {
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
         statusElement.textContent = 'Verbindungsfehler';
-        statusElement.className = 'text-red-600 dark:text-red-400';
+        statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--error';
         console.log('✅ Status-Element aktualisiert: Verbindungsfehler');
       }
     });
@@ -200,7 +200,7 @@ InsightUI.WebSocket = {
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
         statusElement.textContent = 'Verbindung wird wiederhergestellt...';
-        statusElement.className = 'text-yellow-600 dark:text-yellow-400';
+        statusElement.className = 'insight-websocket__status-text insight-websocket__status-text--connecting';
       }
     });
 

@@ -865,6 +865,111 @@ body {
 }
 
 /* ==========================================================================
+   WebSocket Component Styles
+   ========================================================================== */
+
+.insight-websocket {
+  background-color: var(--insight-color-white);
+  border-radius: var(--insight-radius-lg);
+  box-shadow: var(--insight-shadow-md);
+  padding: var(--insight-spacing-6);
+  border: 1px solid var(--insight-color-gray-200);
+}
+
+.insight-websocket__title {
+  font-size: var(--insight-font-size-lg);
+  font-weight: 600;
+  color: var(--insight-color-gray-900);
+  margin: 0 0 var(--insight-spacing-2) 0;
+}
+
+.insight-websocket__output {
+  color: var(--insight-color-gray-800);
+  background-color: var(--insight-color-gray-50);
+  padding: var(--insight-spacing-4);
+  border-radius: var(--insight-radius-md);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: var(--insight-font-size-sm);
+  min-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--insight-color-gray-200);
+}
+
+.insight-websocket__placeholder {
+  color: var(--insight-color-gray-500);
+  margin: 0;
+}
+
+.insight-websocket__status {
+  margin-top: var(--insight-spacing-4);
+  font-size: var(--insight-font-size-sm);
+  color: var(--insight-color-gray-500);
+}
+
+.insight-websocket__status-text {
+  font-weight: 500;
+}
+
+.insight-websocket__url {
+  margin-top: var(--insight-spacing-2);
+  font-size: var(--insight-font-size-xs);
+  color: var(--insight-color-gray-400);
+  word-break: break-all;
+}
+
+.insight-websocket__mode {
+  margin-top: var(--insight-spacing-2);
+  font-size: var(--insight-font-size-xs);
+  color: var(--insight-color-primary);
+  font-weight: 500;
+}
+
+/* WebSocket Status States */
+.insight-websocket__status-text--connected {
+  color: var(--insight-color-success);
+}
+
+.insight-websocket__status-text--disconnected {
+  color: var(--insight-color-error);
+}
+
+.insight-websocket__status-text--connecting {
+  color: var(--insight-color-warning);
+}
+
+.insight-websocket__status-text--error {
+  color: var(--insight-color-error);
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .insight-websocket {
+  background-color: var(--insight-color-gray-800);
+  border-color: var(--insight-color-gray-700);
+}
+
+[data-theme="dark"] .insight-websocket__title {
+  color: var(--insight-color-white);
+}
+
+[data-theme="dark"] .insight-websocket__output {
+  color: var(--insight-color-gray-200);
+  background-color: var(--insight-color-gray-700);
+  border-color: var(--insight-color-gray-600);
+}
+
+[data-theme="dark"] .insight-websocket__placeholder {
+  color: var(--insight-color-gray-400);
+}
+
+[data-theme="dark"] .insight-websocket__status {
+  color: var(--insight-color-gray-400);
+}
+
+[data-theme="dark"] .insight-websocket__url {
+  color: var(--insight-color-gray-500);
+}
+
+/* ==========================================================================
    Utility Classes
    ========================================================================== */
 
