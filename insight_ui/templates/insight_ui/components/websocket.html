@@ -1,7 +1,7 @@
 {% load i18n %}
 <div 
   id="{{ options.id|default:'insight-websocket' }}"
-  class="insight-live-content insight-live-content--default"
+  class="insight-websocket bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
   hx-ext="ws"
   ws-connect="{{ options.ws_url }}"
   ws-reconnect="true"
@@ -10,11 +10,14 @@
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
     {% trans "WebSocket Live-Komponente" %}
   </h3>
-  <div id="insight-websocket-output" class="text-gray-800 dark:text-gray-200">
+  <div id="{{ options.id|default:'insight-websocket' }}-output" class="text-gray-800 dark:text-gray-200">
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
       <p class="text-gray-500 dark:text-gray-400">{% trans "Warten auf WebSocket-Nachrichten..." %}</p>
     {% endif %}
+  </div>
+  <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+    Status: <span id="{{ options.id|default:'insight-websocket' }}-status">{% trans "Verbindung wird hergestellt..." %}</span>
   </div>
 </div>
