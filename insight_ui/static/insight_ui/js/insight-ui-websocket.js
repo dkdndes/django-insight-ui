@@ -90,7 +90,7 @@ InsightUI.WebSocket = {
       }
     });
 
-    // WebSocket Nachricht empfangen
+    // WebSocket Nachricht empfangen - HTMX v2 WebSocket Extension
     document.body.addEventListener('htmx:wsAfterMessage', function(evt) {
       console.log('📨 WebSocket Nachricht empfangen:', {
         target: evt.target.id || 'unbekannt',
@@ -99,24 +99,34 @@ InsightUI.WebSocket = {
         timestamp: new Date().toISOString()
       });
       
-      // Verarbeite die JSON-Nachricht und zeige sie im Output-Element an
+      // Prüfe ob die Nachricht HTML enthält (für HTMX OOB Swaps)
+      if (evt.detail?.message && evt.detail.message.trim().startsWith('<')) {
+        console.log('📄 HTML-Nachricht erkannt, HTMX verarbeitet automatisch');
+        return; // HTMX verarbeitet HTML automatisch
+      }
+      
+      // Verarbeite JSON-Nachrichten manuell
       try {
         const wsElement = evt.target;
         const outputElement = wsElement.querySelector('[id$="-output"]');
         if (outputElement && evt.detail?.message) {
           const data = JSON.parse(evt.detail.message);
           const formattedData = `
-            <div class="mb-2 p-2 border-l-4 border-blue-500">
-              <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
-              <div class="font-semibold">Connection: ${data.connection_id?.substring(0, 8) || 'unknown'}</div>
-              <div class="text-sm">
-                <div>Disk: ${data.content?.disk?.used_gb || 0}GB / ${data.content?.disk?.total_gb || 0}GB</div>
-                <div>Memory: ${data.content?.memory?.percent_used || 0}% used</div>
-                <div>Client: ${data.client_info?.ip || 'unknown'}</div>
+            <div class="mb-2 p-2 border-l-4 border-blue-500 bg-white dark:bg-gray-600 rounded">
+              <div class="text-xs text-gray-500 dark:text-gray-400">${new Date().toLocaleTimeString()}</div>
+              <div class="font-semibold text-blue-600 dark:text-blue-400">Connection: ${data.connection_id?.substring(0, 8) || 'unknown'}</div>
+              <div class="text-sm space-y-1">
+                <div>💾 Disk: ${data.content?.disk?.used_gb || 0}GB / ${data.content?.disk?.total_gb || 0}GB</div>
+                <div>🧠 Memory: ${data.content?.memory?.percent_used || 0}% used</div>
+                <div>🌐 Client: ${data.client_info?.ip || 'unknown'}</div>
               </div>
             </div>
           `;
-          outputElement.innerHTML = formattedData + outputElement.innerHTML;
+          
+          // Füge neue Nachricht am Anfang hinzu
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = formattedData;
+          outputElement.insertBefore(tempDiv.firstElementChild, outputElement.firstElementChild);
           
           // Begrenze die Anzahl der angezeigten Nachrichten
           const messages = outputElement.querySelectorAll('div.mb-2');
@@ -126,6 +136,7 @@ InsightUI.WebSocket = {
         }
       } catch (error) {
         console.error('❌ Fehler beim Verarbeiten der WebSocket-Nachricht:', error);
+        console.log('📝 Rohe Nachricht:', evt.detail?.message);
       }
     });
 

@@ -9,8 +9,7 @@
     {% trans "WebSocket Live-Komponente" %}
   </h3>
   <div id="{{ options.id|default:'insight-websocket' }}-output" 
-       class="text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 p-4 rounded-md font-mono text-sm"
-       hx-swap-oob="true">
+       class="text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 p-4 rounded-md font-mono text-sm min-h-[200px] overflow-y-auto">
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
