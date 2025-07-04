@@ -204,16 +204,6 @@ InsightUI.WebSocket = {
       }
     });
 
-    // Zähle vorhandene WebSocket-Komponenten
-    const wsComponents = document.querySelectorAll('[hx-ext*="ws"]');
-    console.log(`📊 ${wsComponents.length} WebSocket-Komponente(n) auf der Seite gefunden:`);
-    
-    wsComponents.forEach((component, index) => {
-      const id = component.id || `ws-component-${index}`;
-      const wsUrl = component.getAttribute('ws-connect') || 'nicht gesetzt';
-      console.log(`  ${index + 1}. ID: ${id}, URL: ${wsUrl}`);
-    });
-
     console.log('✅ InsightUI WebSocket Handler erfolgreich initialisiert');
   }
 };
