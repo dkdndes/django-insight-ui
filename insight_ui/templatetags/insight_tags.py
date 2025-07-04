@@ -144,7 +144,7 @@ def infinite_scroll(
     }
 
 
-@register.inclusion_tag("insight_ui/components/language_selector.html")
+@register.inclusion_tag("insight_ui/components/toggle_language.html")
 def language_selector(
     current_language: str = "",
     available_languages: List[Dict[str, str]] = None,
