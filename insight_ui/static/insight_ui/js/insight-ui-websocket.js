@@ -8,9 +8,10 @@ InsightUI.WebSocket = {
     console.log('🔌 InsightUI.WebSocket.init() - Starte WebSocket Handler Initialisierung');
     console.log('🔍 Aktueller Zeitstempel:', new Date().toISOString());
     
-    // Prüfe ob HTMX verfügbar ist
+    // Warte bis HTMX vollständig geladen ist
     if (typeof htmx === 'undefined') {
-      console.error('❌ HTMX nicht gefunden - WebSocket Handler kann nicht initialisiert werden');
+      console.warn('⚠️ HTMX noch nicht geladen, warte 100ms...');
+      setTimeout(() => this.init(), 100);
       return;
     }
     console.log('✅ HTMX gefunden, Version:', htmx.version || 'unbekannt');
@@ -29,6 +30,9 @@ InsightUI.WebSocket = {
       console.error('❌ HTMX WebSocket Extension NICHT geladen!');
       console.log('💡 Stelle sicher, dass ws.js geladen ist');
       console.log('💡 Verfügbare Extensions:', htmx.config.extensions);
+      console.warn('⚠️ WebSocket Extension nicht verfügbar, warte 200ms...');
+      setTimeout(() => this.init(), 200);
+      return;
     } else {
       console.log('✅ HTMX WebSocket Extension erkannt');
     }
