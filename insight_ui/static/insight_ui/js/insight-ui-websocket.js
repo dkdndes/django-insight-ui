@@ -6,6 +6,7 @@ window.InsightUI = window.InsightUI || {};
 InsightUI.WebSocket = {
   init: function() {
     console.log('🔌 InsightUI.WebSocket.init() - Starte WebSocket Handler Initialisierung');
+    console.log('🔍 Aktueller Zeitstempel:', new Date().toISOString());
     
     // Prüfe ob HTMX verfügbar ist
     if (typeof htmx === 'undefined') {
@@ -13,16 +14,21 @@ InsightUI.WebSocket = {
       return;
     }
     console.log('✅ HTMX gefunden, Version:', htmx.version || 'unbekannt');
+    console.log('🔍 HTMX Objekt:', htmx);
 
     // Detaillierte Extension-Prüfung
     console.log('🔍 HTMX Config:', htmx.config);
     console.log('🔍 HTMX Extensions:', htmx.config.extensions);
+    console.log('🔍 HTMX Extensions Array:', Array.isArray(htmx.config.extensions) ? htmx.config.extensions : 'Nicht Array');
     
     // Prüfe ob WebSocket Extension geladen ist
     const hasWsExtension = htmx.config.extensions && htmx.config.extensions.includes('ws');
+    console.log('🔍 WebSocket Extension Check:', hasWsExtension);
+    
     if (!hasWsExtension) {
       console.error('❌ HTMX WebSocket Extension NICHT geladen!');
       console.log('💡 Stelle sicher, dass ws.js geladen ist');
+      console.log('💡 Verfügbare Extensions:', htmx.config.extensions);
     } else {
       console.log('✅ HTMX WebSocket Extension erkannt');
     }
@@ -33,6 +39,35 @@ InsightUI.WebSocket = {
       return;
     }
     console.log('✅ WebSocket API verfügbar');
+
+    // Prüfe WebSocket-Komponenten auf der Seite
+    const wsComponents = document.querySelectorAll('[hx-ext*="ws"]');
+    console.log(`📊 ${wsComponents.length} WebSocket-Komponente(n) gefunden:`);
+    
+    wsComponents.forEach((component, index) => {
+      const id = component.id || `ws-component-${index}`;
+      const wsUrl = component.getAttribute('ws-connect') || 'nicht gesetzt';
+      console.log(`  ${index + 1}. ID: ${id}, URL: ${wsUrl}`);
+      console.log(`     Element:`, component);
+    });
+
+    // Test: Manueller WebSocket-Verbindungstest
+    console.log('🧪 Teste direkte WebSocket-Verbindung...');
+    try {
+      const testWs = new WebSocket('ws://localhost:8765');
+      testWs.onopen = () => {
+        console.log('✅ Direkte WebSocket-Verbindung erfolgreich');
+        testWs.close();
+      };
+      testWs.onerror = (e) => {
+        console.error('❌ Direkte WebSocket-Verbindung fehlgeschlagen:', e);
+      };
+      testWs.onclose = (e) => {
+        console.log('🔴 Test-WebSocket geschlossen, Code:', e.code, 'Reason:', e.reason);
+      };
+    } catch (error) {
+      console.error('❌ Fehler beim Erstellen der Test-WebSocket:', error);
+    }
 
     // WebSocket Verbindung erfolgreich geöffnet
     document.body.addEventListener('htmx:wsOpen', function(evt) {
