@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   InsightUI.ThemeToggle?.init?.();
   InsightUI.Modal?.init?.();
   InsightUI.Sidebar?.init?.();
-  InsightUI.Form?.init?.();
+  InsightUI.Form?.init?.(); 
 
   console.log('✅ InsightUI components initialized');
 });
