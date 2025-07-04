@@ -74,11 +74,12 @@
         </button>
       </div>
 
-      <!-- Language Selector -->
+      <!-- Language Selector and Theme Toggle -->
       <div class="hidden md:flex items-center space-x-4">
         {% if options.show_language_selector %}
           {% include "insight_ui/components/toggle_language.html" with options=options %}
         {% endif %}
+        {% include "insight_ui/components/toggle_theme.html" %}
       </div>
     </div>
 
