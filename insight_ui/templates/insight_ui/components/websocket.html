@@ -4,13 +4,13 @@
   class="insight-websocket bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
   hx-ext="ws"
   ws-connect="{{ options.ws_url }}"
-  ws-reconnect="true"
-  ws-reconnect-delay="5000"
 >
   <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
     {% trans "WebSocket Live-Komponente" %}
   </h3>
-  <div id="{{ options.id|default:'insight-websocket' }}-output" class="text-gray-800 dark:text-gray-200">
+  <div id="{{ options.id|default:'insight-websocket' }}-output" 
+       class="text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 p-4 rounded-md font-mono text-sm"
+       hx-swap-oob="true">
     {% if options.initial_content %}
       {{ options.initial_content|safe }}
     {% else %}
@@ -19,5 +19,8 @@
   </div>
   <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
     Status: <span id="{{ options.id|default:'insight-websocket' }}-status">{% trans "Verbindung wird hergestellt..." %}</span>
+  </div>
+  <div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
+    URL: {{ options.ws_url }}
   </div>
 </div>

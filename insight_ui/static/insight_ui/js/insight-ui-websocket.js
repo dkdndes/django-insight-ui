@@ -95,8 +95,38 @@ InsightUI.WebSocket = {
       console.log('📨 WebSocket Nachricht empfangen:', {
         target: evt.target.id || 'unbekannt',
         messageLength: evt.detail?.message?.length || 0,
+        message: evt.detail?.message || 'keine Nachricht',
         timestamp: new Date().toISOString()
       });
+      
+      // Verarbeite die JSON-Nachricht und zeige sie im Output-Element an
+      try {
+        const wsElement = evt.target;
+        const outputElement = wsElement.querySelector('[id$="-output"]');
+        if (outputElement && evt.detail?.message) {
+          const data = JSON.parse(evt.detail.message);
+          const formattedData = `
+            <div class="mb-2 p-2 border-l-4 border-blue-500">
+              <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
+              <div class="font-semibold">Connection: ${data.connection_id?.substring(0, 8) || 'unknown'}</div>
+              <div class="text-sm">
+                <div>Disk: ${data.content?.disk?.used_gb || 0}GB / ${data.content?.disk?.total_gb || 0}GB</div>
+                <div>Memory: ${data.content?.memory?.percent_used || 0}% used</div>
+                <div>Client: ${data.client_info?.ip || 'unknown'}</div>
+              </div>
+            </div>
+          `;
+          outputElement.innerHTML = formattedData + outputElement.innerHTML;
+          
+          // Begrenze die Anzahl der angezeigten Nachrichten
+          const messages = outputElement.querySelectorAll('div.mb-2');
+          if (messages.length > 10) {
+            messages[messages.length - 1].remove();
+          }
+        }
+      } catch (error) {
+        console.error('❌ Fehler beim Verarbeiten der WebSocket-Nachricht:', error);
+      }
     });
 
     // WebSocket Nachricht gesendet
