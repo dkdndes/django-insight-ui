@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load insight_tags %}
+
+<!-- Insight UI Toggle View Component -->
+<!-- This component allows users to switch between different views (table or card) -->
+{% comment %}
+  This template provides a toggle view functionality for the Insight UI.
+  It allows users to switch between a table view and a card view.
+  The current view is determined by the `current_view` context variable.
+{% endcomment %}
+
+<section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
+      <div class="flex items-center space-x-2">
+        <button
+          hx-get="{% url 'toggle_view' %}?view=table"                                                                   
+          hx-target="#switchable-view"                                                                                  
+          hx-swap="outerHTML"                                                                                           
+          class="px-3 py-1 rounded border text-sm font-medium"                                                          
+          {% if current_view == 'table' %} disabled aria-pressed="true"{% endif %}                                      
+        >                                                                                                               
+          {% trans 'Tabelle' %}                                                                                         
+        </button>  
+        <button
+          hx-get="{% url 'toggle_view' %}?view=card"
+          hx-target="#switchable-view"
+          hx-swap="outerHTML"
+          class="px-3 py-1 rounded border text-sm font-medium"
+          {% if current_view == 'card' %} disabled aria-pressed="true"{% endif %}
+        >
+          {% trans 'Karten' %}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Bereich, der ersetzt wird -->
+    <div id="switchable-view">
+      {% if current_view == 'table' %}
+        {% include 'insight_ui/components/toggle_view_table.html' %}
+      {% elif current_view == 'card' %}
+        {% include 'insight_ui/components/toggle_view_card.html' %}
+      {% else %}
+        {% include 'insight_ui/components/toggle_view_table.html' %}
+      {% endif %}
+    </div>
+  </section>

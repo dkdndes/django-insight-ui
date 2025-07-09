@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div class="insight-table-wrapper">
+  <table class="insight-table insight-table--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+    {% if caption %}
+      <caption class="insight-table__caption">{{ caption }}</caption>
+    {% endif %}
+    
+    {% if headers %}
+      <thead class="insight-table__head">
+        <tr class="insight-table__row">
+          {% for header in headers %}
+            <th class="insight-table__header" scope="col">{{ header }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+    {% endif %}
+    
+    <tbody class="insight-table__body">
+      {% for row in rows %}
+        <tr class="insight-table__row">
+          {% for cell in row %}
+            <td class="insight-table__cell">{{ cell }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

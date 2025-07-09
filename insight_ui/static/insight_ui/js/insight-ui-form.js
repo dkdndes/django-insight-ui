@@ -1,0 +1,1 @@
+InsightUI.Form = { init: function () { /* Form validation logic */ } };
