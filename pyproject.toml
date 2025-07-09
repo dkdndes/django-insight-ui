@@ -1,0 +1,102 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-insight-ui"
+version = "0.1.0"
+description = "Ein modernes, barrierefreies UI-Framework für Django"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Django Insight UI Team"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "django>=5.2,<6.0",
+    "django-htmx>=1.17.0",
+    "playwright>=1.52.0",
+    "pytest-django>=4.11.1",
+    "pytest-playwright>=0.7.0",
+    "whitenoise>=6.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "isort",
+    "mypy",
+    "ruff",
+    "pre-commit",
+]
+test = [
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+    "playwright",
+    "axe-playwright-python",
+]
+docs = [
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/django-insight-ui"
+Documentation = "https://yourusername.github.io/django-insight-ui"
+Issues = "https://github.com/yourusername/django-insight-ui/issues"
+
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = "core.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "B", "I", "N", "UP", "ANN", "S", "A", "C4", "DTZ", "T10", "EM", "ICN", "G", "PIE", "PT", "RSE", "RET", "SIM", "TID", "ARG", "PD", "PGH", "PL", "TRY", "RUF"]
+ignore = ["ANN401"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["insight_ui"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings"
+python_files = "test_*.py"
+testpaths = ["core"]
+

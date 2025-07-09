@@ -1,0 +1,75 @@
+{% load insight_tags %}
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
+
+    <!-- TailwindCSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'insight-primary': '#3b82f6',
+                        'insight-secondary': '#6b7280',
+                        'insight-success': '#10b981',
+                        'insight-warning': '#f59e0b',
+                        'insight-error': '#ef4444',
+                        'insight-info': '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- HTMX CDN -->
+    <script defer src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
+    {% if LANGUAGE_BIDI %}
+        <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
+    {% endif %}
+    {% block extra_head %}{% endblock %}
+</head>
+<body data-theme="light" class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    {% block navbar %}
+    {% endblock navbar %}
+
+    <div class="flex flex-1 relative">
+        <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% block sidebar %}
+        {% endblock sidebar %}
+
+    {% footer %}
+
+    <!-- HTMX Extensions -->
+    <script defer src="{% static 'insight_ui/js/insight-ui-htmx-extensions.js' %}"></script>
+
+    {% block extra_scripts %}
+        <!-- Insight UI Modular JavaScript, you load what you need in your template -->
+        <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-navbar.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-alert.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-form.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-init.js' %}"></script>
+        <script defer src="{% static 'insight_ui/js/insight-ui-language.js' %}"></script>
+    {% endblock %}
+
+</body>
+</html>

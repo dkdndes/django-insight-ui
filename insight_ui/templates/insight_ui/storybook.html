@@ -1,0 +1,273 @@
+{% load insight_tags %}
+{% load i18n %}
+
+{% block navbar %}
+<nav class="bg-white dark:bg-gray-800 shadow">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <img class="h-8 w-auto" src="/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow">
+            </div>
+            <!-- Menu Items -->
+            <div class="hidden sm:flex sm:space-x-4">
+                <a href="#" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                <a href="#" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">Team</a>
+                <a href="#" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
+                <a href="#" class="text-gray-900 dark:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+            </div>
+            <!-- Right Side -->
+            <div class="flex items-center space-x-4">
+                <!-- Dark Mode Toggle -->
+                <button class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    <span class="sr-only">Toggle Dark Mode</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12h-1m15.364-4.95l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+                    </svg>
+                </button>
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button type="button" class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                        <span class="sr-only">Open user menu</span>
+                        <img class="h-8 w-8 rounded-full" src="/img/user.jpg" alt="">
+                    </button>
+                    <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock navbar %}
+
+<!-- Hauptcontainer für alle Demo-Abschnitte -->
+{% block content %} 
+    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Willkommenstext -->
+    <section class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>
+        <p class="text-lg text-gray-700 dark:text-gray-300">
+            {% trans 'Eine moderne, barrierefreie und responsive UI-Bibliothek für Django-Projekte.' %}
+        </p>
+    </section>
+
+    <!-- Alert Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+        <div class="space-y-4">
+            {% alert message="Dies ist eine Informationsmeldung" type="info" %}
+            {% alert message="Erfolgreich gespeichert!" type="success" %}
+            {% alert message="Achtung: Überprüfen Sie Ihre Eingaben" type="warning" %}
+            {% alert message="Fehler beim Laden der Daten" type="error" %}
+        </div>
+    </section>
+
+    <!-- Breadcrumbs Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
+        {% breadcrumbs items=breadcrumb_items %}
+    </section>
+
+    <!-- Modal Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Modal-Dialoge' %}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Standard Modal -->
+        <button type="button" class="bg-insight-primary hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="demo-modal">
+            {% trans 'Standard Modal' %}
+        </button>
+        
+        <!-- Info Modal -->
+        <button type="button" class="bg-insight-info hover:bg-cyan-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="info-modal">
+            {% trans 'Info Modal' %}
+        </button>
+        
+        <!-- Success Modal -->
+        <button type="button" class="bg-insight-success hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="success-modal">
+            {% trans 'Erfolg Modal' %}
+        </button>
+        
+        <!-- Warning Modal -->
+        <button type="button" class="bg-insight-warning hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="warning-modal">
+            {% trans 'Warnung Modal' %}
+        </button>
+        
+        <!-- Error Modal -->
+        <button type="button" class="bg-insight-error hover:bg-red-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="error-modal">
+            {% trans 'Fehler Modal' %}
+        </button>
+        
+        <!-- Confirmation Modal -->
+        <button type="button" class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200" data-insight-toggle="modal" data-insight-target="confirm-modal">
+            {% trans 'Bestätigung Modal' %}
+        </button>
+        </div>
+        
+        <!-- Standard Modal -->
+        {% include "insight_ui/components/modal.html" with id="demo-modal" title="Demo Modal" content="Dies ist ein Beispiel-Modal mit Standard-Styling." actions=modal_actions %}
+        
+        <!-- Info Modal -->
+        {% include "insight_ui/components/modal.html" with id="info-modal" title="Information" content="<div class='flex items-center'><svg class='w-6 h-6 text-blue-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Dies ist eine wichtige Information für den Benutzer.</span></div>" %}
+        
+        <!-- Success Modal -->
+        {% include "insight_ui/components/modal.html" with id="success-modal" title="Erfolgreich!" content="<div class='flex items-center'><svg class='w-6 h-6 text-green-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Die Aktion wurde erfolgreich ausgeführt!</span></div>" %}
+        
+        <!-- Warning Modal -->
+        {% include "insight_ui/components/modal.html" with id="warning-modal" title="Achtung!" content="<div class='flex items-center'><svg class='w-6 h-6 text-yellow-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z'></path></svg><span>Bitte überprüfen Sie Ihre Eingaben vor dem Fortfahren.</span></div>" %}
+        
+        <!-- Error Modal -->
+        {% include "insight_ui/components/modal.html" with id="error-modal" title="Fehler aufgetreten" content="<div class='flex items-center'><svg class='w-6 h-6 text-red-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es erneut.</span></div>" %}
+        
+        <!-- Confirmation Modal -->
+        {% include "insight_ui/components/modal.html" with id="confirm-modal" title="Bestätigung erforderlich" content="<div class='flex items-center'><svg class='w-6 h-6 text-gray-500 mr-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'></path></svg><span>Sind Sie sicher, dass Sie diese Aktion ausführen möchten?</span></div>" actions=confirm_modal_actions %}
+    </section>
+
+    <!-- Form Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular' %}</h2>
+        {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions %}
+    </section>
+    
+    <!-- HTMX Form Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
+        
+        <!-- Manuelles HTMX-Formular für bessere Kontrolle, ohne Reset-Button -->
+        <form hx-post="/api/form-submit/" hx-target="#form-result" hx-swap="innerHTML" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <h3 class="text-md font-light text-gray-900 dark:text-white mb-4">Füllen Sie das Formular aus</h3>
+            </div>
+            <div>
+                <label for="htmx_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {% trans 'Name (HTMX)' %} <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="htmx_name" name="htmx_name" required 
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="{% trans 'Name eingeben' %}">
+            </div>
+            <div>
+                <label for="htmx_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {% trans 'E-Mail (HTMX)' %} <span class="text-red-500">*</span>
+                </label>
+                <input type="email" id="htmx_email" name="htmx_email" required 
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="{% trans 'E-Mail eingeben' %}">
+            </div>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {% trans 'Nachricht (HTMX)' %}
+                </label>
+                <textarea id="message" name="message" rows="4" 
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="{% trans 'Ihre Nachricht...' %}"></textarea>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                    {% trans 'Senden' %}
+                </button>
+            </div>
+        </form>
+        <div id="form-result" class="mt-4"></div>
+    </section>
+
+    <!-- Alpine.js Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6" x-data="{ count: 0, message: 'Hello Alpine!' }">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Alpine.js Integration' %}</h2>
+        <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+            <p x-text="message" class="text-lg mb-4 text-gray-900 dark:text-white"></p>
+            <p class="mb-4 text-gray-700 dark:text-gray-300">Counter: <span x-text="count" class="font-bold text-insight-primary"></span></p>
+            <button @click="count++" class="bg-insight-primary hover:bg-blue-600 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                {% trans 'Zähler erhöhen' %}
+            </button>
+            <button @click="message = 'Alpine.js funktioniert!'" class="bg-insight-success hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors duration-200 ml-2">
+                {% trans 'Nachricht ändern' %}
+            </button>
+        </div>
+    </section>
+    
+    <!-- HTMX Live Content Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Live-Inhalte (HTMX)' %}</h2>
+        {% live_content url="/api/live-data/" interval=20000 id="live-content" %}
+    </section>
+
+    <!-- Table Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
+        {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
+    </section>
+
+    <!-- Card Demo -->
+    <section class="mb-8">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Karten' %}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% card title="Beispiel-Karte" subtitle="Untertitel" content="Dies ist der Inhalt einer Karte." %}
+        {% card title="Karte mit Aktionen" content="Diese Karte hat Aktions-Buttons." actions=card_actions %}
+        </div>
+    </section>
+
+    <!-- Pagination Demo -->
+
+    <!-- Table-Card Toggle View Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        {% include "insight_ui/components/toggle-view.html" with table_headers=toggle_table_headers table_rows=toggle_table_rows cards=toggle_cards current_view=toggle_current_view %}
+    </section>
+
+    <!-- Infinite Scroll Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
+        {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
+    </section>
+
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+        {# Sidebar wird immer über den Template-Tag eingebunden, zentrale Methode für Storybook und App #}
+        <div id="right-sidebar-hover-area" class="fixed right-0 top-0 w-8 h-full z-10"></div>
+        {% sidebar 
+            title="Zusätzliche Informationen"
+            items=[
+                {
+                    "text": "Dokumentation",
+                    "url": "#",
+                    "icon": "",
+                    "active": False
+                },
+                {
+                    "text": "Komponenten",
+                    "url": "#",
+                    "icon": "",
+                    "active": False
+                },
+                {
+                    "text": "Einstellungen",
+                    "url": "#",
+                    "icon": "",
+                    "active": False
+                },
+                {
+                    "text": "Support kontaktieren",
+                    "url": "#",
+                    "icon": "<svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4 mr-1' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' /></svg>",
+                    "active": False
+                }
+            ]
+            theme="light"
+            collapsible=True
+            options={"id": "right-sidebar"}
+        %}
+    </div>
+{% endblock sidebar %}
+
+{% block footer %}
+{% endblock footer %}
+
+{% block extra_scripts %}
+{% endblock extra_scripts %}

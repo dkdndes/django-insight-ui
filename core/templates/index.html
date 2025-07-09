@@ -1,0 +1,38 @@
+{% extends "insight_ui/base.html" %}
+{% load insight_tags %}
+{% load i18n %}
+
+{% block title %}{% trans 'Django Insight UI index.html' %}{% endblock %}
+
+{% block content %}
+    <!-- Layout mit rechter Sidebar -->
+    <div class="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+        
+        <!-- Hauptinhalt -->
+        <main class="flex-1 mr-0 transition-all duration-300" id="main-content">
+            <div class="container mx-auto p-6">
+                
+                <!-- Erfolgsmeldung anzeigen -->
+                {% if form_success %}
+                    <div class="mb-6">
+                        {% alert message=form_success.message type="success" dismissible=True %}
+                    </div>
+                {% endif %}
+                
+                <!-- Fehlermeldungen anzeigen -->
+                {% if form_errors %}
+                    <div class="mb-6">
+                        {% for field, error in form_errors.items %}
+                            {% alert message=error type="error" dismissible=True %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <!-- Include Storybook -->
+                {% include "insight_ui/storybook.html" with toggle_table_headers=toggle_table_headers toggle_table_rows=toggle_table_rows toggle_cards=toggle_cards toggle_current_view=toggle_current_view %}
+            </div>
+        </main>
+
+    </div>
+
+{% endblock %}

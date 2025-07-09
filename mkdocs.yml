@@ -1,0 +1,78 @@
+site_name: Django Insight UI
+site_description: Ein modernes, barrierefreies UI-Framework für Django
+site_author: Django Insight UI Team
+
+repo_url: https://github.com/yourusername/django-insight-ui
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: de
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Zum dunklen Modus wechseln
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Zum hellen Modus wechseln
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.indexes
+    - content.code.annotate
+    - content.tabs.link
+    - search.highlight
+    - search.share
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [insight_ui]
+          options:
+            show_source: true
+            show_root_heading: true
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Schnellstart: quickstart.md
+  - Komponenten:
+    - Überblick: components/index.md
+    - Navbar: components/navbar.md
+    - Alert: components/alert.md
+  - Template-Tags: template-tags.md
+  - Anpassung: customization.md
+  - Barrierefreiheit: accessibility.md
+  - Internationalisierung: i18n.md
+  - API-Referenz: api-reference.md
+  - Mitwirken: contributing.md
