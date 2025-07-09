@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}" class="insight-breadcrumbs">
+  <ol class="insight-breadcrumbs__list">
+    {% for item in items %}
+      <li class="insight-breadcrumbs__item{% if forloop.last %} insight-breadcrumbs__item--current{% endif %}">
+        {% if not forloop.last %}
+          <a href="{{ item.url }}" class="insight-breadcrumbs__link">{{ item.text }}</a>
+          <span class="insight-breadcrumbs__separator" aria-hidden="true">/</span>
+        {% else %}
+          <span class="insight-breadcrumbs__current" aria-current="page">{{ item.text }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
