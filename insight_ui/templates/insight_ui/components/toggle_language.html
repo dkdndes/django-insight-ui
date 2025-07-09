@@ -1,7 +1,6 @@
 {% load static insight_tags i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
-{% if options.show_language_selector %}
 <form id="navbar-language-form" method="post" action="{% url 'set_language' %}">
   {% csrf_token %}
   <input name="next" type="hidden" value="{{ request.get_full_path }}" />

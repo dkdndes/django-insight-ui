@@ -41,7 +41,7 @@
       {% elif current_view == 'card' %}
         {% include 'insight_ui/components/toggle_view_card.html' %}
       {% else %}
-        <p class="text-red-500">{% trans 'Unbekannte Ansicht.' %}</p>
+        {% include 'insight_ui/components/toggle_view_table.html' %}
       {% endif %}
     </div>
   </section>

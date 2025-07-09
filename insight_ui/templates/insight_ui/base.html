@@ -18,13 +18,11 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <!-- CSRF Token for Django -->
-    {% csrf_token %}
     <meta name="csrf-token" content="{{ csrf_token }}">
     <!-- SEO Meta Tags -->
     <meta name="description" content="{% block meta_description %}Django Insight UI base template{% endblock meta_description %}">
     <meta name="keywords" content="{% block meta_keywords %}Django, Insight UI, base template{% endblock meta_keywords %}">
     <meta name="author" content="{% block meta_author %}Peter Rosemann{% endblock meta_author %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{% block og_title %}Django Insight UI base template{% endblock og_title %}">
     <meta property="og:description" content="{% block og_description %}Django Insight UI base template{% endblock og_description %}">
@@ -66,8 +64,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- HTMX CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" integrity="sha384-vuKxTKv5TX/b3lLzDKP2U363sOAoRo5wSvzzc3LJsbaQRSBSS+3rKKHcOx5J8doU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
 
     <!-- Insight UI Modular Utils  -->
     <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
