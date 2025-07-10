@@ -324,7 +324,7 @@ def normal_form_submit(request):
         context = get_storybook_context()
         context["form_errors"] = errors
         context["form_data"] = {"name": name, "email": email, "message": message}
-        return render(request, "index.html", context)
+        return render(request, "insight_ui/storybook.html", context)
 
     # Erfolg simulieren mit synchroner Verarbeitung
     time.sleep(1)  # Simuliere synchrone Verarbeitungszeit
@@ -341,7 +341,7 @@ def normal_form_submit(request):
         "type": "success",
     }
 
-    return render(request, "index.html", context)
+    return render(request, "insight_ui/storybook.html", context)
 
 
 def log_form_input_sync(name, email, message, logger) -> None:
@@ -580,7 +580,7 @@ def storybook_view(request):
     context["table_rows"] = rows
     context["toggle_current_view"] = "table"
     
-    return render(request, "index.html", context)
+    return render(request, "insight_ui/storybook.html", context)
 
 def generate_random_payload():
     """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
@@ -615,7 +615,7 @@ def map_payload_to_cards(payload):
 
 def map_payload_to_table(payload):
     """Mappt Payload-Daten auf Tabellen-Darstellung."""
-    headers = ["title", "status", "content", "action_link"]
+    headers = ["Title", "Status", "Content", "URL"]
     rows = []
     for item in payload:
         content = item["content"]
@@ -644,11 +644,11 @@ def toggle_view(request):
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
         logger.info("log: toggle_view – Kartenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view_cards.html", context)
+        return render(request, "insight_ui/components/toggle_view.html", context)
 
     else:  # default: table view
         headers, rows = map_payload_to_table(payload)
         context["table_headers"] = headers
         context["table_rows"] = rows
         logger.info("log: toggle_view – Tabellenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view_table.html", context)
+        return render(request, "insight_ui/components/toggle_view.html", context)

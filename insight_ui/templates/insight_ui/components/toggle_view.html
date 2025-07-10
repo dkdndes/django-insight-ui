@@ -9,7 +9,7 @@
   The current view is determined by the `current_view` context variable.
 {% endcomment %}
 
-<section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+<section id="switchable-view" class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
       <div class="flex items-center space-x-2">
@@ -35,11 +35,11 @@
     </div>
   
     <!-- Bereich, der ersetzt wird -->
-    <div id="switchable-view">
+    <div>
       {% if current_view == 'table' %}
         {% include 'insight_ui/components/toggle_view_table.html' %}
       {% elif current_view == 'card' %}
-        {% include 'insight_ui/components/toggle_view_card.html' %}
+        {% include 'insight_ui/components/toggle_view_cards.html' %}
       {% else %}
         {% include 'insight_ui/components/toggle_view_table.html' %}
       {% endif %}
