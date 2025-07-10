@@ -67,7 +67,7 @@ def live_content(
     if url:
         htmx_config = {
             "url": url,
-            "trigger": kwargs.get("trigger", "load"),
+            "trigger": kwargs.get("trigger", f"load, every {interval}s"),
             "swap": kwargs.get("swap", "innerHTML"),
         }
         if interval:

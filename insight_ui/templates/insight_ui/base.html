@@ -60,9 +60,6 @@
         }
     </script>
 
-    <!-- Alpine.js CDN -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <!-- HTMX CDN -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
@@ -79,7 +76,7 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %} 
-    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col"
+    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 
     <div class="navbar-container">
@@ -93,7 +90,7 @@
     </div>
 
     <div class="flex flex-1 relative">
-        <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
+        <main id="main-content" class="flex-1 mx-auto">
             {% block content %}{% endblock %}
         </main>
     </div>

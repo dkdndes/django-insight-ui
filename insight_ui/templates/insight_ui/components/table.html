@@ -20,7 +20,7 @@
       {% for row in rows %}
         <tr class="insight-table__row">
           {% for cell in row %}
-            <td class="insight-table__cell">{{ cell }}</td>
+            <td class="insight-table__cell">{{ cell|safe }}</td>
           {% endfor %}
         </tr>
       {% endfor %}
