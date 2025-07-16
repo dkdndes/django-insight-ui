@@ -22,13 +22,38 @@ Django Insight UI ist ein umfassendes UI-Paket für Django-Projekte mit Fokus au
 - Internationalisierung und RTL-Unterstützung
 - HTMX-Integration für dynamische Updates
 
-## Installation
+## Entwicklung
+
+```bash
+uv sync --all-groups
+
+python manage.py migrate
+python manage.py runserver
+```
+
+### Websocket
+
+Um das Beispiel der Websocket Kommunikation zu verwenden muss ein weiterer Prozess gestartet werden. Dieser befindet sich in dem Verzeichnis _/utils_.
+
+```bash
+uv run ./utils/main.py
+```
+
+In dem Verzeichnis _/utils_ gibt es eine extra Readme mit weiteren Informationen.
+
+### Styling
+
+Für das Styling der Frontend Komponenten kann bzw. sollte TailwindCSS verwendet werden. Dazu muss **npm** bzw. **node.js** installiert sein. Der Tailwind-Compiler muss in einem separaten Konsolenfenster ausgeführt werden, um neue CSS-Klassen dynamisch hinzuzufügen. Der Compiler läuft am besten während der Entwicklung in einer separaten Kommandozeile.
+
+```bash
+npx tailwindcss@3 -i ./src/input.css -o ./insight_ui/static/insight_ui/css/tailwind.css --watch
+```
+
+## Installation (in externes Projekt)
 
 ```bash
 uv add django-insight-ui
 ```
-
-## Schnellstart
 
 Fügen Sie 'insight_ui' zu Ihren INSTALLED_APPS in settings.py hinzu:
 
@@ -39,6 +64,43 @@ INSTALLED_APPS = [
     # ...
 ]
 ```
+
+## Komponenten
+
+### Implementiert
+
+- Navigation (Navbar)
+- Alerts (Notifications)
+- Breadcrumbs
+- Dialoge (Modals)
+- HTML-Formular
+- HTMX-Formular (ohne Seiten-Reload)
+- Live-Update (Polling mit HTMX)
+- WebSockets
+- Tabellen/Listen-Ansicht (umschaltbar)
+- Karten/Kachel-Ansicht (umschaltbar)
+- Infinite Scroll
+- Sidebar (Rechts)
+- Footer
+
+### Geplant
+
+- Mehr Input-Elemente (Buttons, Dropdown-Menüs, Radio-Buttons, Radio-Groups)
+- Mehr Varianten für Karten/Kacheln
+- SQL like Filterung (Dynamische Filterung)
+- Standard Listen-Filterung (Dropdowns mit festen Werten)
+- Suchleiste (auch für die Navbar)
+- Layout: Text + Tags
+- KI-Chat
+- Anbindung einer Charts Library (bspw. Apache Echarts)
+- Karussell (für Karten Ansicht)
+- Pagination (für Tabellen/Listen Ansicht)
+- Sortierung
+    - Einfach (nur eine Parameter)
+    - Komplex (nach mehreren Parametern)
+- Differentiator (GitHub like Diff-Ansicht)
+- Geo-Karten Einbindung (leaflet)
+- Tabellenspaltengröße vom Nutzer anpassbar
 
 ## Dokumentation
 
