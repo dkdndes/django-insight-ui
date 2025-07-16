@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div 
+<div
   role="alert"
   class="flex justify-between w-full shadow p-4 rounded bg-insight-{{ type }}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
@@ -19,10 +19,10 @@
     </svg>
     <p>{{ message }}</p>
   </div>
-  
+
   {% if dismissible %}
-    <button 
-      class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-neutral-100 transition" 
+    <button
+      class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-neutral-100 transition"
       aria-label="{% trans 'Schließen' %}"
       onclick="this.parentElement.remove();">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">

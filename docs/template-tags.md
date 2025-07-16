@@ -17,9 +17,9 @@ Um die Template-Tags zu verwenden, müssen Sie sie zuerst in Ihrem Template lade
 Rendert eine barrierefreie Navigationsleiste.
 
 ```django
-{% navbar 
-   brand="Meine App" 
-   links=nav_links 
+{% navbar
+   brand="Meine App"
+   links=nav_links
    theme="light"
    show_theme_toggle=True
 %}
@@ -42,10 +42,10 @@ Weitere Informationen finden Sie in der [Navbar-Dokumentation](components/navbar
 Rendert eine barrierefreie Benachrichtigung.
 
 ```django
-{% alert 
-   message="Ihre Änderungen wurden gespeichert." 
-   type="success" 
-   dismissible=True 
+{% alert
+   message="Ihre Änderungen wurden gespeichert."
+   type="success"
+   dismissible=True
 %}
 ```
 

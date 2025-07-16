@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
 
-    <!-- Webmanifest für Favicon -->                                                                                                                           
-    <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">                                                                            
+    <!-- Webmanifest für Favicon -->
+    <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
     <link rel="icon" href="{% static 'insight_ui/favicon/favicon.ico' %}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{% static 'insight_ui/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'insight_ui/favicon/favicon-32x32.png' %}">
@@ -56,10 +56,10 @@
         <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
     {% endif %}
     {% endcomment %}
-    
+
     {% block extra_head %}{% endblock %}
 </head>
-<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %} 
+<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %}
     class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 

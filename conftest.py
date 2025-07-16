@@ -29,7 +29,7 @@ def live_server_class():
 
 
 @pytest.fixture
-def live_server_url(live_server):
+def live_server_url(live_server) -> None:
     """Fixture für Live-Server-URL."""
     return live_server.url
 

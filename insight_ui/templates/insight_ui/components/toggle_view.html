@@ -13,7 +13,7 @@
   <div id="switchable-view">
     <div class="flex justify-end mb-4">
       <div>
-        <input 
+        <input
           type="radio" id="card_view" name="view" value="card" {% if current_view == 'card' %}checked="true"{% endif %}
           hx-get="{% url 'toggle_view' %}?view=card"
           hx-target="#switchable-view"
@@ -27,7 +27,7 @@
         </label>
       </div>
       <div>
-        <input 
+        <input
           type="radio" id="table_view" name="view" value="table" {% if current_view == 'table' %}checked="true"{% endif %}
           hx-get="{% url 'toggle_view' %}?view=table"
           hx-target="#switchable-view"

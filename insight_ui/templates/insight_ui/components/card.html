@@ -6,7 +6,7 @@
       <img src="{{ image.url }}" alt="{{ image.alt|default:'' }}" class="size-full object-cover" />
     </div>
   {% endif %}
-  
+
   <div class="flex flex-col h-full p-6">
     {% if title %}
       <div>
@@ -16,18 +16,18 @@
         {% endif %}
       </div>
     {% endif %}
-    
+
     {% if content %}
       <div class="grow my-4">
         {{ content|safe }}
       </div>
     {% endif %}
-    
+
     {% if actions %}
       <div class="flex gap-2">
         {% for action in actions %}
-          <a 
-            href="{{ action.url }}" 
+          <a
+            href="{{ action.url }}"
             class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             {% if action.external %}target="_blank" rel="noopener"{% endif %}>
             {{ action.text }}

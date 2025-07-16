@@ -10,21 +10,21 @@ Die einfachste Methode zur Anpassung ist die Konfiguration über die INSIGHT_UI-
 INSIGHT_UI = {
     # Allgemeine Einstellungen
     "theme": "light",  # 'light', 'dark', oder 'high-contrast'
-    
+
     # Branding
     "branding": {
         "name": "Meine App",
         "logo": "path/to/logo.svg",
         "favicon": "path/to/favicon.ico",
     },
-    
+
     # Funktionen
     "features": {
         "theme_toggle": True,
         "language_selector": True,
         "skip_links": True,
     },
-    
+
     # Komponenten-Überschreibungen
     "components": {
         "navbar": {
@@ -50,10 +50,10 @@ Sie können die CSS-Variablen von Insight UI überschreiben, um das Aussehen anz
   --insight-color-primary: #ff5722;
   --insight-color-primary-dark: #e64a19;
   --insight-color-primary-light: #ff7e47;
-  
+
   /* Schriftart ändern */
   --insight-font-family: 'Roboto', sans-serif;
-  
+
   /* Abstände ändern */
   --insight-spacing-md: 1.25rem;
 }
@@ -147,7 +147,7 @@ InsightUI.MyComponent = {
   init: function() {
     // Initialisierungscode
   },
-  
+
   doSomething: function() {
     // Funktionalität
   }

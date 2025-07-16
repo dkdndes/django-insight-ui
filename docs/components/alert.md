@@ -15,10 +15,10 @@ Die Alert-Komponente bietet eine barrierefreie Möglichkeit, Benutzern wichtige 
 ```django
 {% load insight_tags %}
 
-{% alert 
-   message="Ihre Änderungen wurden gespeichert." 
-   type="success" 
-   dismissible=True 
+{% alert
+   message="Ihre Änderungen wurden gespeichert."
+   type="success"
+   dismissible=True
 %}
 ```
 
@@ -43,38 +43,38 @@ Die Alert-Komponente bietet eine barrierefreie Möglichkeit, Benutzern wichtige 
 ### Erfolgs-Alert
 
 ```django
-{% alert 
-   message="Ihr Konto wurde erfolgreich erstellt." 
-   type="success" 
+{% alert
+   message="Ihr Konto wurde erfolgreich erstellt."
+   type="success"
 %}
 ```
 
 ### Warnungs-Alert
 
 ```django
-{% alert 
-   message="Ihre Sitzung läuft in 5 Minuten ab." 
-   type="warning" 
+{% alert
+   message="Ihre Sitzung läuft in 5 Minuten ab."
+   type="warning"
 %}
 ```
 
 ### Fehler-Alert
 
 ```django
-{% alert 
-   message="Es ist ein Fehler aufgetreten." 
-   type="error" 
-   details="Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support." 
+{% alert
+   message="Es ist ein Fehler aufgetreten."
+   type="error"
+   details="Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support."
 %}
 ```
 
 ### Nicht schließbares Alert
 
 ```django
-{% alert 
-   message="Diese Nachricht ist wichtig und kann nicht geschlossen werden." 
-   type="info" 
-   dismissible=False 
+{% alert
+   message="Diese Nachricht ist wichtig und kann nicht geschlossen werden."
+   type="info"
+   dismissible=False
 %}
 ```
 

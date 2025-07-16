@@ -1,5 +1,5 @@
 {% load i18n %}
-<div 
+<div
   id="{{ options.id|default:'insight-websocket' }}"
   hx-ext="ws"
   ws-connect="{{ options.ws_url }}"

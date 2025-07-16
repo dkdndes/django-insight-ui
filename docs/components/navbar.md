@@ -16,9 +16,9 @@ Die Navbar-Komponente bietet eine vollständig responsive, barrierefreie Navigat
 ```django
 {% load insight_tags %}
 
-{% navbar 
-   brand="Meine App" 
-   links=nav_links 
+{% navbar
+   brand="Meine App"
+   links=nav_links
    theme="light"
    show_theme_toggle=True
    show_language_selector=True
@@ -68,9 +68,9 @@ links = [
 ```django
 {% load insight_tags %}
 
-{% navbar 
-   brand="Meine App" 
-   links=nav_links 
+{% navbar
+   brand="Meine App"
+   links=nav_links
 %}
 ```
 
@@ -89,10 +89,10 @@ def my_view(request):
 ### Navbar mit Themenwechsler
 
 ```django
-{% navbar 
-   brand="Meine App" 
-   links=nav_links 
-   show_theme_toggle=True 
+{% navbar
+   brand="Meine App"
+   links=nav_links
+   show_theme_toggle=True
 %}
 ```
 

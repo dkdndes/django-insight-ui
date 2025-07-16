@@ -110,4 +110,3 @@
     htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'ws'];
   });
 })();
-
