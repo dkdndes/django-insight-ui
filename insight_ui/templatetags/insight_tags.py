@@ -387,13 +387,7 @@ def form(
     method: str = "post",
     theme: str = "light",
     actions: List[Dict[str, Any]] = None,
-    htmx_url: str = "",
-    htmx_method: str = "post",
-    htmx_target: str = "",
-    htmx_swap: str = "innerHTML",
-    htmx_trigger: str = "submit",
-    htmx_confirm: str = "",
-    htmx_boost: bool = False,
+    htmx: List[Dict[str, Any]] = None,
     **kwargs: Any,
 ) -> Dict[str, Any]:
     """
@@ -407,13 +401,7 @@ def form(
         method: Die HTTP-Methode ('post', 'get')
         theme: Das Farbschema ('light', 'dark', 'high-contrast')
         actions: Eine Liste von Aktions-Buttons
-        htmx_url: HTMX URL für AJAX-Requests
-        htmx_method: HTMX HTTP-Methode ('post', 'get', 'put', 'patch', 'delete')
-        htmx_target: HTMX Ziel-Element
-        htmx_swap: HTMX Swap-Strategie
-        htmx_trigger: HTMX Trigger-Event
-        htmx_confirm: HTMX Bestätigungsnachricht
-        htmx_boost: HTMX Boost aktivieren
+        htmx: HTMX Konfiguration für AJAX-Requests
         **kwargs: Zusätzliche Optionen für das Formular
 
     Returns:
@@ -426,15 +414,15 @@ def form(
 
     # HTMX-Konfiguration
     htmx_config = None
-    if htmx_url:
+    if htmx:
         htmx_config = {
-            "url": htmx_url,
-            "method": htmx_method,
-            "target": htmx_target,
-            "swap": htmx_swap,
-            "trigger": htmx_trigger,
-            "confirm": htmx_confirm,
-            "boost": htmx_boost,
+            "url": htmx.get("url"),
+            "method": htmx.get("method"),
+            "target": htmx.get("target"),
+            "swap": htmx.get("swap"),
+            "trigger": htmx.get("trigger"),
+            "confirm": htmx.get("confirm"),
+            "boost": htmx.get("boost"),
             "validate": kwargs.get("htmx_validate", True),
             "indicator": kwargs.get("htmx_indicator", ".htmx-indicator"),
         }
@@ -447,9 +435,9 @@ def form(
         "method": method,
         "theme": theme,
         "actions": actions,
+        "htmx": htmx_config,
         "options": {
             **kwargs,
-            "htmx": htmx_config,
         },
     }
 

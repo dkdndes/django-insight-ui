@@ -1,14 +1,14 @@
 {% load i18n %}
 
-<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}" class="insight-breadcrumbs">
-  <ol class="insight-breadcrumbs__list">
+<nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
+  <ol class="flex space-x-2">
     {% for item in items %}
-      <li class="insight-breadcrumbs__item{% if forloop.last %} insight-breadcrumbs__item--current{% endif %}">
+      <li >
         {% if not forloop.last %}
-          <a href="{{ item.url }}" class="insight-breadcrumbs__link">{{ item.text }}</a>
-          <span class="insight-breadcrumbs__separator" aria-hidden="true">/</span>
+          <a href="{{ item.url }}" class="underline text-blue-500 hover:text-blue-300">{{ item.text }}</a>
+          <span class="text-neutral-300" aria-hidden="true">/</span>
         {% else %}
-          <span class="insight-breadcrumbs__current" aria-current="page">{{ item.text }}</span>
+          <span aria-current="page" class="text-neutral-400">{{ item.text }}</span>
         {% endif %}
       </li>
     {% endfor %}

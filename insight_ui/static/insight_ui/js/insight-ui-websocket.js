@@ -16,25 +16,16 @@ InsightUI.WebSocket = {
     }
     console.log('✅ HTMX gefunden, Version:', htmx.version || 'unbekannt');
     console.log('🔍 HTMX Objekt:', htmx);
+    console.log('🔍 HTMX Config:', htmx.config);
 
     // Detaillierte Extension-Prüfung
-    console.log('🔍 HTMX Config:', htmx.config);
-    console.log('🔍 HTMX Extensions:', htmx.config.extensions);
-    console.log('🔍 HTMX Extensions Array:', Array.isArray(htmx.config.extensions) ? htmx.config.extensions : 'Nicht Array');
-    
-    // Prüfe ob WebSocket Extension geladen ist
-    const hasWsExtension = htmx.config.extensions && htmx.config.extensions.includes('ws');
-    console.log('🔍 WebSocket Extension Check:', hasWsExtension);
-    
-    if (!hasWsExtension) {
-      console.error('❌ HTMX WebSocket Extension NICHT geladen!');
-      console.log('💡 Stelle sicher, dass ws.js geladen ist');
-      console.log('💡 Verfügbare Extensions:', htmx.config.extensions);
-      console.warn('⚠️ WebSocket Extension nicht verfügbar, warte 200ms...');
+    if (!htmx.config.extensions) {
+      console.warn('⚠️ HTMX  Extensions nicht verfügbar, re-initialisiere in 200ms...');
       setTimeout(() => this.init(), 200);
       return;
     } else {
-      console.log('✅ HTMX WebSocket Extension erkannt');
+      console.log('✅ HTMX Extensions erkannt');
+      console.log('🔍 HTMX Extensions:', htmx.config.extensions);
     }
 
     // Prüfe ob WebSocket im Browser verfügbar ist

@@ -1,28 +1,36 @@
 {% load i18n %}
 
-<div class="insight-table-wrapper">
-  <table class="insight-table insight-table--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<div class="bg-white dark:bg-gray-800 rounded overflow-y-scroll">
+  <table class="table-auto w-full" {% if options.id %}id="{{ options.id }}"{% endif %}>
     {% if caption %}
-      <caption class="insight-table__caption">{{ caption }}</caption>
+      <caption class="text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ caption }}</caption>
     {% endif %}
     
     {% if headers %}
-      <thead class="insight-table__head">
-        <tr class="insight-table__row">
+      <thead class="text-insight-text-primary dark:text-insight-text-primary-dark">
+        <tr class="border-b border-neutral-400 dark:border-neutral-500">
           {% for header in headers %}
-            <th class="insight-table__header" scope="col">{{ header }}</th>
+            <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
         </tr>
       </thead>
     {% endif %}
     
-    <tbody class="insight-table__body">
+    <tbody class="text-insight-text-primary dark:text-insight-text-primary-dark">
       {% for row in rows %}
-        <tr class="insight-table__row">
+        <tr class="border-b dark:border-neutral-600">
           {% for cell in row %}
-            <td class="insight-table__cell">{{ cell|safe }}</td>
+            <td class="text-start text-xs px-4 py-3">{{ cell|safe }}</td>
           {% endfor %}
         </tr>
+      {% empty %}
+        <tfoot>
+          <tr>
+            <td colspan="{{ headers|length }}" class="w-full border-t border-neutral-400 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
+              {% trans "Keine Daten vorhanden!" %}
+            </td>
+          </tr>
+        </tfoot>
       {% endfor %}
     </tbody>
   </table>
