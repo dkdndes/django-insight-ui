@@ -2,7 +2,7 @@
 
 <div class="space-y-4">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Buttons" %}</h2>
-    <div class="flex items-center space-x-1">
+    <div class="flex items-center gap-1">
         <button class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
             {% trans "Primary" %}
         </button>
@@ -34,7 +34,7 @@
         </a>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Outline Buttons" %}</h2>
-    <div class="flex space-x-1">
+    <div class="flex gap-1">
         <button class="border-insight-primary border-2 rounded-sm text-insight-primary px-6 py-2 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
             {% trans "Primary" %}
         </button>
@@ -58,7 +58,7 @@
         </button>
     </div>
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Button Größen" %}</h2>
-    <div class="flex items-end space-x-2">
+    <div class="flex items-end gap-1">
         <button class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
             {% trans "Klick mich!" %}
         </button>
@@ -72,37 +72,37 @@
 </div>
 <div class="flex flex-col space-y-2">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Checkboxen" %}</h2>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="checkbox" id="english" name="lang" value="english">
         <span class="text-sm">{% trans "Englisch" %}</span>
     </label>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="checkbox" id="german" name="lang" value="german">
         <span class="text-sm">{% trans "Deutsch" %}</span>
     </label>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="checkbox" id="italian" name="lang" value="italian">
         <span class="text-sm">{% trans "Italienisch" %}</span>
     </label>
 </div>
 <div class="flex flex-col space-y-2">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Radio Buttons" %}</h2>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="radio" id="model1" name="radio-example1" value="BERT">
         <span class="text-sm">{% trans "BERT" %}</span>
     </label>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="radio" id="model2" name="radio-example1" value="PaLM 2">
         <span class="text-sm">{% trans "PaLM 2" %}</span>
     </label>
-    <label class="flex items-center space-x-1">
+    <label class="flex items-center gap-1">
         <input type="radio" id="model3" name="radio-example1" value="LLaMA 2" disabled>
         <span class="text-sm text-neutral-500">{% trans "LLaMA 2 (Momentan nicht verfügbar)" %}</span>
     </label>
 </div>
 <div class="flex flex-col space-y-2">
     <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Block Radio Buttons" %}</h2>
-    <div class="flex">
+    <div class="flex rtl:flex-row-reverse w-fit">
         <div>
             <input type="radio" id="view1" name="radio-example2" value="card" checked="true" class="peer hidden">
             <label for="view1" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border-2 rounded-l-sm text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">

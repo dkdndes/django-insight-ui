@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <nav role="navigation" aria-label="{% trans 'Breadcrumb-Navigation' %}">
-  <ol class="flex space-x-2">
+  <ol class="flex gap-2">
     {% for item in items %}
       <li >
         {% if not forloop.last %}
