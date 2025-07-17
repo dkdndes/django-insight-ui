@@ -1,22 +1,22 @@
 import asyncio
-import logging
-import random
 import time
 from datetime import datetime
+from typing import Any
+
+import structlog
 from asgiref.sync import sync_to_async
-from django.http import HttpResponse, JsonResponse
-from django.utils.translation import activate
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 
-def get_storybook_context():
-    """Hilfsfunktion für Index-Seiten Context"""
+def get_storybook_context() -> dict:
+    """Hilfsfunktion für Index-Seiten Context."""
     return {
         "nav_links": [
             {"text": _("Startseite"), "url": "/", "active": True},
@@ -42,12 +42,7 @@ def get_storybook_context():
                 _("Inaktiv"),
                 mark_safe('<button class="btn btn-sm">Bearbeiten</button>'),
             ],
-            [
-                "Tom Weber",
-                "tom@example.com",
-                _("Aktiv"),
-                mark_safe('<button class="btn btn-sm">Bearbeiten</button>'),
-            ],
+            ["Tom Weber", "tom@example.com", _("Aktiv"), mark_safe('<button class="btn btn-sm">Bearbeiten</button>')],
         ],
         "card_actions": [
             {"text": _("Mehr erfahren"), "url": "#", "type": "primary"},
@@ -85,11 +80,7 @@ def get_storybook_context():
             {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
         ],
         "confirm_modal_actions": [
-            {
-                "text": _("Ja, fortfahren"),
-                "type": "primary",
-                "onclick": 'alert("Aktion bestätigt!")',
-            },
+            {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
             {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
         ],
         "right_sidebar_items": [
@@ -100,16 +91,13 @@ def get_storybook_context():
             {"text": _("Einstellungen"), "icon": "⚙️"},
             {"text": _("Profil"), "icon": "👤"},
         ],
-        "sidebar_items": [
+        "left_sidebar_items": [
             {"text": _("Dashboard"), "url": "/", "icon": "📊"},
             {"text": _("Benutzer"), "url": "/users/", "icon": "👥"},
             {"text": _("Einstellungen"), "url": "/settings/", "icon": "⚙️"},
             {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
         ],
-        "scroll_items": [
-            {"title": f"Element {i}", "content": f"Inhalt für Element {i}"}
-            for i in range(1, 11)
-        ],
+        "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
         "htmx_form_fields": [
             {
                 "type": "text",
@@ -134,12 +122,7 @@ def get_storybook_context():
                 "required": False,
             },
         ],
-        "htmx_config": {
-            "url": "/api/form-submit/",
-            "method": "post",
-            "target": "#form-result",
-            "swap": "innerHTML",
-        },
+        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#form-result", "swap": "innerHTML"},
         "available_languages": [
             {"code": "de", "name": "Deutsch"},
             {"code": "en", "name": "English"},
@@ -152,8 +135,8 @@ def get_storybook_context():
 
 
 @require_http_methods(["GET"])
-def live_data_view(request):
-    """HTMX Endpoint für Live-Daten"""
+def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """HTMX Endpoint für Live-Daten."""
     current_time = datetime.now().strftime("%H:%M:%S")
     data = {
         "time": current_time,
@@ -164,8 +147,7 @@ def live_data_view(request):
     if request.headers.get("HX-Request"):
         # HTMX Request - nur den Inhalt zurückgeben
         html = render_to_string(
-            "insight_ui/components/live_content_partial.html",
-            {"data": data, "timestamp": current_time},
+            "insight_ui/components/live_content_partial.html", {"data": data, "timestamp": current_time}
         )
         return HttpResponse(html)
 
@@ -174,8 +156,8 @@ def live_data_view(request):
 
 
 @require_http_methods(["GET"])
-def more_items_view(request):
-    """HTMX Endpoint für Infinite Scroll"""
+def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """HTMX Endpoint für Infinite Scroll."""
     page = int(request.GET.get("page", 1))
     items_per_page = 5
 
@@ -184,11 +166,7 @@ def more_items_view(request):
     end = start + items_per_page
 
     new_items = [
-        {
-            "title": f"Element {i}",
-            "content": f"Dynamisch geladener Inhalt für Element {i}",
-        }
-        for i in range(start, end)
+        {"title": f"Element {i}", "content": f"Dynamisch geladener Inhalt für Element {i}"} for i in range(start, end)
     ]
 
     has_next = page < 5  # Simuliere max 5 Seiten
@@ -197,117 +175,81 @@ def more_items_view(request):
     if request.headers.get("HX-Request"):
         html = render_to_string(
             "insight_ui/components/infinite_scroll_items.html",
-            {
-                "items": new_items,
-                "next_url": next_url,
-                "has_next": has_next,
-                "page": page + 1,
-            },
+            {"items": new_items, "next_url": next_url, "has_next": has_next, "page": page + 1},
         )
         return HttpResponse(html)
 
-    return JsonResponse(
-        {"items": new_items, "has_next": has_next, "next_url": next_url}
-    )
+    return JsonResponse({"items": new_items, "has_next": has_next, "next_url": next_url})
 
 
 @require_http_methods(["POST"])
-async def htmx_form_submit(request):
-    """HTMX Endpoint für Formular-Übermittlung mit asynchronem Logging"""
-    logger = logging.getLogger(__name__)
-
+async def htmx_form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """HTMX Endpoint für Formular-Übermittlung mit asynchronem Logging."""
     if request.headers.get("HX-Request"):
         # Debug: Alle POST-Daten loggen
-        post_data = await sync_to_async(lambda: dict(request.POST))()
         content_type = request.content_type
 
-        print(f"[HTMX FORM] Empfangene POST-Daten: {request.POST}")
-        print(f"[HTMX FORM] Content-Type: {content_type}")
-        logger.info(f"Empfangene POST-Daten: {request.POST}")
-        logger.info(f"Content-Type: {content_type}")
+        logger.info("Empfangene POST-Daten: %s", request.POST)
+        logger.info("Content-Type: %s", content_type)
 
         # Eingabedaten extrahieren
-        name = request.POST.get("htmx_name", "")
-        email = request.POST.get("htmx_email", "")
+        name = request.POST.get("name", "")
+        email = request.POST.get("email", "")
         message = request.POST.get("message", "")
 
-        print(
-            f"[HTMX FORM] Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'"
-        )
-        logger.info(
-            f"Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'"
-        )
+        logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
 
         # Asynchrones Logging der Eingabedaten
-        await log_form_input_async(name, email, message, logger)
+        await log_form_input_async(name, email, message)
 
         # Einfache Validierung
         errors = {}
         if not name:
-            errors["htmx_name"] = _("Name ist erforderlich")
+            errors["name"] = _("Name ist erforderlich")
         if not email:
-            errors["htmx_email"] = _("E-Mail ist erforderlich")
+            errors["email"] = _("E-Mail ist erforderlich")
         elif "@" not in email:
-            errors["htmx_email"] = _("Ungültige E-Mail-Adresse")
+            errors["email"] = _("Ungültige E-Mail-Adresse")
 
         if errors:
-            logger.warning(f"Formular-Validierungsfehler: {errors}")
+            logger.warning("Formular-Validierungsfehler: %s", errors)
             # Fehler zurückgeben
             html = await sync_to_async(render_to_string)(
-                "insight_ui/components/form_errors.html",
-                {"errors": errors, "type": "error"},
+                "insight_ui/components/form_errors.html", {"errors": errors, "type": "error"}
             )
-            response = HttpResponse(html, status=400)
-            return response
+            return HttpResponse(html, status=400)
 
         # Erfolg simulieren mit asynchroner Verarbeitung
         await asyncio.sleep(1)  # Simuliere asynchrone Verarbeitungszeit
 
-        print("[HTMX FORM] Formular erfolgreich verarbeitet")
         logger.info("Formular erfolgreich verarbeitet")
         success_html = await sync_to_async(render_to_string)(
             "insight_ui/components/form_success.html",
-            {
-                "message": _("Formular erfolgreich übermittelt!"),
-                "name": name,
-                "email": email,
-                "type": "success",
-            },
+            {"message": _("Formular erfolgreich übermittelt!"), "name": name, "email": email, "type": "success"},
         )
         # Erfolgreiche Antwort ohne Redirect - bleibt auf der Seite
-        response = HttpResponse(success_html)
-        return response
+        return HttpResponse(success_html)
 
     logger.warning("Nicht-HTMX Request an htmx_form_submit erhalten")
-    response = JsonResponse({"error": _("Nur HTMX-Requests erlaubt")}, status=400)
-    return response
+    return JsonResponse({"error": _("Nur HTMX-Requests erlaubt")}, status=400)
 
 
 @require_http_methods(["POST"])
-def normal_form_submit(request):
-    """Normale Formular-Übermittlung mit synchronem Logging"""
-    logger = logging.getLogger(__name__)
-
+def normal_form_submit(request: HttpRequest) -> HttpResponse:
+    """Normale Formular-Übermittlung mit synchronem Logging."""
     # Debug: Alle POST-Daten loggen
-    print(f"[NORMAL FORM] Empfangene POST-Daten: {dict(request.POST)}")
-    print(f"[NORMAL FORM] Content-Type: {request.content_type}")
-    logger.info(f"Empfangene POST-Daten: {dict(request.POST)}")
-    logger.info(f"Content-Type: {request.content_type}")
+    logger.info("Empfangene POST-Daten: %s", dict(request.POST))
+    logger.info("Content-Type: %s", request.content_type)
 
     # Eingabedaten extrahieren
     name = request.POST.get("name", "")
     email = request.POST.get("email", "")
     message = request.POST.get("message", "")
 
-    print(
-        f"[NORMAL FORM] Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'"
-    )
-    logger.info(
-        f"Extrahierte Werte - Name: '{name}', Email: '{email}', Message: '{message}'"
-    )
+    logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
 
     # Synchrones Logging der Eingabedaten
-    log_form_input_sync(name, email, message, logger)
+    log_form_input_sync(name, email, message)
 
     # Einfache Validierung
     errors = {}
@@ -319,17 +261,16 @@ def normal_form_submit(request):
         errors["email"] = _("Ungültige E-Mail-Adresse")
 
     if errors:
-        logger.warning(f"Formular-Validierungsfehler: {errors}")
+        logger.warning("Formular-Validierungsfehler: %s", errors)
         # Bei Fehlern die komplette Seite mit Fehlermeldungen rendern
         context = get_storybook_context()
         context["form_errors"] = errors
         context["form_data"] = {"name": name, "email": email, "message": message}
-        return render(request, "index.html", context)
+        return render(request, "insight_ui/storybook.html", context)
 
     # Erfolg simulieren mit synchroner Verarbeitung
     time.sleep(1)  # Simuliere synchrone Verarbeitungszeit
 
-    print("[NORMAL FORM] Normales Formular erfolgreich verarbeitet")
     logger.info("Normales Formular erfolgreich verarbeitet")
 
     # Bei erfolgreichem Submit die komplette Seite mit Erfolgsmeldung rendern
@@ -341,122 +282,72 @@ def normal_form_submit(request):
         "type": "success",
     }
 
-    return render(request, "index.html", context)
+    return render(request, "insight_ui/storybook.html", context)
 
 
-def log_form_input_sync(name, email, message, logger) -> None:
+def log_form_input_sync(name: str, email: str, message: str) -> None:
     """
-    Synchrone Funktion zum Loggen der Formular-Eingaben
+    Synchrone Funktion zum Loggen der Formular-Eingaben.
 
     Args:
+    ----
         name (str): Name des Benutzers
         email (str): E-Mail-Adresse des Benutzers
         message (str): Nachricht des Benutzers
         logger: Logger-Instanz
+
     """
     # Simuliere synchrone Verarbeitung
     time.sleep(0.1)
 
-    # Detailliertes Logging der Eingabedaten - sowohl print als auch logger
-    separator = "=" * 50
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    print(separator)
-    print("NORMALES Kontaktformular - Neue Eingabe erhalten")
-    print(separator)
-    print(f"Zeitstempel: {timestamp}")
-    print(f"Name: {name}")
-    print(f"E-Mail: {email}")
-    print(f"Nachricht: {message}")
-    print(f"Name-Länge: {len(name)} Zeichen")
-    print(f"E-Mail-Länge: {len(email)} Zeichen")
-    print(f"Nachricht-Länge: {len(message)} Zeichen")
-
+    # Detailliertes Logging der Eingabedaten
+    separator = "=" * 30
     logger.info(separator)
     logger.info("NORMALES Kontaktformular - Neue Eingabe erhalten")
     logger.info(separator)
-    logger.info(f"Zeitstempel: {timestamp}")
-    logger.info(f"Name: {name}")
-    logger.info(f"E-Mail: {email}")
-    logger.info(f"Nachricht: {message}")
-    logger.info(f"Name-Länge: {len(name)} Zeichen")
-    logger.info(f"E-Mail-Länge: {len(email)} Zeichen")
-    logger.info(f"Nachricht-Länge: {len(message)} Zeichen")
-
-    # Zusätzliche Validierungsinfos
-    if "@" in email:
-        email_parts = email.split("@")
-        domain = email_parts[1] if len(email_parts) > 1 else "Unbekannt"
-        print(f"E-Mail Domain: {domain}")
-        logger.info(f"E-Mail Domain: {domain}")
-
-    print(separator)
+    logger.info("Name: %s", name)
+    logger.info("E-Mail: %s", email)
+    logger.info("Nachricht: %s", message)
     logger.info(separator)
 
     # Simuliere weitere synchrone Verarbeitung
     time.sleep(0.05)
-    print("Synchrones Logging abgeschlossen")
     logger.debug("Synchrones Logging abgeschlossen")
 
 
-async def log_form_input_async(name, email, message, logger) -> None:
+async def log_form_input_async(name: str, email: str, message: str) -> None:
     """
-    Asynchrone Funktion zum Loggen der Formular-Eingaben
+    Asynchrone Funktion zum Loggen der Formular-Eingaben.
 
     Args:
+    ----
         name (str): Name des Benutzers
         email (str): E-Mail-Adresse des Benutzers
         message (str): Nachricht des Benutzers
         logger: Logger-Instanz
+
     """
     # Simuliere asynchrone Verarbeitung
     await asyncio.sleep(0.1)
 
-    # Detailliertes Logging der Eingabedaten - sowohl print als auch logger
-    separator = "=" * 50
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    print(separator)
-    print("HTMX Kontaktformular - Neue Eingabe erhalten")
-    print(separator)
-    print(f"Zeitstempel: {timestamp}")
-    print(f"Name: {name}")
-    print(f"E-Mail: {email}")
-    print(f"Nachricht: {message}")
-    print(f"Name-Länge: {len(name)} Zeichen")
-    print(f"E-Mail-Länge: {len(email)} Zeichen")
-    print(f"Nachricht-Länge: {len(message)} Zeichen")
-
+    # Detailliertes Logging der Eingabedaten
+    separator = "=" * 30
     logger.info(separator)
     logger.info("HTMX Kontaktformular - Neue Eingabe erhalten")
     logger.info(separator)
-    logger.info(f"Zeitstempel: {timestamp}")
-    logger.info(f"Name: {name}")
-    logger.info(f"E-Mail: {email}")
-    logger.info(f"Nachricht: {message}")
-    logger.info(f"Name-Länge: {len(name)} Zeichen")
-    logger.info(f"E-Mail-Länge: {len(email)} Zeichen")
-    logger.info(f"Nachricht-Länge: {len(message)} Zeichen")
-
-    # Zusätzliche Validierungsinfos
-    if "@" in email:
-        email_parts = email.split("@")
-        domain = email_parts[1] if len(email_parts) > 1 else "Unbekannt"
-        print(f"E-Mail Domain: {domain}")
-        logger.info(f"E-Mail Domain: {domain}")
-
-    print(separator)
+    logger.info("Name: %s", name)
+    logger.info("E-Mail: %s", email)
+    logger.info("Nachricht: %s", message)
     logger.info(separator)
 
     # Simuliere weitere asynchrone Verarbeitung
     await asyncio.sleep(0.05)
-    print("Asynchrones Logging abgeschlossen")
     logger.debug("Asynchrones Logging abgeschlossen")
 
 
 @require_http_methods(["GET"])
-def component_demo_view(request, component_name):
-    """Einzelne Storybook-Demo für HTMX"""
+def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse | JsonResponse:
+    """Einzelne Storybook-Demo für HTMX."""
     component_templates = {
         "alert": "insight_ui/components/alert.html",
         "card": "insight_ui/components/card.html",
@@ -483,21 +374,15 @@ def component_demo_view(request, component_name):
         "insight_ui/component_demo.html",
         {
             "component_name": component_name,
-            "component_html": render_to_string(
-                component_templates[component_name], context
-            ),
+            "component_html": render_to_string(component_templates[component_name], context),
         },
     )
 
 
-def get_component_context(component_name):
-    """Hilfsfunktion für Komponenten-Beispieldaten"""
+def get_component_context(component_name: str) -> Any:
+    """Hilfsfunktion für Komponenten-Beispieldaten."""
     contexts = {
-        "alert": {
-            "message": _("Dies ist eine Beispiel-Benachrichtigung"),
-            "type": "info",
-            "dismissible": True,
-        },
+        "alert": {"message": _("Dies ist eine Beispiel-Benachrichtigung"), "type": "info", "dismissible": True},
         "card": {
             "title": _("Beispiel-Karte"),
             "subtitle": _("Untertitel"),
@@ -528,16 +413,9 @@ def get_component_context(component_name):
             "title": _("Beispiel-Formular"),
             "fields": [
                 {"type": "text", "name": "name", "label": _("Name"), "required": True},
-                {
-                    "type": "email",
-                    "name": "email",
-                    "label": _("E-Mail"),
-                    "required": True,
-                },
+                {"type": "email", "name": "email", "label": _("E-Mail"), "required": True},
             ],
-            "actions": [
-                {"text": _("Absenden"), "type": "submit", "style": "primary"},
-            ],
+            "actions": [{"text": _("Absenden"), "type": "submit", "style": "primary"}],
         },
         "sidebar": {
             "title": _("Navigation"),
@@ -547,10 +425,7 @@ def get_component_context(component_name):
             ],
         },
         "breadcrumbs": {
-            "items": [
-                {"text": _("Startseite"), "url": "/"},
-                {"text": _("Komponenten"), "url": None, "active": True},
-            ]
+            "items": [{"text": _("Startseite"), "url": "/"}, {"text": _("Komponenten"), "url": None, "active": True}]
         },
         "navbar": {
             "brand": "Demo App",
@@ -563,9 +438,9 @@ def get_component_context(component_name):
 
     return contexts.get(component_name, {})
 
-def storybook_view(request):
-    """Hauptseite mit allen Insight UI Komponenten"""
 
+def storybook_view(request: HttpRequest) -> HttpResponse:
+    """Hauptseite mit allen Insight UI Komponenten."""
     # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
     if request.method == "POST":
         return normal_form_submit(request)
@@ -579,53 +454,59 @@ def storybook_view(request):
     context["table_headers"] = headers
     context["table_rows"] = rows
     context["toggle_current_view"] = "table"
-    
-    return render(request, "index.html", context)
 
-def generate_random_payload():
+    return render(request, "insight_ui/storybook.html", context)
+
+
+def generate_random_payload() -> list:
     """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
-    count = random.randint(3, 7)  # zufällige Anzahl zwischen 3 und 7
+    count = 5
     entries = []
     for i in range(1, count + 1):
-        entries.append({
-            "title": f"Element {i}",
-            "subtitle": f"Untertitel {i}",
-            "content": f"Dies ist der Inhalt von Eintrag {i}.",
-            "actions": [
-                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                {"text": "Teilen", "url": "#", "type": "secondary"},
-            ],
-            "name": f"Name {i}",
-            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
-            "action_link": f"<a href='#'>Details {i}</a>",
-        })
+        entries.append(
+            {
+                "title": f"Element {i}",
+                "subtitle": f"Untertitel {i}",
+                "content": f"Dies ist der Inhalt von Eintrag {i}.",
+                "actions": [
+                    {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                    {"text": "Teilen", "url": "#", "type": "secondary"},
+                ],
+                "name": f"Name {i}",
+                "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
+                "action_link": f"<a href='#' class='underline text-blue-500 hover:text-blue-300'>Details {i}</a>",
+            }
+        )
     return entries
 
-def map_payload_to_cards(payload):
+
+def map_payload_to_cards(payload: list) -> list:
     """Mappt Payload-Daten auf Karten-Darstellung."""
     elements = []
     for item in payload:
-        elements.append({
-            "title": item["title"],
-            "subtitle": item["subtitle"],
-            "content": item["content"],
-            "actions": item["actions"],
-        })
+        elements.append(
+            {
+                "title": item["title"],
+                "subtitle": item["subtitle"],
+                "content": item["content"],
+                "actions": item["actions"],
+            }
+        )
     return elements
 
-def map_payload_to_table(payload):
+
+def map_payload_to_table(payload: list) -> tuple[list[str], list]:
     """Mappt Payload-Daten auf Tabellen-Darstellung."""
-    headers = ["title", "status", "content", "action_link"]
+    headers = ["Title", "Status", "Content", "URL"]
     rows = []
     for item in payload:
         content = item["content"]
-        if len(content) > 10:
-            content = content[:10] + "..."
         rows.append([item["title"], item["status"], content, item["action_link"]])
     return headers, rows
 
+
 @require_GET
-def toggle_view(request):
+def toggle_view(request: HttpRequest) -> HttpResponse:
     """
     Toggle between table and card views, based on the `view` GET parameter.
     Loads and maps payload data to the appropriate format.
@@ -634,7 +515,7 @@ def toggle_view(request):
     valid_views = {"table", "card"}
 
     if view not in valid_views:
-        logger.warning(f"log: toggle_view – Ungültiger 'view'-Parameter empfangen: {view}. Fallback auf 'table'.")
+        logger.warning("log: toggle_view - Ungültiger 'view'-Parameter empfangen: %s. Fallback auf 'table'.", view)
         view = "table"
 
     # Generate the base payload
@@ -643,12 +524,12 @@ def toggle_view(request):
 
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
-        logger.info("log: toggle_view – Kartenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view_cards.html", context)
+        logger.info("log: toggle_view - Kartenansicht ausgewählt")
+        return render(request, "insight_ui/components/toggle_view.html", context)
 
-    else:  # default: table view
-        headers, rows = map_payload_to_table(payload)
-        context["table_headers"] = headers
-        context["table_rows"] = rows
-        logger.info("log: toggle_view – Tabellenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view_table.html", context)
+    # default: table view
+    headers, rows = map_payload_to_table(payload)
+    context["table_headers"] = headers
+    context["table_rows"] = rows
+    logger.info("log: toggle_view - Tabellenansicht ausgewählt")
+    return render(request, "insight_ui/components/toggle_view.html", context)

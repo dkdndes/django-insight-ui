@@ -1,0 +1,141 @@
+{% load i18n %}
+
+<div class="space-y-4">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Buttons" %}</h2>
+    <div class="flex items-center space-x-1">
+        <button class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+            {% trans "Primary" %}
+        </button>
+        <button class="bg-insight-secondary rounded-sm text-white px-6 py-2 hover:bg-insight-secondary-hover active:bg-insight-secondary-active transition">
+            {% trans "Secondary" %}
+        </button>
+        <button class="bg-insight-success rounded-sm text-white px-6 py-2 hover:bg-insight-success-hover active:bg-insight-success-active transition">
+            {% trans "Success" %}
+        </button>
+        <button class="bg-insight-warning rounded-sm text-white px-6 py-2 hover:bg-insight-warning-hover active:bg-insight-warning-active transition">
+            {% trans "Warning" %}
+        </button>
+        <button class="bg-insight-error rounded-sm text-white px-6 py-2 hover:bg-insight-error-hover active:bg-insight-error-active transition">
+            {% trans "Error" %}
+        </button>
+        <button class="bg-insight-info rounded-sm text-white px-6 py-2 hover:bg-insight-info-hover active:bg-insight-info-active transition">
+            {% trans "Info" %}
+        </button>
+        <button disabled class="bg-neutral-300 dark:bg-neutral-600 rounded-sm text-neutral-400 px-6 py-2">
+            {% trans "Disabled" %}
+        </button>
+        <button aria-label="{% trans 'Schließen' %}" class="bg-white h-fit rounded-sm shadow p-3 text-insight-text-primary hover:bg-neutral-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z" />
+            </svg>
+        </button>
+        <a href="#" class="underline text-blue-500 px-6 py-2 hover:text-blue-300">
+            {% trans "Link" %}
+        </a>
+    </div>
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Outline Buttons" %}</h2>
+    <div class="flex space-x-1">
+        <button class="border-insight-primary border-2 rounded-sm text-insight-primary px-6 py-2 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">
+            {% trans "Primary" %}
+        </button>
+        <button class="border-insight-secondary border-2 rounded-sm text-insight-secondary px-6 py-2 hover:text-white hover:bg-insight-secondary-hover active:bg-insight-secondary-active hover:border-insight-secondary-hover active:border-insight-secondary-active transition">
+            {% trans "Secondary" %}
+        </button>
+        <button class="border-insight-success border-2 rounded-sm text-insight-success px-6 py-2 hover:text-white hover:bg-insight-success-hover active:bg-insight-success-active hover:border-insight-success-hover active:border-insight-success-active transition">
+            {% trans "Success" %}
+        </button>
+        <button class="border-insight-warning border-2 rounded-sm text-insight-warning px-6 py-2 hover:text-white hover:bg-insight-warning-hover active:bg-insight-warning-active hover:border-insight-warning-hover active:border-insight-warning-active transition">
+            {% trans "Warning" %}
+        </button>
+        <button class="border-insight-error border-2 rounded-sm text-insight-error px-6 py-2 hover:text-white hover:bg-insight-error-hover active:bg-insight-error-active hover:border-insight-error-hover active:border-insight-error-active transition">
+            {% trans "Error" %}
+        </button>
+        <button class="border-insight-info border-2 rounded-sm text-insight-info px-6 py-2 hover:text-white hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition">
+            {% trans "Info" %}
+        </button>
+        <button disabled class="border-neutral-300 dark:border-neutral-600 border-2 rounded-sm text-neutral-400 px-6 py-2">
+            {% trans "Disabled" %}
+        </button>
+    </div>
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Button Größen" %}</h2>
+    <div class="flex items-end space-x-2">
+        <button class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+            {% trans "Klick mich!" %}
+        </button>
+        <button class="bg-insight-primary rounded-sm text-white text-sm px-5 py-1.5 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+            {% trans "Klick mich!" %}
+        </button>
+        <button class="bg-insight-primary rounded-sm text-white text-xs px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+            {% trans "Klick mich!" %}
+        </button>
+    </div>
+</div>
+<div class="flex flex-col space-y-2">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Checkboxen" %}</h2>
+    <label class="flex items-center space-x-1">
+        <input type="checkbox" id="english" name="lang" value="english">
+        <span class="text-sm">{% trans "Englisch" %}</span>
+    </label>
+    <label class="flex items-center space-x-1">
+        <input type="checkbox" id="german" name="lang" value="german">
+        <span class="text-sm">{% trans "Deutsch" %}</span>
+    </label>
+    <label class="flex items-center space-x-1">
+        <input type="checkbox" id="italian" name="lang" value="italian">
+        <span class="text-sm">{% trans "Italienisch" %}</span>
+    </label>
+</div>
+<div class="flex flex-col space-y-2">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Radio Buttons" %}</h2>
+    <label class="flex items-center space-x-1">
+        <input type="radio" id="model1" name="radio-example1" value="BERT">
+        <span class="text-sm">{% trans "BERT" %}</span>
+    </label>
+    <label class="flex items-center space-x-1">
+        <input type="radio" id="model2" name="radio-example1" value="PaLM 2">
+        <span class="text-sm">{% trans "PaLM 2" %}</span>
+    </label>
+    <label class="flex items-center space-x-1">
+        <input type="radio" id="model3" name="radio-example1" value="LLaMA 2" disabled>
+        <span class="text-sm text-neutral-500">{% trans "LLaMA 2 (Momentan nicht verfügbar)" %}</span>
+    </label>
+</div>
+<div class="flex flex-col space-y-2">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Block Radio Buttons" %}</h2>
+    <div class="flex">
+        <div>
+            <input type="radio" id="view1" name="radio-example2" value="card" checked="true" class="peer hidden">
+            <label for="view1" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border-2 rounded-l-sm text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clip-rule="evenodd" />
+                </svg>
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="view2" name="radio-example2" value="table" class="peer hidden">
+            <label for="view2" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border-y-2 text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </label>
+        </div>
+        <div>
+            <input type="radio" id="view3" name="radio-example2" value="carousel" class="peer hidden">
+            <label for="view3" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border-2 rounded-r-sm text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
+                    <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
+                    <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
+                </svg>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="flex flex-col space-y-2">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Switches / Toggle-Buttons" %}</h2>
+    <span class="text-neutral-400 italic">Todo</span>
+</div>
+<div class="flex flex-col space-y-2">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Range-Slider" %}</h2>
+    <span class="text-neutral-400 italic">Todo</span>
+</div>

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div 
+<div
   class="insight-infinite-scroll"
   {% if options.id %}id="{{ options.id }}"{% endif %}
   hx-get="{{ next_url }}"
@@ -10,16 +10,17 @@
   data-threshold="{{ threshold|default:100 }}"
   data-next-url="{{ next_url }}"
   hx-ext="infinite-scroll,progressive-enhancement">
-  
+
   <!-- Existing Content -->
   <div class="insight-infinite-scroll__content">
     {% for item in items %}
-      <div class="insight-infinite-scroll__item">
-        {{ item|safe }}
-      </div>
+      <div class="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+        <p class="text-gray-600 dark:text-gray-300">{{ item.content }}</p>
+    </div>
     {% endfor %}
   </div>
-  
+
   <!-- Loading Indicator -->
   <div class="insight-infinite-scroll__loading htmx-spinner" style="display: none;">
     <div class="flex items-center justify-center py-4">
@@ -27,7 +28,7 @@
       <span class="ml-2 text-sm text-gray-600">{% trans 'Weitere Inhalte werden geladen...' %}</span>
     </div>
   </div>
-  
+
   <!-- End Indicator -->
   {% if not has_next %}
     <div class="insight-infinite-scroll__end">

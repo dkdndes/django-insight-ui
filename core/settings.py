@@ -1,14 +1,13 @@
-"""
-Django-Einstellungen für Tests.
-"""
+"""Django-Einstellungen für Tests."""
 
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-test-key-not-for-production"
+SECRET_KEY = "django-insecure-test-key-not-for-production"  # noqa: S105
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -54,20 +53,15 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
-            ],
+            ]
         },
-    },
+    }
 ]
 
 ASGI_APPLICATION = "core.asgi.application"
 
 # Database
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": os.path.join(BASE_DIR, "db.sqlite3")}}
 
 # Internationalization
 LANGUAGE_CODE = "de-de"
@@ -86,9 +80,7 @@ LANGUAGES = [
     ("zh", "中文"),
 ]
 
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, "insight_ui", "locale"),
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
@@ -103,12 +95,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Insight UI Einstellungen
 INSIGHT_UI = {
     "theme": "light",
-    "branding": {
-        "name": "Django Insight UI",
-        "logo": None,
-    },
-    "features": {
-        "theme_toggle": True,
-        "language_selector": True,
-    },
+    "branding": {"name": "Django Insight UI", "logo": None},
+    "features": {"theme_toggle": True, "language_selector": True},
 }

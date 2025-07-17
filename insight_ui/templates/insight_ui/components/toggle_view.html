@@ -9,39 +9,50 @@
   The current view is determined by the `current_view` context variable.
 {% endcomment %}
 
-<section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
-      <div class="flex items-center space-x-2">
-        <button
-          hx-get="{% url 'toggle_view' %}?view=table"                                                                   
-          hx-target="#switchable-view"                                                                                  
-          hx-swap="outerHTML"                                                                                           
-          class="px-3 py-1 rounded border text-sm font-medium"                                                          
-          {% if current_view == 'table' %} disabled aria-pressed="true"{% endif %}                                      
-        >                                                                                                               
-          {% trans 'Tabelle' %}                                                                                         
-        </button>  
-        <button
+
+  <div id="switchable-view">
+    <div class="flex justify-end mb-4">
+      <div>
+        <input
+          type="radio" id="card_view" name="view" value="card" {% if current_view == 'card' %}checked="true"{% endif %}
           hx-get="{% url 'toggle_view' %}?view=card"
           hx-target="#switchable-view"
           hx-swap="outerHTML"
-          class="px-3 py-1 rounded border text-sm font-medium"
-          {% if current_view == 'card' %} disabled aria-pressed="true"{% endif %}
+          class="peer hidden"
         >
-          {% trans 'Karten' %}
-        </button>
+        <label for="card_view" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border rounded-l-sm text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+            <path fill-rule="evenodd" d="M3 6a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3v2.25a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3V6ZM3 15.75a3 3 0 0 1 3-3h2.25a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-2.25Zm9.75 0a3 3 0 0 1 3-3H18a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-2.25a3 3 0 0 1-3-3v-2.25Z" clip-rule="evenodd" />
+          </svg>
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio" id="table_view" name="view" value="table" {% if current_view == 'table' %}checked="true"{% endif %}
+          hx-get="{% url 'toggle_view' %}?view=table"
+          hx-target="#switchable-view"
+          hx-swap="outerHTML"
+          class="peer hidden"
+        >
+        <label for="table_view" class="flex peer-checked:bg-insight-primary-active peer-checked:text-white border-insight-primary border rounded-r-sm text-insight-primary px-4 py-1 hover:text-white hover:bg-insight-primary-hover active:bg-insight-primary-active transition">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+          </svg>
+        </label>
       </div>
     </div>
-  
-    <!-- Bereich, der ersetzt wird -->
-    <div id="switchable-view">
+
+    <div>
       {% if current_view == 'table' %}
-        {% include 'insight_ui/components/toggle_view_table.html' %}
+        {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" actions=table.actions %}
       {% elif current_view == 'card' %}
-        {% include 'insight_ui/components/toggle_view_card.html' %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {% for card in cards %}
+            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
+          {% endfor %}
+        </div>
       {% else %}
-        {% include 'insight_ui/components/toggle_view_table.html' %}
+        {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" actions=table.actions %}
       {% endif %}
     </div>
-  </section>
+  </div>

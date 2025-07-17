@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
 
-    <!-- Webmanifest für Favicon -->                                                                                                                           
-    <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">                                                                            
+    <!-- Webmanifest für Favicon -->
+    <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
     <link rel="icon" href="{% static 'insight_ui/favicon/favicon.ico' %}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{% static 'insight_ui/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'insight_ui/favicon/favicon-32x32.png' %}">
@@ -40,29 +40,6 @@
     <meta name="twitter:site" content="@dkdndes">
     <meta name="twitter:creator" content="@dkdndes">
 
-    <!-- TailwindCSS CDN and colour palette for all Insight UI -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'insight-primary': '#3b82f6',
-                        'insight-secondary': '#6b7280',
-                        'insight-success': '#10b981',
-                        'insight-warning': '#f59e0b',
-                        'insight-error': '#ef4444',
-                        'insight-info': '#06b6d4',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Alpine.js CDN -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <!-- HTMX CDN -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
@@ -70,30 +47,34 @@
     <!-- Insight UI Modular Utils  -->
     <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
 
+    <!-- TailwindCSS for development -->
+    <link rel="stylesheet" href="{% static 'insight_ui/css/tailwind.css' %}">
+
     <!-- Insight UI CSS -->
-    <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
     {% endif %}
+    {% endcomment %}
 
     {% block extra_head %}{% endblock %}
 </head>
-<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %} 
-    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 min-h-screen flex flex-col"
+<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %}
+    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 
-    <div class="navbar-container">
+    <div class="">
     {% block navbar %}
     {% endblock navbar %}
     </div>
 
-    <div class="sidebar-container">
+    <div class="">
         {% block sidebar_right %}{% endblock sidebar_right %}
         {% block sidebar_left %}{% endblock sidebar_left %}
     </div>
 
     <div class="flex flex-1 relative">
-        <main id="main-content" class="flex-1 p-6 max-w-7xl mx-auto">
+        <main id="main-content" class="flex-1 mx-auto">
             {% block content %}{% endblock %}
         </main>
     </div>

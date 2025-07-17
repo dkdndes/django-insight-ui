@@ -25,9 +25,9 @@ Laden Sie die Template-Tags in Ihren Templates:
 Mit Links:
 
 ```django
-{% navbar 
-   brand="Meine App" 
-   links=nav_links 
+{% navbar
+   brand="Meine App"
+   links=nav_links
 %}
 ```
 
@@ -65,16 +65,16 @@ Hier ist ein vollständiges Beispiel für ein Template:
 </head>
 <body>
     {% navbar brand="Meine App" links=nav_links %}
-    
+
     <main id="main-content">
         <div class="container">
             {% alert message="Willkommen bei Insight UI!" type="success" %}
-            
+
             <h1>Willkommen bei meiner App</h1>
             <p>Dies ist ein Beispiel für die Verwendung von Django Insight UI.</p>
         </div>
     </main>
-    
+
     <script src="{% static 'insight_ui/js/insight-ui.js' %}"></script>
 </body>
 </html>

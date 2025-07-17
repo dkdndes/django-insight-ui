@@ -7,7 +7,7 @@ InsightUI.WebSocket = {
   init: function() {
     console.log('🔌 InsightUI.WebSocket.init() - Starte WebSocket Handler Initialisierung');
     console.log('🔍 Aktueller Zeitstempel:', new Date().toISOString());
-    
+
     // Warte bis HTMX vollständig geladen ist
     if (typeof htmx === 'undefined') {
       console.warn('⚠️ HTMX noch nicht geladen, warte 100ms...');
@@ -16,25 +16,16 @@ InsightUI.WebSocket = {
     }
     console.log('✅ HTMX gefunden, Version:', htmx.version || 'unbekannt');
     console.log('🔍 HTMX Objekt:', htmx);
+    console.log('🔍 HTMX Config:', htmx.config);
 
     // Detaillierte Extension-Prüfung
-    console.log('🔍 HTMX Config:', htmx.config);
-    console.log('🔍 HTMX Extensions:', htmx.config.extensions);
-    console.log('🔍 HTMX Extensions Array:', Array.isArray(htmx.config.extensions) ? htmx.config.extensions : 'Nicht Array');
-    
-    // Prüfe ob WebSocket Extension geladen ist
-    const hasWsExtension = htmx.config.extensions && htmx.config.extensions.includes('ws');
-    console.log('🔍 WebSocket Extension Check:', hasWsExtension);
-    
-    if (!hasWsExtension) {
-      console.error('❌ HTMX WebSocket Extension NICHT geladen!');
-      console.log('💡 Stelle sicher, dass ws.js geladen ist');
-      console.log('💡 Verfügbare Extensions:', htmx.config.extensions);
-      console.warn('⚠️ WebSocket Extension nicht verfügbar, warte 200ms...');
+    if (!htmx.config.extensions) {
+      console.warn('⚠️ HTMX  Extensions nicht verfügbar, re-initialisiere in 200ms...');
       setTimeout(() => this.init(), 200);
       return;
     } else {
-      console.log('✅ HTMX WebSocket Extension erkannt');
+      console.log('✅ HTMX Extensions erkannt');
+      console.log('🔍 HTMX Extensions:', htmx.config.extensions);
     }
 
     // Prüfe ob WebSocket im Browser verfügbar ist
@@ -47,7 +38,7 @@ InsightUI.WebSocket = {
     // Prüfe WebSocket-Komponenten auf der Seite
     const wsComponents = document.querySelectorAll('[hx-ext*="ws"]');
     console.log(`📊 ${wsComponents.length} WebSocket-Komponente(n) gefunden:`);
-    
+
     wsComponents.forEach((component, index) => {
       const id = component.id || `ws-component-${index}`;
       const wsUrl = component.getAttribute('ws-connect') || 'nicht gesetzt';
@@ -80,7 +71,7 @@ InsightUI.WebSocket = {
         url: evt.detail?.socketWrapper?.socket?.url || 'unbekannt',
         timestamp: new Date().toISOString()
       });
-      
+
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
@@ -101,7 +92,7 @@ InsightUI.WebSocket = {
         wasClean: evt.detail?.wasClean || false,
         timestamp: new Date().toISOString()
       });
-      
+
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
@@ -119,7 +110,7 @@ InsightUI.WebSocket = {
         message: evt.detail?.message || 'unbekannt',
         timestamp: new Date().toISOString()
       });
-      
+
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {
@@ -137,13 +128,13 @@ InsightUI.WebSocket = {
         message: evt.detail?.message || 'keine Nachricht',
         timestamp: new Date().toISOString()
       });
-      
+
       // Prüfe ob die Nachricht HTML enthält (für HTMX OOB Swaps)
       if (evt.detail?.message && evt.detail.message.trim().startsWith('<')) {
         console.log('📄 HTML-Nachricht erkannt, HTMX verarbeitet automatisch');
         return; // HTMX verarbeitet HTML automatisch
       }
-      
+
       // Verarbeite JSON-Nachrichten manuell
       try {
         const wsElement = evt.target;
@@ -161,12 +152,12 @@ InsightUI.WebSocket = {
               </div>
             </div>
           `;
-          
+
           // Füge neue Nachricht am Anfang hinzu
           const tempDiv = document.createElement('div');
           tempDiv.innerHTML = formattedData;
           outputElement.insertBefore(tempDiv.firstElementChild, outputElement.firstElementChild);
-          
+
           // Begrenze die Anzahl der angezeigten Nachrichten
           const messages = outputElement.querySelectorAll('div.mb-2');
           if (messages.length > 10) {
@@ -195,7 +186,7 @@ InsightUI.WebSocket = {
         attempt: evt.detail?.attempt || 'unbekannt',
         timestamp: new Date().toISOString()
       });
-      
+
       const wsElement = evt.target;
       const statusElement = wsElement.querySelector('[id$="-status"]');
       if (statusElement) {

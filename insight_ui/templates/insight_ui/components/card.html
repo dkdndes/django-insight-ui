@@ -1,34 +1,34 @@
 {% load i18n %}
 
-<div class="insight-card insight-card--{{ theme }}" {% if options.id %}id="{{ options.id }}"{% endif %}>
+<div class="bg-white dark:bg-gray-700 min-h-56 w-96 shadow-lg rounded" {% if options.id %}id="{{ options.id }}"{% endif %}>
   {% if image %}
-    <div class="insight-card__image">
-      <img src="{{ image.url }}" alt="{{ image.alt|default:'' }}" class="insight-card__img" />
+    <div class="w-full h-48 overflow-hidden">
+      <img src="{{ image.url }}" alt="{{ image.alt|default:'' }}" class="size-full object-cover" />
     </div>
   {% endif %}
-  
-  <div class="insight-card__content">
+
+  <div class="flex flex-col h-full p-6">
     {% if title %}
-      <div class="insight-card__header">
-        <h3 class="insight-card__title">{{ title }}</h3>
+      <div>
+        <h3 class="text-xl text-insight-text-primary dark:text-insight-text-primary-dark">{{ title }}</h3>
         {% if subtitle %}
-          <p class="insight-card__subtitle">{{ subtitle }}</p>
+          <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark">{{ subtitle }}</p>
         {% endif %}
       </div>
     {% endif %}
-    
+
     {% if content %}
-      <div class="insight-card__body">
+      <div class="grow my-4">
         {{ content|safe }}
       </div>
     {% endif %}
-    
+
     {% if actions %}
-      <div class="insight-card__footer">
+      <div class="flex gap-2">
         {% for action in actions %}
-          <a 
-            href="{{ action.url }}" 
-            class="insight-btn insight-btn--{{ action.type|default:'primary' }}"
+          <a
+            href="{{ action.url }}"
+            class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             {% if action.external %}target="_blank" rel="noopener"{% endif %}>
             {{ action.text }}
           </a>

@@ -2,7 +2,7 @@
 
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from django.views.i18n import set_language
 
 urlpatterns = [
@@ -11,7 +11,4 @@ urlpatterns = [
     path("", include("insight_ui.urls")),
 ]
 
-urlpatterns += i18n_patterns(
-    path("", include("insight_ui.urls")),
-    prefix_default_language=False,
-)
+urlpatterns += i18n_patterns(path("", include("insight_ui.urls")), prefix_default_language=False)

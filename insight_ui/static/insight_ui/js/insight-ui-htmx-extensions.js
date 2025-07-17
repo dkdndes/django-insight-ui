@@ -72,24 +72,7 @@
   // ----------------------------------------
   // 🔄 HTMX Extension: Live Updates (Polling)
   // ----------------------------------------
-  htmx.defineExtension('live-updates', {
-    init: function (elt) {
-      if (!elt.hasAttribute('hx-live-update')) return;
-      const interval = parseInt(elt.getAttribute('data-interval') || '5000', 10);
-      const url = elt.getAttribute('hx-get');
-      if (!url) return;
-
-      const timer = setInterval(() => {
-        htmx.ajax('GET', url, { target: elt, swap: 'innerHTML' });
-      }, interval);
-
-      // Store timer for potential cleanup
-      elt._liveUpdateTimer = timer;
-    },
-    onEvent: function (name, evt) {
-      // No-op: polling set up via init
-    }
-  });
+  // Entfernt: Da HTMX mit "every <interval>s" eine build-in Logik für Polling hat.
 
   // ----------------------------------------
   // 🚀 HTMX Extension: Progressive Enhancement
@@ -127,4 +110,3 @@
     htmx.config.extensions = ['infinite-scroll', 'form-validation', 'live-updates', 'progressive-enhancement', 'ws'];
   });
 })();
-
