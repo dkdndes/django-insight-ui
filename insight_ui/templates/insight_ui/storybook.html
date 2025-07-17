@@ -20,15 +20,15 @@
 
     <!-- Willkommenstext -->
     <section class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>
-        <p class="text-lg text-gray-700 dark:text-gray-300">
+        <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>
+        <p class="text-lg text-insight-text-secondary dark:text-insight-text-secondary-dark">
             {% trans 'Eine moderne, barrierefreie und responsive UI-Bibliothek für Django-Projekte.' %}
         </p>
     </section>
 
     <!-- Input Elements -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
         <div class="space-y-4">
             {% include "insight_ui/components/inputs.html" %}
         </div>
@@ -36,7 +36,7 @@
 
     <!-- Alert Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Benachrichtigungen' %}</h2>
         <div class="space-y-4">
             {% alert message="Dies ist eine Informationsmeldung" alert_type="info" %}
             {% alert message="Erfolgreich gespeichert!" alert_type="success" %}
@@ -47,86 +47,86 @@
 
     {% comment %}  Breadcrumbs Demo {% endcomment %}
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Breadcrumb-Navigation' %}</h2>
         {% breadcrumbs items=breadcrumb_items %}
     </section>
 
     {% comment %} Modal Demo {% endcomment %}
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "Modal-Dialoge" %}</h2>
+        <div class="flex gap-4">
             <!-- Modal Trigger Buttons -->
             <!-- Standard -->
             <button type="button"
-                    class="bg-insight-primary rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
+                    class="bg-insight-primary w-72 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
                     data-insight-toggle="modal"
                     data-insight-target="demo-modal">
                 {% trans "Standard Modal" %}
             </button>
-            {% include "insight_ui/components/modal.html" with html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
+            {% modal html_tag_id="demo-modal" title=_("Demo Modal") description=_("Dies ist ein Beispiel-Modal mit Standard-Styling!") %}
 
             <!-- Action-Buttons -->
             <button type="button"
-                class="bg-insight-error rounded-sm text-white px-6 py-2 hover:bg-insight-error-hover active:bg-insight-error-active transition"
+                class="bg-insight-error w-72 rounded-sm text-white px-6 py-2 hover:bg-insight-error-hover active:bg-insight-error-active transition"
                 data-insight-toggle="modal"
                 data-insight-target="delete-modal">
                 {% trans "Modal mit Action-Buttons" %}
             </button>
-            {% include "insight_ui/components/modal.html" with html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
+            {% modal html_tag_id="delete-modal" title=_("Löschen?") description="Bitte bestätigen Sie die Löschung!" actions=confirm_modal_actions %}
         </div>
     </section>
 
     <!-- Form Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular' %}</h2>
         {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions %}
     </section>
 
     <!-- HTMX Form Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular, mit hx-post' %}</h2>
         {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions htmx=htmx_config id="htmx-form" %}
     </section>
 
     <!-- Filter Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Generische Filterung' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Generische Filterung' %}</h2>
         <span class="text-neutral-400 italic">Todo</span>
     </section>
 
     <!-- SQL-Like Filter Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'SQL-Like Filterung' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'SQL-Like Filterung' %}</h2>
         <span class="text-neutral-400 italic">Todo</span>
     </section>
 
     <!-- HTMX Live Content Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Live-Inhalte (HTMX)' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Live-Inhalte (HTMX)' %}</h2>
         {% live_content url="/api/live-data/" interval=10 id="live-content" %}
     </section>
 
     <!-- HTMX Websocket Content Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans "WebSocket Live-Demo" %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans "WebSocket Live-Demo" %}</h2>
         {% insight_websocket html_tag_id="demo-websocket" ws_url="ws://localhost:8765" initial_content="<p>Verbinde zu WebSocket…</p>" %}
     </section>
 
     <!-- Table Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Tabelle' %}</h2>
         {% table headers=table_headers rows=table_rows caption="Beispiel-Tabelle" %}
     </section>
 
     <!-- Pagination Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Listen/Tabellen Pagination' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Listen/Tabellen Pagination' %}</h2>
         <span class="text-neutral-400 italic">Todo</span>
     </section>
 
     <!-- Card Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Karten' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten' %}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {% card title="Beispiel-Karte" subtitle="Untertitel" content="Dies ist der Inhalt einer Karte." %}
         {% card title="Karte mit Aktionen" content="Diese Karte hat Aktions-Buttons." actions=card_actions %}
@@ -135,19 +135,19 @@
 
     <!-- Carousel Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Karten/Kachel Karussell' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kachel Karussell' %}</h2>
         <span class="text-neutral-400 italic">Todo</span>
     </section>
 
     <!-- Table-Card Toggle View Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
         {% include "insight_ui/components/toggle_view.html" with table_headers=table_headers table_rows=table_rows current_view=toggle_current_view %}
     </section>
 
     <!-- Infinite Scroll Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Infinite Scroll' %}</h2>
         {% infinite_scroll items=scroll_items next_url="/api/more-items/" has_next=True %}
     </section>
 </div>

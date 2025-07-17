@@ -5,7 +5,7 @@
     {% for item in items %}
       <li >
         {% if not forloop.last %}
-          <a href="{{ item.url }}" class="underline text-blue-500 hover:text-blue-300">{{ item.text }}</a>
+          <a href="{{ item.url }}" class="underline text-insight-text-link hover:text-insight-text-link-hover">{{ item.text }}</a>
           <span class="text-neutral-300" aria-hidden="true">/</span>
         {% else %}
           <span aria-current="page" class="text-neutral-400">{{ item.text }}</span>

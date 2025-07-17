@@ -89,7 +89,7 @@ async def handler(ws: WebSocketServerProtocol) -> None:
             html_content = f"""
             <div id="demo-websocket-output" hx-swap-oob="innerHTML">
                 <div class="mb-2 p-2 border-l-4 border-blue-500 bg-white dark:bg-gray-600 rounded">
-                    <div class="text-xs text-gray-500 dark:text-gray-400">{datetime.datetime.now().strftime('%H:%M:%S')}</div>
+                    <div class="text-xs text-insight-text-secondary dark:text-insight-text-secondary-dark">{datetime.datetime.now().strftime('%H:%M:%S')}</div>
                     <div class="font-semibold text-blue-600 dark:text-blue-400">Connection: {conn_id[:8]}</div>
                     <div class="text-sm space-y-1">
                         <div>💾 Disk: {info["disk"]["used_gb"]}GB / {info["disk"]["total_gb"]}GB</div>

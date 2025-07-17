@@ -6,7 +6,7 @@
   <input name="next" type="hidden" value="{{ request.get_full_path }}" />
   <input name="language" type="hidden" />
   <select name="language_select"
-          class="hidden md:block px-3 py-1 border dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+          class="hidden md:block px-3 py-1 border dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm text-insight-text-primary dark:text-white focus:ring-2 focus:ring-blue-500"
           onchange="this.form.elements['language'].value=this.value; this.form.submit();"
           aria-label="{% trans 'Sprache ändern' %}">
     {% get_available_languages as LANGUAGES %}

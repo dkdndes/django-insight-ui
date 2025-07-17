@@ -474,7 +474,7 @@ def generate_random_payload() -> list:
                 ],
                 "name": f"Name {i}",
                 "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
-                "action_link": f"<a href='#' class='underline text-blue-500 hover:text-blue-300'>Details {i}</a>",
+                "action_link": f"<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details {i}</a>",
             }
         )
     return entries

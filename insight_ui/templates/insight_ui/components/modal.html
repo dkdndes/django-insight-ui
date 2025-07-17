@@ -19,7 +19,7 @@
 
       <!-- Modal Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 id="{{ id }}-title" class="text-xl font-semibold text-gray-900 dark:text-white">{{ title }}</h2>
+        <h2 id="{{ id }}-title" class="text-xl font-semibold text-insight-text-primary dark:text-white">{{ title }}</h2>
         <button
           aria-label="{% trans 'Schließen' %}"
           class="bg-white h-fit rounded-sm p-2 text-insight-text-primary hover:bg-neutral-300 transition"
@@ -34,12 +34,12 @@
       <!-- Modal Body -->
       <div class="p-6 space-y-4">
         {% if description %}
-          <p id="{{ id }}-description" class="text-gray-600 dark:text-gray-400 mb-4 flex items-center">
+          <p id="{{ id }}-description" class="text-insight-text-secondary dark:text-insight-text-secondary-dark mb-4 flex items-center">
             {{ description }}
           </p>
         {% endif %}
 
-        <div class="text-gray-900 dark:text-white">
+        <div class="text-insight-text-primary dark:text-white">
           {% block modal_content %}
             {{ content|safe }}
           {% endblock %}
@@ -48,7 +48,7 @@
 
       <!-- Modal Footer -->
       {% if actions %}
-        <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex justify-end gap-2 p-6 border-t border-gray-200 dark:border-gray-700">
           {% for action in actions %}
             {% if action.type == 'cancel' or action.dismiss %}
               <button
