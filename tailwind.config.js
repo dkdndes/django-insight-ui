@@ -36,6 +36,8 @@ module.exports = {
                 'insight-text-secondary': '#737373',
                 'insight-text-primary-dark': '#e5e7eb',
                 'insight-text-secondary-dark': '#94a3b8',
+                'insight-text-link': '#3b82f6',
+                'insight-text-link-hover': '#93c5fd',
             },
             screens: {
                 '3xl': '1920px',

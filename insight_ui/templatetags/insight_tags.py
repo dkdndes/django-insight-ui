@@ -282,6 +282,45 @@ def modal(  # noqa: PLR0913 (too many args)
     }
 
 
+@register.inclusion_tag("insight_ui/components/carousel.html")
+def carousel(  # noqa: PLR0913 (too many args)
+    carousel_items: list = [],
+    autoplay: bool = False,
+    show_dots: bool = True,
+    show_index: bool = False,
+    slides_count: range = [],
+    items_per_slide: int = 1,
+    **kwargs,
+) -> dict[str, Any]:
+    """
+    Rendert ein Karussell.
+
+    Args:
+    ----
+        carousel_items: Darzustellender Inhalt (Karten)
+        autoplay: Wechsle automatisch nach einer bestimmten Zeit (5s) zur nächsten Seite
+        show_dots: Zeige Pagination Dots unter dem Inhalt
+        show_index: Zeige Anzahl und aktuelle Seite in der unteren rechten Ecke
+        slides_count: Anzahl der Seiten als Iterable
+        items_per_slide: Anzahl der Items pro Seite
+        **kwargs: Zusätzliche Optionen für die Karte
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {
+        "carousel_items": carousel_items,
+        "autoplay": autoplay,
+        "show_dots": show_dots,
+        "show_index": show_index,
+        "slides_count": slides_count,
+        "items_per_slide": items_per_slide,
+        "options": kwargs,
+    }
+
+
 @register.inclusion_tag("insight_ui/components/card.html")
 def card(  # noqa: PLR0913 (too many args)
     title: str = "",

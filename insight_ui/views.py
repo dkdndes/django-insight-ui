@@ -98,30 +98,6 @@ def get_storybook_context() -> dict:
             {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
         ],
         "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-        "htmx_form_fields": [
-            {
-                "type": "text",
-                "name": "htmx_name",
-                "label": _("Name (HTMX)"),
-                "placeholder": _("Name eingeben"),
-                "required": True,
-            },
-            {
-                "type": "email",
-                "name": "htmx_email",
-                "label": _("E-Mail (HTMX)"),
-                "placeholder": _("E-Mail eingeben"),
-                "required": True,
-            },
-            {
-                "type": "textarea",
-                "name": "message",
-                "label": _("Nachricht (HTMX)"),
-                "placeholder": _("Ihre Nachricht..."),
-                "rows": 4,
-                "required": False,
-            },
-        ],
         "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#form-result", "swap": "innerHTML"},
         "available_languages": [
             {"code": "de", "name": "Deutsch"},
@@ -131,6 +107,8 @@ def get_storybook_context() -> dict:
             {"code": "ar", "name": "العربية"},
             {"code": "zh", "name": "中文"},
         ],
+        "carousel_items": map_payload_to_cards(generate_random_payload()),
+        "range_total_slides": range(3),
     }
 
 
@@ -512,7 +490,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     Loads and maps payload data to the appropriate format.
     """
     view = request.GET.get("view", "table")
-    valid_views = {"table", "card"}
+    valid_views = {"table", "card", "carousel"}
 
     if view not in valid_views:
         logger.warning("log: toggle_view - Ungültiger 'view'-Parameter empfangen: %s. Fallback auf 'table'.", view)
@@ -525,11 +503,14 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
     if view == "card":
         context["cards"] = map_payload_to_cards(payload)
         logger.info("log: toggle_view - Kartenansicht ausgewählt")
-        return render(request, "insight_ui/components/toggle_view.html", context)
+    elif view == "carousel":
+        context["cards"] = map_payload_to_cards(payload)
+        logger.info("log: toggle_view - Karussell-Ansicht ausgewählt")
+    else:
+        # default: table view
+        headers, rows = map_payload_to_table(payload)
+        context["table_headers"] = headers
+        context["table_rows"] = rows
+        logger.info("log: toggle_view - Tabellenansicht ausgewählt")
 
-    # default: table view
-    headers, rows = map_payload_to_table(payload)
-    context["table_headers"] = headers
-    context["table_rows"] = rows
-    logger.info("log: toggle_view - Tabellenansicht ausgewählt")
     return render(request, "insight_ui/components/toggle_view.html", context)
