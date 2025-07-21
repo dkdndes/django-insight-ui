@@ -84,9 +84,7 @@
         <button
           type="{{ action.type|default:'submit' }}"
           class="bg-insight-{{ action.style }} rounded-sm text-white px-6 py-2 hover:bg-insight-{{ action.style }}-hover active:bg-insight-{{ action.style }}-active transition"
-          {% if action.htmx %}
-            {% if action.htmx.method == 'delete' %}hx-delete="{{ action.htmx.url }}"{% elif action.htmx.method == 'put' %}hx-put="{{ action.htmx.url }}"{% elif action.htmx.method == 'patch' %}hx-patch="{{ action.htmx.url }}"{% else %}hx-post="{{ action.htmx.url }}"{% endif %} {% if action.htmx.target %}hx-target="{{ action.htmx.target }}"{% endif %} {% if action.htmx.swap %}hx-swap="{{ action.htmx.swap }}"{% endif %} {% if action.htmx.confirm %}hx-confirm="{{ action.htmx.confirm }}"{% endif %}
-          {% endif %}>
+        >
           {{ action.text }}
         </button>
       {% endfor %}
@@ -102,6 +100,6 @@
       </svg>
       {% trans 'Wird geladen...' %}
     </div>
-    <div id="form-result" class="mt-4"></div>
+    <div id="form-error" class="mt-4"></div>
   {% endif %}
 </form>
