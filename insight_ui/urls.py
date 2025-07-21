@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/normal-form-submit/", views.normal_form_submit, name="normal_form_submit"),
     path("components/<str:component_name>/", views.component_demo_view, name="component_demo"),
     path("toggle_view/", views.toggle_view, name="toggle_view"),
+    path("pagination/", views.pagination, name="pagination"),
     path("i18n/setlang/", set_language, name="set_language"),
     path("", views.storybook_view, name="storybook_view"),
 ]

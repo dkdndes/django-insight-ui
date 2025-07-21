@@ -5,6 +5,7 @@ from typing import Any
 
 import structlog
 from asgiref.sync import sync_to_async
+from django.core.paginator import Page, Paginator
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -17,6 +18,8 @@ logger = structlog.get_logger(__name__)
 
 def get_storybook_context() -> dict:
     """Hilfsfunktion für Index-Seiten Context."""
+    page_obj, surrounding_pages = get_page()
+
     return {
         "nav_links": [
             {"text": _("Startseite"), "url": "/", "active": True},
@@ -98,7 +101,7 @@ def get_storybook_context() -> dict:
             {"text": _("Hilfe"), "url": "/help/", "icon": "❓"},
         ],
         "scroll_items": [{"title": f"Element {i}", "content": f"Inhalt für Element {i}"} for i in range(1, 11)],
-        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#form-result", "swap": "innerHTML"},
+        "htmx_config": {"url": "/api/form-submit/", "method": "post", "target": "#htmx-form", "swap": "innerHTML"},
         "available_languages": [
             {"code": "de", "name": "Deutsch"},
             {"code": "en", "name": "English"},
@@ -109,7 +112,59 @@ def get_storybook_context() -> dict:
         ],
         "carousel_items": map_payload_to_cards(generate_random_payload()),
         "range_total_slides": range(3),
+        "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
     }
+
+
+def get_page(page: int = 1, max_neighbor_pages: int = 3) -> tuple[Page, list[str]]:
+    items = generate_random_payload(100)
+    paginator = Paginator(items, 10)
+
+    max_neighbor_pages2 = max_neighbor_pages * 2
+
+    # Berechnen der benachbarten Seiten
+    surrounding_pages = []
+    total_surrounding_pages = 6  # Immer insgesamt 6 benachbarte Seiten
+    half = total_surrounding_pages // 2
+
+    # Berechnung der Start- und Endseiten für die benachbarten Seiten
+    start = max(1, page - half)
+    end = min(paginator.num_pages, page + half)
+
+    # Falls nicht genügend Seiten vor der aktuellen Seite sind, nach vorne ausgleichen
+    if page - start < half:
+        end = min(paginator.num_pages, end + (half - (page - start)))
+
+    # Falls nicht genügend Seiten nach der aktuellen Seite sind, nach hinten ausgleichen
+    if end - page < half:
+        start = max(1, start - (half - (end - page)))
+
+    # Füllen der Liste der benachbarten Seiten
+    surrounding_pages = list(range(start, end + 1))
+
+    page_links = []
+    for i in range(1, paginator.num_pages + 1):
+        if i in surrounding_pages:
+            page_links.append(i)
+        elif i == 1 or i == paginator.num_pages or (i in surrounding_pages and i not in page_links[-1:]):
+            page_links.append("...")
+
+    return paginator.get_page(page), page_links
+
+
+def pagination(request: HttpRequest) -> HttpResponse:
+    page_obj, surrounding_pages = get_page(int(request.GET.get("page")))
+
+    if request.htmx:
+        return render(
+            request,
+            "insight_ui/components/list_partial.html",
+            {"pagination": {"page_obj": page_obj, "surrounding_pages": surrounding_pages}},
+        )
+
+    context = get_storybook_context()
+    context["page_obj"] = {"page_obj": page_obj, "surrounding_pages": surrounding_pages}
+    return render(request, "insight_ui/storybook.html", context)
 
 
 @require_http_methods(["GET"])
@@ -436,9 +491,8 @@ def storybook_view(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
-def generate_random_payload() -> list:
+def generate_random_payload(count: int = 5) -> list:
     """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
-    count = 5
     entries = []
     for i in range(1, count + 1):
         entries.append(
