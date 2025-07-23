@@ -1,28 +1,26 @@
 {% load static i18n insight_tags %}
 
+{% if not auto_close %}
+  <button data-sidebar-target="{{ side }}" class="open-btn fixed top-20 ltr:left-4 rtl:right-4 z-50 bg-insight-primary rounded-full shadow p-2 hover:bg-insight-primary-hover active:bg-insight-primary-active">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 rtl:rotate-180">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+{% endif %}
+
 <aside
   id="{{ side }}-sidebar"
   role="complementary"
   aria-label="{% trans 'Seitennavigation' %}"
-  class="fixed top-0 {% if side == "right" %}right-0 border-l translate-x-full{% else %}left-0 border-r -translate-x-full{% endif %} z-50 overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 h-screen w-64 shadow-md transition"
+  class="fixed top-16 {% if side == "right" %}ltr:right-0 ltr:translate-x-full ltr:border-l rtl:left-0 rtl:-translate-x-full rtl:border-r{% else %}ltr:left-0 ltr:-translate-x-full ltr:border-r rtl:right-0 rtl:translate-x-full rtl:border-l{% endif %} z-40 overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-600 h-screen w-72 shadow-md transition"
   data-insight-sidebar="{{ side }}"
+  data-auto-close="{{ auto_close|yesno:'true,false' }}"
 >
   <div class="flex flex-col px-4">
     <!-- Sidebar Header -->
     {% if title %}
       <div class="flex justify-between items-center h-16 border-b mb-4">
         <h2 class="text-lg font-semibold text-insight-text-primary dark:text-white">{{ title }}</h2>
-        {% if collapsible %}
-          <button
-            class="text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark"
-            aria-expanded="true"
-            aria-controls="{{ side }}-sidebar-content"
-            aria-label="{% trans 'Sidebar umschalten' %}"
-            data-insight-toggle="sidebar"
-          >
-            <span class="">⯈</span>
-          </button>
-        {% endif %}
       </div>
     {% endif %}
 
@@ -57,7 +55,7 @@
       <div class="pt-4 border-t border-gray-200 dark:border-gray-600">
         <button
           id="{{ side }}-sidebar-close"
-          class="flex items-center text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
+          class="close-btn flex items-center text-insight-text-secondary hover:text-insight-text-primary dark:text-insight-text-secondary-dark dark:hover:text-insight-text-primary-dark p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-sm"
           aria-label="{% trans 'Sidebar schließen' %}"
         >
           <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

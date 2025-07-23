@@ -6,9 +6,11 @@ InsightUI.Sidebar = {
     for (const sidebar of sidebars)
     {
       const side = sidebar.getAttribute("data-insight-sidebar");
+      const openBtn = document.querySelector(`.open-btn[data-sidebar-target="${side}"]`);
+      const closeBtn = sidebar.querySelector(".close-btn");
 
       // Sidebar closes automatically when the mouse leaves the sidebar
-      let autoClose = true;
+      const autoClose = sidebar.getAttribute("data-auto-close") === "true";
 
       // Funktion zum Öffnen der Sidebar
       function openSidebar() {
@@ -17,28 +19,57 @@ InsightUI.Sidebar = {
 
       // Funktion zum Schließen der Sidebar
       function closeSidebar() {
-        if (side == "right") sidebar.style.transform = 'translateX(100%)';
-        else if (side == "left") sidebar.style.transform = 'translateX(-100%)';
+        if (document.documentElement.dir === "rtl")
+        {
+          if (side == "right") sidebar.style.transform = 'translateX(-100%)';
+          else if (side == "left") sidebar.style.transform = 'translateX(100%)';
+        }
+        else
+        {
+          if (side == "right") sidebar.style.transform = 'translateX(100%)';
+          else if (side == "left") sidebar.style.transform = 'translateX(-100%)';
+        }
       }
 
       // Sidebar initial verstecken
       closeSidebar();
 
-      // Öffnen, wenn Maus nahe an der Fenster Seite ist
-      document.addEventListener('mousemove', (e) => {
-        const threshold = 50; // Pixel Abstand vom Rand
-        if (side == "right" && window.innerWidth - e.clientX < threshold) {
-          openSidebar();
-        }
-        else if (side == "left" && e.clientX < threshold) {
-          openSidebar();
-        }
-      });
+      if (autoClose)
+      {
+        // Öffnen, wenn Maus nahe an der Fenster Seite ist
+        document.addEventListener('mousemove', (e) => {
+          const threshold = 50; // Pixel Abstand vom Rand
+          if (document.documentElement.dir === "rtl")
+          {
+            if (side == "right" && e.clientX < threshold) { openSidebar(); }
+            else if (side == "left" && window.innerWidth - e.clientX < threshold) { openSidebar(); }
+          }
+          else
+          {
+            if (side == "right" && window.innerWidth - e.clientX < threshold) { openSidebar(); }
+            else if (side == "left" && e.clientX < threshold) { openSidebar(); }
+          }
+        });
 
-      // Optional: Schließen, wenn Maus die Sidebar verlässt
-      sidebar.addEventListener('mouseleave', () => {
-        if (autoClose) closeSidebar();
-      });
+        // Optional: Schließen, wenn Maus die Sidebar verlässt
+        sidebar.addEventListener('mouseleave', () => { closeSidebar(); });
+      }
+
+      if (openBtn)
+      {
+        openBtn.addEventListener('click', () => {
+          openSidebar();
+          openBtn.classList.toggle("hidden", true);
+        });
+
+        if (closeBtn)
+        {
+          closeBtn.addEventListener('click', () => {
+            closeSidebar();
+            openBtn.classList.toggle("hidden", false);
+          });
+        }
+      }
     }
   }
 };
