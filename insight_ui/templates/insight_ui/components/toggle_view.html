@@ -61,7 +61,7 @@
       {% if current_view == 'carousel' %}
         {% carousel carousel_items=cards show_index=True slides_count=range_total_slides items_per_slide=2 %}
       {% elif current_view == 'card' %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-wrap gap-6">
           {% for card in cards %}
             {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
           {% endfor %}
