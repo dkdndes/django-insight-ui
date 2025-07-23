@@ -5,7 +5,6 @@ class Carousel {
       this.root.dir === "rtl" ||
       document.documentElement.dir === "rtl" ||
       getComputedStyle(this.root).direction === "rtl";
-    console.log(this.isRTL)
     this.track = root.querySelector(".carousel-track");
     this.items = [...root.querySelectorAll(".carousel-item")];
     this.prevBtn = root.querySelector(".carousel-prev");
