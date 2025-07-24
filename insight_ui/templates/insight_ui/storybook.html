@@ -79,7 +79,7 @@
     <!-- Form Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Formular' %}</h2>
-        {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions id="standard-form" %}
+        {% form title="Kontaktformular" description="Füllen Sie das Formular aus" fields=form_fields actions=form_actions action="api/form-submit/" id="standard-form" %}
     </section>
 
     <!-- HTMX Form Demo -->
@@ -144,7 +144,7 @@
     <!-- Table-Card Toggle View Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white">{% trans 'Ansicht wechseln' %}</h2>
-        {% include "insight_ui/components/toggle_view.html" with table_headers=table_headers table_rows=table_rows current_view=toggle_current_view %}
+        {% include "insight_ui/components/toggle_view.html" with table_headers=toggle_table_headers table_rows=toggle_table_rows current_view=toggle_current_view %}
     </section>
 
     <!-- Infinite Scroll Demo -->

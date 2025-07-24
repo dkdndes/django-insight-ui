@@ -1,15 +1,11 @@
-import asyncio
-import time
-from datetime import datetime
-from typing import Any
+from datetime import UTC, datetime
 
 import structlog
-from asgiref.sync import sync_to_async
 from django.core.paginator import Page, Paginator
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_http_methods
 
@@ -18,7 +14,7 @@ logger = structlog.get_logger(__name__)
 
 def get_storybook_context() -> dict:
     """Hilfsfunktion für Index-Seiten Context."""
-    page_obj, surrounding_pages = get_page()
+    page_obj, surrounding_pages = get_page(generate_payload(100))
 
     return {
         "nav_links": [
@@ -37,15 +33,26 @@ def get_storybook_context() -> dict:
                 "Max Mustermann",
                 "max@example.com",
                 _("Aktiv"),
-                mark_safe('<button class="btn btn-sm">Bearbeiten</button>'),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
             ],
             [
                 "Anna Schmidt",
                 "anna@example.com",
                 _("Inaktiv"),
-                mark_safe('<button class="btn btn-sm">Bearbeiten</button>'),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
             ],
-            ["Tom Weber", "tom@example.com", _("Aktiv"), mark_safe('<button class="btn btn-sm">Bearbeiten</button>')],
+            [
+                "Tom Weber",
+                "tom@example.com",
+                _("Aktiv"),
+                format_html(
+                    '<button class="bg-insight-primary border-insight-primary border-2 rounded-sm text-white px-6 py-2 hover:bg-insight-primary-hover active:bg-insight-primary-active hover:border-insight-primary-hover active:border-insight-primary-active transition">Bearbeiten</button>'  # noqa: E501
+                ),
+            ],
         ],
         "card_actions": [
             {"text": _("Mehr erfahren"), "url": "#", "type": "primary"},
@@ -78,10 +85,6 @@ def get_storybook_context() -> dict:
             {"text": _("Absenden"), "type": "submit", "style": "primary"},
             {"text": _("Zurücksetzen"), "type": "reset", "style": "secondary"},
         ],
-        "modal_actions": [
-            {"text": _("Speichern"), "type": "primary"},
-            {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
-        ],
         "confirm_modal_actions": [
             {"text": _("Ja, fortfahren"), "type": "primary", "onclick": 'alert("Aktion bestätigt!")'},
             {"text": _("Abbrechen"), "type": "cancel", "dismiss": True},
@@ -110,36 +113,48 @@ def get_storybook_context() -> dict:
             {"code": "ar", "name": "العربية"},
             {"code": "zh", "name": "中文"},
         ],
-        "carousel_items": map_payload_to_cards(generate_random_payload()),
+        "carousel_items": map_payload_to_cards(generate_payload()),
         "range_total_slides": range(3),
         "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
     }
 
 
-def get_page(page: int = 1, max_neighbor_pages: int = 3) -> tuple[Page, list[str]]:
-    items = generate_random_payload(100)
-    paginator = Paginator(items, 10)
+def get_page(data: list, page: int = 1, max_neighbor_pages: int = 6) -> tuple[Page, list[str]]:
+    """
+    Create pagination for given data.
 
-    max_neighbor_pages2 = max_neighbor_pages * 2
+    Retrieve data of the desired page and calculate page number of neighboring pages.
 
-    # Berechnen der benachbarten Seiten
+    Arguments:
+    ---------
+        data (list): data to create pagination for.
+        page (int): desired page number.
+        max_neighbor_pages (int): the maximal amount of pages, next to the desired page.
+
+    Returns:
+    -------
+        page, neighbor_pages (Page, List[str]): the desired page and a list of neighboring pages.
+
+    """
+    paginator = Paginator(data, 10)
+
+    # Calculate neighboring pages
     surrounding_pages = []
-    total_surrounding_pages = 6  # Immer insgesamt 6 benachbarte Seiten
-    half = total_surrounding_pages // 2
+    half = max_neighbor_pages // 2
 
-    # Berechnung der Start- und Endseiten für die benachbarten Seiten
+    # Calculate start page and end page
     start = max(1, page - half)
     end = min(paginator.num_pages, page + half)
 
-    # Falls nicht genügend Seiten vor der aktuellen Seite sind, nach vorne ausgleichen
+    # Adjust if there are not enough pages before the current page
     if page - start < half:
         end = min(paginator.num_pages, end + (half - (page - start)))
 
-    # Falls nicht genügend Seiten nach der aktuellen Seite sind, nach hinten ausgleichen
+    # Adjust if there are not enough pages after the current page
     if end - page < half:
         start = max(1, start - (half - (end - page)))
 
-    # Füllen der Liste der benachbarten Seiten
+    # Create list of neighboring pages
     surrounding_pages = list(range(start, end + 1))
 
     page_links = []
@@ -153,7 +168,8 @@ def get_page(page: int = 1, max_neighbor_pages: int = 3) -> tuple[Page, list[str
 
 
 def pagination(request: HttpRequest) -> HttpResponse:
-    page_obj, surrounding_pages = get_page(int(request.GET.get("page")))
+    """Pagination endpoint to retrieve data of the desired page."""
+    page_obj, surrounding_pages = get_page(generate_payload(100), int(request.GET.get("page")))
 
     if request.htmx:
         return render(
@@ -170,7 +186,7 @@ def pagination(request: HttpRequest) -> HttpResponse:
 @require_http_methods(["GET"])
 def live_data_view(request: HttpRequest) -> HttpResponse | JsonResponse:
     """HTMX Endpoint für Live-Daten."""
-    current_time = datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.now(tz=UTC).strftime("%H:%M:%S")
     data = {
         "time": current_time,
         "message": _("Daten aktualisiert um %(time)s") % {"time": current_time},
@@ -202,7 +218,7 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
         {"title": f"Element {i}", "content": f"Dynamisch geladener Inhalt für Element {i}"} for i in range(start, end)
     ]
 
-    has_next = page < 5  # Simuliere max 5 Seiten
+    has_next = page < 5  # noqa: PLR2004 Simuliere max 5 Seiten
     next_url = f"/api/more-items/?page={page + 1}" if has_next else ""
 
     if request.headers.get("HX-Request"):
@@ -216,63 +232,16 @@ def more_items_view(request: HttpRequest) -> HttpResponse | JsonResponse:
 
 
 @require_http_methods(["POST"])
-async def htmx_form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
-    """HTMX Endpoint für Formular-Übermittlung mit asynchronem Logging."""
-    if request.headers.get("HX-Request"):
-        # Debug: Alle POST-Daten loggen
-        content_type = request.content_type
+def form_submit(request: HttpRequest) -> HttpResponse | JsonResponse:
+    """
+    Endpoint for form validation and handling.
 
-        logger.info("Empfangene POST-Daten: %s", request.POST)
-        logger.info("Content-Type: %s", content_type)
-
-        # Eingabedaten extrahieren
-        name = request.POST.get("name", "")
-        email = request.POST.get("email", "")
-        message = request.POST.get("message", "")
-
-        logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
-
-        # Asynchrones Logging der Eingabedaten
-        await log_form_input_async(name, email, message)
-
-        # Einfache Validierung
-        errors = {}
-        if not name:
-            errors["name"] = _("Name ist erforderlich")
-        if not email:
-            errors["email"] = _("E-Mail ist erforderlich")
-        elif "@" not in email:
-            errors["email"] = _("Ungültige E-Mail-Adresse")
-
-        if errors:
-            logger.warning("Formular-Validierungsfehler: %s", errors)
-            # Fehler zurückgeben
-            html = await sync_to_async(render_to_string)(
-                "insight_ui/components/form_errors.html", {"errors": errors, "type": "error"}
-            )
-            return HttpResponse(html, status=400)
-
-        # Erfolg simulieren mit asynchroner Verarbeitung
-        await asyncio.sleep(1)  # Simuliere asynchrone Verarbeitungszeit
-
-        logger.info("Formular erfolgreich verarbeitet")
-        success_html = await sync_to_async(render_to_string)(
-            "insight_ui/components/form_success.html",
-            {"message": _("Formular erfolgreich übermittelt!"), "name": name, "email": email, "type": "success"},
-        )
-        # Erfolgreiche Antwort ohne Redirect - bleibt auf der Seite
-        return HttpResponse(success_html)
-
-    logger.warning("Nicht-HTMX Request an htmx_form_submit erhalten")
-    return JsonResponse({"error": _("Nur HTMX-Requests erlaubt")}, status=400)
-
-
-@require_http_methods(["POST"])
-def normal_form_submit(request: HttpRequest) -> HttpResponse:
-    """Normale Formular-Übermittlung mit synchronem Logging."""
+    Works with standard and htmx requests. Handle form issues and return either
+    partial template data if this is a htmx request or do a whole page reload.
+    """
     # Debug: Alle POST-Daten loggen
-    logger.info("Empfangene POST-Daten: %s", dict(request.POST))
-    logger.info("Content-Type: %s", request.content_type)
+    logger.debug("Empfangene POST-Daten: %s", request.POST)
+    logger.debug("Content-Type: %s", request.content_type)
 
     # Eingabedaten extrahieren
     name = request.POST.get("name", "")
@@ -280,9 +249,6 @@ def normal_form_submit(request: HttpRequest) -> HttpResponse:
     message = request.POST.get("message", "")
 
     logger.info("Extrahierte Werte - Name: '%s', Email: '%s', Message: '%s'", name, email, message)
-
-    # Synchrones Logging der Eingabedaten
-    log_form_input_sync(name, email, message)
 
     # Einfache Validierung
     errors = {}
@@ -295,18 +261,29 @@ def normal_form_submit(request: HttpRequest) -> HttpResponse:
 
     if errors:
         logger.warning("Formular-Validierungsfehler: %s", errors)
-        # Bei Fehlern die komplette Seite mit Fehlermeldungen rendern
+
+        # Return error with partial template as it is a htmx request
+        if request.headers.get("HX-Request"):
+            html = render_to_string("insight_ui/components/form_errors.html", {"errors": errors, "type": "error"})
+            return HttpResponse(html, status=400)
+
+        # Retrieve necessary context data and perform a whole page reload to present form issues
         context = get_storybook_context()
         context["form_errors"] = errors
         context["form_data"] = {"name": name, "email": email, "message": message}
         return render(request, "insight_ui/storybook.html", context)
 
-    # Erfolg simulieren mit synchroner Verarbeitung
-    time.sleep(1)  # Simuliere synchrone Verarbeitungszeit
+    logger.info("Formular erfolgreich verarbeitet")
 
-    logger.info("Normales Formular erfolgreich verarbeitet")
+    # Return partial template without redirect as it is a htmx request
+    if request.headers.get("HX-Request"):
+        success_html = render_to_string(
+            "insight_ui/components/form_success.html",
+            {"message": _("Formular erfolgreich übermittelt!"), "name": name, "email": email, "type": "success"},
+        )
+        return HttpResponse(success_html)
 
-    # Bei erfolgreichem Submit die komplette Seite mit Erfolgsmeldung rendern
+    # Retrieve necessary context data and perform a whole page reload to present form success
     context = get_storybook_context()
     context["form_success"] = {
         "message": _("Normales Formular erfolgreich übermittelt!"),
@@ -318,222 +295,50 @@ def normal_form_submit(request: HttpRequest) -> HttpResponse:
     return render(request, "insight_ui/storybook.html", context)
 
 
-def log_form_input_sync(name: str, email: str, message: str) -> None:
-    """
-    Synchrone Funktion zum Loggen der Formular-Eingaben.
-
-    Args:
-    ----
-        name (str): Name des Benutzers
-        email (str): E-Mail-Adresse des Benutzers
-        message (str): Nachricht des Benutzers
-        logger: Logger-Instanz
-
-    """
-    # Simuliere synchrone Verarbeitung
-    time.sleep(0.1)
-
-    # Detailliertes Logging der Eingabedaten
-    separator = "=" * 30
-    logger.info(separator)
-    logger.info("NORMALES Kontaktformular - Neue Eingabe erhalten")
-    logger.info(separator)
-    logger.info("Name: %s", name)
-    logger.info("E-Mail: %s", email)
-    logger.info("Nachricht: %s", message)
-    logger.info(separator)
-
-    # Simuliere weitere synchrone Verarbeitung
-    time.sleep(0.05)
-    logger.debug("Synchrones Logging abgeschlossen")
-
-
-async def log_form_input_async(name: str, email: str, message: str) -> None:
-    """
-    Asynchrone Funktion zum Loggen der Formular-Eingaben.
-
-    Args:
-    ----
-        name (str): Name des Benutzers
-        email (str): E-Mail-Adresse des Benutzers
-        message (str): Nachricht des Benutzers
-        logger: Logger-Instanz
-
-    """
-    # Simuliere asynchrone Verarbeitung
-    await asyncio.sleep(0.1)
-
-    # Detailliertes Logging der Eingabedaten
-    separator = "=" * 30
-    logger.info(separator)
-    logger.info("HTMX Kontaktformular - Neue Eingabe erhalten")
-    logger.info(separator)
-    logger.info("Name: %s", name)
-    logger.info("E-Mail: %s", email)
-    logger.info("Nachricht: %s", message)
-    logger.info(separator)
-
-    # Simuliere weitere asynchrone Verarbeitung
-    await asyncio.sleep(0.05)
-    logger.debug("Asynchrones Logging abgeschlossen")
-
-
-@require_http_methods(["GET"])
-def component_demo_view(request: HttpRequest, component_name: str) -> HttpResponse | JsonResponse:
-    """Einzelne Storybook-Demo für HTMX."""
-    component_templates = {
-        "alert": "insight_ui/components/alert.html",
-        "card": "insight_ui/components/card.html",
-        "modal": "insight_ui/components/modal.html",
-        "table": "insight_ui/components/table.html",
-        "form": "insight_ui/components/form.html",
-        "sidebar": "insight_ui/components/sidebar.html",
-        "breadcrumbs": "insight_ui/components/breadcrumbs.html",
-        "navbar": "insight_ui/components/navbar.html",
-    }
-
-    if component_name not in component_templates:
-        return JsonResponse({"error": _("Komponente nicht gefunden")}, status=404)
-
-    # Beispieldaten für die jeweilige Komponente
-    context = get_component_context(component_name)
-
-    if request.headers.get("HX-Request"):
-        html = render_to_string(component_templates[component_name], context)
-        return HttpResponse(html)
-
-    return render(
-        request,
-        "insight_ui/component_demo.html",
-        {
-            "component_name": component_name,
-            "component_html": render_to_string(component_templates[component_name], context),
-        },
-    )
-
-
-def get_component_context(component_name: str) -> Any:
-    """Hilfsfunktion für Komponenten-Beispieldaten."""
-    contexts = {
-        "alert": {"message": _("Dies ist eine Beispiel-Benachrichtigung"), "type": "info", "dismissible": True},
-        "card": {
-            "title": _("Beispiel-Karte"),
-            "subtitle": _("Untertitel"),
-            "content": _("Dies ist der Inhalt einer Beispiel-Karte."),
-            "actions": [
-                {"text": _("Aktion 1"), "url": "#", "type": "primary"},
-                {"text": _("Aktion 2"), "url": "#", "type": "secondary"},
-            ],
-        },
-        "modal": {
-            "id": "demo-modal",
-            "title": _("Demo Modal"),
-            "content": _("Dies ist ein Beispiel-Modal-Dialog."),
-            "actions": [
-                {"text": _("Speichern"), "type": "button", "style": "primary"},
-                {"text": _("Abbrechen"), "type": "button", "style": "secondary"},
-            ],
-        },
-        "table": {
-            "headers": [_("Name"), _("E-Mail"), _("Status")],
-            "rows": [
-                ["Max Mustermann", "max@example.com", _("Aktiv")],
-                ["Anna Schmidt", "anna@example.com", _("Inaktiv")],
-            ],
-            "caption": _("Beispiel-Tabelle"),
-        },
-        "form": {
-            "title": _("Beispiel-Formular"),
-            "fields": [
-                {"type": "text", "name": "name", "label": _("Name"), "required": True},
-                {"type": "email", "name": "email", "label": _("E-Mail"), "required": True},
-            ],
-            "actions": [{"text": _("Absenden"), "type": "submit", "style": "primary"}],
-        },
-        "sidebar": {
-            "title": _("Navigation"),
-            "items": [
-                {"text": _("Dashboard"), "url": "/", "icon": "📊"},
-                {"text": _("Einstellungen"), "url": "/settings/", "icon": "⚙️"},
-            ],
-        },
-        "breadcrumbs": {
-            "items": [{"text": _("Startseite"), "url": "/"}, {"text": _("Komponenten"), "url": None, "active": True}]
-        },
-        "navbar": {
-            "brand": "Demo App",
-            "links": [
-                {"text": _("Startseite"), "url": "/", "active": True},
-                {"text": _("Über uns"), "url": "/about/", "active": False},
-            ],
-        },
-    }
-
-    return contexts.get(component_name, {})
-
-
 def storybook_view(request: HttpRequest) -> HttpResponse:
     """Hauptseite mit allen Insight UI Komponenten."""
-    # Wenn es ein POST-Request ist, leite an normale Formular-Verarbeitung weiter
-    if request.method == "POST":
-        return normal_form_submit(request)
-
     # Beispieldaten für die Komponenten
     context = get_storybook_context()
 
     # Toggle-View: Initiale Tabellendaten für das Storybook bereitstellen
-    payload = generate_random_payload()
+    payload = generate_payload()
     headers, rows = map_payload_to_table(payload)
-    context["table_headers"] = headers
-    context["table_rows"] = rows
+    context["toggle_table_headers"] = headers
+    context["toggle_table_rows"] = rows
     context["toggle_current_view"] = "table"
 
     return render(request, "insight_ui/storybook.html", context)
 
 
-def generate_random_payload(count: int = 5) -> list:
+def generate_payload(count: int = 5) -> list:
     """Erstellt eine zufällige Anzahl von Einträgen als Payload-Daten."""
-    entries = []
-    for i in range(1, count + 1):
-        entries.append(
-            {
-                "title": f"Element {i}",
-                "subtitle": f"Untertitel {i}",
-                "content": f"Dies ist der Inhalt von Eintrag {i}.",
-                "actions": [
-                    {"text": "Mehr erfahren", "url": "#", "type": "primary"},
-                    {"text": "Teilen", "url": "#", "type": "secondary"},
-                ],
-                "name": f"Name {i}",
-                "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
-                "action_link": f"<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details {i}</a>",
-            }
-        )
-    return entries
+    return [
+        {
+            "title": f"Element {i}",
+            "content": f"Dies ist der Inhalt von Eintrag {i}.",
+            "status": "Aktiv" if i % 2 == 0 else "Inaktiv",
+            "actions": [
+                {"text": "Mehr erfahren", "url": "#", "type": "primary"},
+                {"text": "Teilen", "url": "#", "type": "secondary"},
+            ],
+            "action_link": f"<a href='#' class='underline text-insight-text-link hover:text-insight-text-link-hover'>Details {i}</a>",  # noqa: E501
+        }
+        for i in range(1, count + 1)
+    ]
 
 
 def map_payload_to_cards(payload: list) -> list:
     """Mappt Payload-Daten auf Karten-Darstellung."""
-    elements = []
-    for item in payload:
-        elements.append(
-            {
-                "title": item["title"],
-                "subtitle": item["subtitle"],
-                "content": item["content"],
-                "actions": item["actions"],
-            }
-        )
-    return elements
+    return [
+        {"title": item["title"], "subtitle": item["status"], "content": item["content"], "actions": item["actions"]}
+        for item in payload
+    ]
 
 
 def map_payload_to_table(payload: list) -> tuple[list[str], list]:
     """Mappt Payload-Daten auf Tabellen-Darstellung."""
     headers = ["Title", "Status", "Content", "URL"]
-    rows = []
-    for item in payload:
-        content = item["content"]
-        rows.append([item["title"], item["status"], content, item["action_link"]])
+    rows = [[item["title"], item["status"], item["content"], item["action_link"]] for item in payload]
     return headers, rows
 
 
@@ -541,7 +346,8 @@ def map_payload_to_table(payload: list) -> tuple[list[str], list]:
 def toggle_view(request: HttpRequest) -> HttpResponse:
     """
     Toggle between table and card views, based on the `view` GET parameter.
-    Loads and maps payload data to the appropriate format.
+
+    Load and map payload data to the appropriate format.
     """
     view = request.GET.get("view", "table")
     valid_views = {"table", "card", "carousel"}
@@ -551,7 +357,7 @@ def toggle_view(request: HttpRequest) -> HttpResponse:
         view = "table"
 
     # Generate the base payload
-    payload = generate_random_payload()
+    payload = generate_payload()
     context = {"current_view": view}
 
     if view == "card":
