@@ -11,7 +11,7 @@
 {% endblock sidebar_left %}
 
 {% block navbar %}
-{% navbar brand="Django Insight UI NavBar" links=nav_links show_language_selector=True show_theme_toggle=True %}
+{% navbar brand="Django Insight UI NavBar" links=nav_links show_searchbar=True show_language_selector=True show_theme_toggle=True %}
 {% endblock navbar %}
 
 {% block content %}
@@ -31,6 +31,14 @@
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Input Elemente' %}</h2>
         <div class="space-y-4">
             {% include "insight_ui/components/inputs.html" %}
+        </div>
+    </section>
+
+    <!-- Searchbox -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Prominente Suchzeile' %}</h2>
+        <div class="space-y-4">
+            {% include "insight_ui/components/searchbar.html" %}
         </div>
     </section>
 
