@@ -1,32 +1,35 @@
 {% load i18n %}
 <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-24 mt-auto">
     <div class="container mx-auto py-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-                <h3 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-2">Django Insight UI</h3>
-                <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark text-sm">
-                    {% trans 'Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.' %}
-                </p>
-            </div>
-            <div>
+        <div class="flex flex-col md:flex-row justify-stretch gap-6">
+            {% if data.description %}
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-insight-text-primary dark:text-white mb-2">{{ data.description.title }}</h3>
+                    <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark text-sm">
+                        {{ data.description.text }}
+                    </p>
+                </div>
+            {% endif %}
+            <div class="flex-1">
                 <h4 class="text-md font-medium text-insight-text-primary dark:text-white mb-2">{% trans 'Links' %}</h4>
                 <ul class="space-y-1">
-                    <li><a href="#" class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-primary text-sm">{% trans 'Dokumentation' %}</a></li>
-                    <li><a href="#" class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-primary text-sm">{% trans 'GitHub' %}</a></li>
-                    <li><a href="#" class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-primary text-sm">{% trans 'Support' %}</a></li>
+                    {% for link in data.links %}
+                        <li><a href="{% url link.url %}" class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link-hover text-sm">{{ link.text }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
-            <div>
+            <div class="flex-1">
                 <h4 class="text-md font-medium text-insight-text-primary dark:text-white mb-2">{% trans 'Kontakt' %}</h4>
+                <a href="https://alpininsight.com/imprint" class="text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link-hover text-sm">{% trans "Impressum" %}</a>
                 <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark text-sm">
                     {% trans 'Haben Sie Fragen oder Feedback?' %}<br>
-                    <a href="mailto:info@alpininsight.com" class="text-insight-primary hover:underline">info@example.com</a>
+                    <a href="mailto:info@alpininsight.com" class="text-insight-primary hover:underline">info@alpininsight.com</a>
                 </p>
             </div>
         </div>
         <div class="border-t border-gray-200 dark:border-gray-700 mt-6 pt-4 text-center">
             <p class="text-insight-text-secondary dark:text-insight-text-secondary-dark text-sm">
-                © 2025 Django Insight UI. {% trans 'Alle Rechte vorbehalten.' %}
+                © 2025 {{ PROJECT_NAME }}. {% trans 'Alle Rechte vorbehalten.' %}
             </p>
         </div>
     </div>

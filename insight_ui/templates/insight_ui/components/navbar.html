@@ -11,12 +11,12 @@
       <!-- Brand Logo - Links positioniert -->
       {% if brand %}
       <div class="flex items-center">
-        <a href="{% if brand_url %}{{ brand_url }}{% else %}#{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white hover:text-insight-text-link dark:hover:text-blue-400">
+        <a href="{% if brand_url %}{% url brand_url %}{% else %}#{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white hover:text-insight-text-link dark:hover:text-blue-400">
           {% if brand_logo %}
             <img src="{{ brand_logo }}" alt="{{ brand }}" class="size rounded-full" />
           {% else %}
             <!-- Platzhalter brand_logo, not Profile_Head -->
-            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full" alt="Brand Icon" aria-hidden="true" />
+            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" aria-hidden="true" />
           {% endif %}
           <span>{{ brand }}</span>
         </a>
@@ -30,7 +30,7 @@
           {% for link in links %}
             <li>
               <a
-                href="{{ link.url }}"
+                href="{% url link.url %}"
                 class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
                 {% if link.active %}aria-current="page"{% endif %}
                 {% if link.external %}target="_blank" rel="noopener"{% endif %}
@@ -72,7 +72,9 @@
         {% if options.show_language_selector %}
           {% include "insight_ui/components/toggle_language.html" with options=options %}
         {% endif %}
-        {% include "insight_ui/components/toggle_theme.html" %}
+        {% if options.show_theme_toggle %}
+          {% include "insight_ui/components/toggle_theme.html" %}
+        {% endif %}
       </div>
     </div>
 
@@ -82,7 +84,7 @@
       <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         {% for link in links %}
           <a
-            href="{{ link.url }}"
+            href="{% url link.url %}"
             {% if link.id %}id="{{ link.id }}"{% endif %}
             class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-insight-text-link dark:text-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
             {% if link.active %}aria-current="page"{% endif %}

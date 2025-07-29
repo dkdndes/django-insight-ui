@@ -321,28 +321,21 @@ def carousel(  # noqa: PLR0913 (too many args)
     }
 
 
-@register.inclusion_tag("insight_ui/components/card.html")
-def card(  # noqa: PLR0913 (too many args)
-    title: str = "",
-    subtitle: str = "",
-    content: str = "",
-    theme: str = "light",
-    image: dict[str, str] = {},
-    actions: list[dict[str, Any]] = [],
-    **kwargs,
-) -> dict[str, Any]:
+@register.inclusion_tag("insight_ui/components/cards/card.html")
+def card(card: dict) -> dict[str, Any]:
     """
-    Rendert eine barrierefreie Karte.
+    Rendert eine Karte.
+
+    Folgende Informationen müssen in dem Dictionary enthalten sein:
+        - title (str)
+        - subtitle (str) (Optional)
+        - content (str)
+        - image (dict[url: str, alt: str]) (Optional)
+        - actions (list[dict[text: str, url: str, type: str]]) (Optional)
 
     Args:
     ----
-        title: Der Titel der Karte
-        subtitle: Ein optionaler Untertitel
-        content: Der Inhalt der Karte
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
-        image: Ein Dictionary mit Bild-Informationen (url, alt)
-        actions: Eine Liste von Aktions-Links
-        **kwargs: Zusätzliche Optionen für die Karte
+        card: Ein dictionary mit allen Informationen über die Karte, wie Titel, Content, etc..
 
     Returns:
     -------
@@ -350,13 +343,48 @@ def card(  # noqa: PLR0913 (too many args)
 
     """
     return {
-        "title": title,
-        "subtitle": subtitle,
-        "content": content,
-        "theme": theme,
-        "image": image,
-        "actions": actions,
-        "options": kwargs,
+        "title": card.get("title"),
+        "subtitle": card.get("subtitle"),
+        "content": card.get("content"),
+        "image": card.get("image"),
+        "actions": card.get("actions"),
+        "options": card.get("kwargs"),
+    }
+
+
+@register.inclusion_tag("insight_ui/components/cards/horizontale_card.html")
+def card_horizontale(card: dict) -> dict[str, Any]:
+    """
+    Rendert eine horizontal ausgerichtete Karte.
+
+    Mit einem Bild am oberen Rand. Darunter befindet sich der Titel und der Content, sowie wenn angegeben,
+    eine Liste von Tags. Am Ende werden die angegebenen Action Buttons übereinander dargestellt.
+
+    Folgende Informationen müssen in dem Dictionary enthalten sein:
+        - title (str)
+        - content (str)
+        - tags (list[str]) (Optional)
+        - url (str) (Optional)
+        - image (dict[url: str, alt: str]) (Optional)
+        - actions (list[dict[text: str, url: str, type: str]]) (Optional)
+
+    Args:
+    ----
+        card: Ein dictionary mit allen Informationen über die Karte, wie Titel, Content, etc..
+
+    Returns:
+    -------
+        Dict mit Kontext-Variablen für das Template
+
+    """
+    return {
+        "title": card.get("title"),
+        "content": card.get("content"),
+        "tags": card.get("tags"),
+        "url": card.get("url"),
+        "image": card.get("image"),
+        "actions": card.get("actions"),
+        "options": card.get("kwargs"),
     }
 
 

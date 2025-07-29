@@ -18,13 +18,24 @@ def get_storybook_context() -> dict:
 
     return {
         "nav_links": [
-            {"text": _("Startseite"), "url": "/", "active": True},
-            {"text": _("Storybook"), "url": "/components/", "active": False},
-            {"text": _("Dokumentation"), "url": "/docs/", "active": False},
+            {"text": _("Startseite"), "url": "storybook_view", "active": True},
+            {"text": _("Storybook"), "url": "storybook_view", "active": False},
+            {"text": _("Dokumentation"), "url": "storybook_view", "active": False},
         ],
+        "footer": {
+            "description": {
+                "title": "Django Insight UI",
+                "text": "Eine moderne UI-Bibliothek für Django-Anwendungen mit Fokus auf Barrierefreiheit und Benutzerfreundlichkeit.",  # noqa: E501
+            },
+            "links": [
+                {"text": _("Startseite"), "url": "storybook_view"},
+                {"text": _("Storybook"), "url": "storybook_view"},
+                {"text": _("Dokumentation"), "url": "storybook_view"},
+            ],
+        },
         "breadcrumb_items": [
-            {"text": _("Startseite"), "url": "/"},
-            {"text": _("Demo"), "url": "/demo/"},
+            {"text": _("Startseite"), "url": "storybook_view"},
+            {"text": _("Demo"), "url": "storybook_view"},
             {"text": _("Komponenten"), "url": None, "active": True},
         ],
         "table_headers": [_("Name"), _("E-Mail"), _("Status"), _("Aktionen")],
@@ -54,9 +65,36 @@ def get_storybook_context() -> dict:
                 ),
             ],
         ],
-        "card_actions": [
-            {"text": _("Mehr erfahren"), "url": "#", "type": "primary"},
-            {"text": _("Teilen"), "url": "#", "type": "secondary"},
+        "cards": [
+            {
+                "title": "Beispiel-Karte",
+                "subtitle": "Untertitel",
+                "content": "Dies ist der Inhalt einer Karte.",
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
+                ],
+            },
+            {
+                "title": "Karte mit Aktionen",
+                "content": "Diese Karte hat Aktions-Buttons.",
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
+                ],
+            },
+        ],
+        "horizontale_cards": [
+            {
+                "title": "Horizontale Karte",
+                "content": "Eine Karte dessen Inhalt horizontal angeordnet ist.",
+                "image": "insight_ui/img/thumbnail.png",
+                "tags": ["Test", "Test2", "Test3"],
+                "actions": [
+                    {"text": _("Mehr erfahren"), "url": "#", "type": "secondary"},
+                    {"text": _("Teilen"), "url": "#", "type": "primary"},
+                ],
+            }
         ],
         "form_fields": [
             {

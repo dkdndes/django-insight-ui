@@ -10,7 +10,7 @@
     <div class="carousel-track flex pt-6 pb-16 transition-transform duration-500 ease-in-out">
       {% for item in carousel_items %}
           <div class="flex justify-center carousel-item px-2">
-            {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
+            {% card card=item %}
           </div>
       {% endfor %}
     </div>

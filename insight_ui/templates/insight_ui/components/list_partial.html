@@ -21,7 +21,7 @@
             <a
               href="{% url 'pagination' %}?page=1"
               hx-get="{% url 'pagination' %}?page=1"
-              hx-target="#book-list-container"
+              hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
@@ -31,7 +31,7 @@
             <a
               href="{% url 'pagination' %}?page={{ pagination.page_obj.previous_page_number }}"
               hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.previous_page_number }}"
-              hx-target="#book-list-container"
+              hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
@@ -62,7 +62,7 @@
                     <a
                     href="{% url 'pagination' %}?page={{ num }}"
                     hx-get="{% url 'pagination' %}?page={{ num }}"
-                    hx-target="#book-list-container"
+                    hx-target="#list-container"
                     class="bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
                     >
                         {{ num }}
@@ -76,7 +76,7 @@
             <a
               href="{% url 'pagination' %}?page={{ pagination.page_obj.next_page_number }}"
               hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.next_page_number }}"
-              hx-target="#book-list-container"
+              hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
@@ -86,7 +86,7 @@
             <a
               href="{% url 'pagination' %}?page={{ pagination.page_obj.paginator.num_pages }}"
               hx-get="{% url 'pagination' %}?page={{ pagination.page_obj.paginator.num_pages }}"
-              hx-target="#book-list-container"
+              hx-target="#list-container"
               class="flex items-center bg-insight-primary rounded-sm text-white px-4 py-1 hover:bg-insight-primary-hover active:bg-insight-primary-active transition"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
