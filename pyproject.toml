@@ -39,6 +39,7 @@ dependencies = [
     "whitenoise>=6.9.0",
     "beautifulsoup4",
     "structlog>=25.4.0",
+    "psutil>=7.0.0",
 ]
 
 [project.optional-dependencies]

@@ -2,6 +2,7 @@
 
 module.exports = {
     content: [
+        './insight_ui/templates/**/**/**/*.html',
         './insight_ui/templates/**/**/*.html',
         './insight_ui/templates/**/*.html',
         './templates/**/*.html',

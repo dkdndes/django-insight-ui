@@ -1,44 +1,43 @@
-{% load insight_tags %}
-{% load i18n %}
-{% load static %}
+{% load static i18n insight_tags %}
+
 <!DOCTYPE html>
 <html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django Insight UI base.html{% endblock %}</title>
+    <title>{% block title %}{{ PROJECT_NAME }}{% endblock %}</title>
 
     <!-- Webmanifest für Favicon -->
     <link rel="manifest" href="{% static 'insight_ui/favicon/site.webmanifest' %}">
-    <link rel="icon" href="{% static 'insight_ui/favicon/favicon.ico' %}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{% static 'insight_ui/favicon/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'insight_ui/favicon/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'insight_ui/favicon/favicon-16x16.png' %}">
-    <link rel="mask-icon" href="{% static 'insight_ui/svg/logo.svg' %}" color="#5bbad5"> <!-- used by Safari pinned tab -->
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="{% static INSIGHT_UI.favicon %}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{% static INSIGHT_UI.apple_touch_icon %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
+    <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="#5bbad5"> <!-- used by Safari pinned tab -->
+    <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}"> <!-- Sets the background color for a live tile (MS Edge only) -->
+    <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
     <!-- CSRF Token for Django -->
     <meta name="csrf-token" content="{{ csrf_token }}">
     <!-- SEO Meta Tags -->
-    <meta name="description" content="{% block meta_description %}Django Insight UI base template{% endblock meta_description %}">
-    <meta name="keywords" content="{% block meta_keywords %}Django, Insight UI, base template{% endblock meta_keywords %}">
-    <meta name="author" content="{% block meta_author %}Peter Rosemann{% endblock meta_author %}">
+    <meta name="description" content="{% block meta_description %}{{ INSIGHT_UI.meta.seo.description }}{% endblock meta_description %}">
+    <meta name="keywords" content="{% block meta_keywords %}{{ INSIGHT_UI.meta.seo.keywords }}{% endblock meta_keywords %}">
+    <meta name="author" content="{% block meta_author %}{{ INSIGHT_UI.meta.seo.author }}{% endblock meta_author %}">
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="{% block og_title %}Django Insight UI base template{% endblock og_title %}">
-    <meta property="og:description" content="{% block og_description %}Django Insight UI base template{% endblock og_description %}">
+    <meta property="og:title" content="{% block og_title %}{{ INSIGHT_UI.meta.open_graph.title }}{% endblock og_title %}">
+    <meta property="og:description" content="{% block og_description %}{{ INSIGHT_UI.meta.open_graph.description }}{% endblock og_description %}">
     <meta property="og:image" content="{% static 'insight_ui/favicon/og-image.png' %}">
-    <meta property="og:url" content="{% block og_url %}{% endblock og_url %}">
+    <meta property="og:url" content="{% block og_url %}{{ INSIGHT_UI.meta.open_graph.url }}{% endblock og_url %}">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{% block og_site_name %}Django Insight UI{% endblock og_site_name %}">
+    <meta property="og:site_name" content="{% block og_site_name %}{{ INSIGHT_UI.meta.open_graph.site_name }}{% endblock og_site_name %}">
     <meta property="og:locale" content="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
     <meta property="og:locale:alternate" content="{% get_available_languages as LANGUAGES %}{% for lang in LANGUAGES %}{{ lang.0 }}{% if not forloop.last %},{% endif %}{% endfor %}">
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}Django Insight UI base template{% endblock twitter_title %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Django Insight UI base template{% endblock twitter_description %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ INSIGHT_UI.meta.twitter.title }}{% endblock twitter_title %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ INSIGHT_UI.meta.twitter.description }}{% endblock twitter_description %}">
     <meta name="twitter:image" content="{% static 'insight_ui/favicon/twitter-image.png' %}">
-    <meta name="twitter:site" content="@dkdndes">
-    <meta name="twitter:creator" content="@dkdndes">
+    <meta name="twitter:site" content="{% block twitter_site %}{{ INSIGHT_UI.meta.twitter.site }}{% endblock twitter_site %}">
+    <meta name="twitter:creator" content="{% block twitter_author %}{{ INSIGHT_UI.meta.twitter.author }}{% endblock twitter_author %}">
 
     <!-- HTMX CDN -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
@@ -51,24 +50,20 @@
     <link rel="stylesheet" href="{% static 'insight_ui/css/tailwind.css' %}">
 
     <!-- Insight UI CSS -->
-    {% comment %} <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}">
-    {% if LANGUAGE_BIDI %}
-        <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui-rtl.css' %}">
-    {% endif %}
-    {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}"> {% endcomment %}
 
     {% block extra_head %}{% endblock %}
 </head>
-<body {% if not request.COOKIES.insight_ui_theme %} data-theme="light"{% endif %}
+<body {% if not request.COOKIES.insight_ui_theme %} data-theme="{{ INSIGHT_UI.theme }}"{% endif %}
     class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-insight-text-primary dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 
-    <div class="">
-    {% block navbar %}
-    {% endblock navbar %}
-    </div>
+    <header>
+        {% block navbar %}
+        {% endblock navbar %}
+    </header>
 
-    <div class="">
+    <div>
         {% block sidebar_right %}{% endblock sidebar_right %}
         {% block sidebar_left %}{% endblock sidebar_left %}
     </div>

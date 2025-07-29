@@ -53,6 +53,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
+                "core.context_processor.project_context",
             ]
         },
     }
@@ -92,9 +93,40 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Env-Variables
+PROJECT_NAME = "Insight UI"
+PROJECT_DESCRIPTION = "Our base template to build Web UI's for our applications"
+PROJECT_AUTHOR = "Alpin Insight AI"
+VERSION = "0.1.0"
+
 # Insight UI Einstellungen
 INSIGHT_UI = {
     "theme": "light",
-    "branding": {"name": "Django Insight UI", "logo": None},
-    "features": {"theme_toggle": True, "language_selector": True},
+    "favicon": "insight_ui/favicon/favicon.ico",
+    "favicon_32": "insight_ui/favicon/favicon-32x32.png",
+    "favicon_16": "insight_ui/favicon/favicon-16x16.png",
+    "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
+    "safari_mask_icon": "insight_ui/svg/logo.svg",
+    "msapplication_TileColor": "#da532c",
+    "theme_color": "#ffffff",
+    "branding": {"name": PROJECT_NAME, "logo": None},
+    "meta": {
+        "seo": {
+            "description": PROJECT_DESCRIPTION,
+            "keywords": "Django, Insight UI, base template",
+            "author": PROJECT_AUTHOR,
+        },
+        "open_graph": {
+            "title": PROJECT_NAME,
+            "description": PROJECT_DESCRIPTION,
+            "site_name": "Django Insight UI",
+            "url": "",
+        },
+        "twitter": {
+            "title": PROJECT_NAME,
+            "description": PROJECT_DESCRIPTION,
+            "site": "Django Insight UI",
+            "author": PROJECT_AUTHOR,
+        },
+    },
 }
