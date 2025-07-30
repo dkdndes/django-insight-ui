@@ -63,7 +63,7 @@
       {% elif current_view == 'card' %}
         <div class="flex flex-wrap gap-6">
           {% for card in cards %}
-            {% card card=card %}
+            {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
           {% endfor %}
         </div>
       {% else %}

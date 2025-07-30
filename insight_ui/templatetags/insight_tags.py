@@ -322,70 +322,58 @@ def carousel(  # noqa: PLR0913 (too many args)
 
 
 @register.inclusion_tag("insight_ui/components/cards/card.html")
-def card(card: dict) -> dict[str, Any]:
+def card(
+    title: str, content: str, subtitle: str = "", image: dict[str, str] = {}, actions: list[dict[str, str]] = []
+) -> dict[str, Any]:
     """
     Rendert eine Karte.
 
-    Folgende Informationen müssen in dem Dictionary enthalten sein:
-        - title (str)
-        - subtitle (str) (Optional)
-        - content (str)
-        - image (dict[url: str, alt: str]) (Optional)
-        - actions (list[dict[text: str, url: str, type: str]]) (Optional)
-
     Args:
     ----
-        card: Ein dictionary mit allen Informationen über die Karte, wie Titel, Content, etc..
+        title (str): Title der Karte
+        content (str): Inhalt der Karte
+        subtitle (str): Untertitel der Karte
+        image (dict[url: str, alt: str]): Informationen über das Bild der Karte
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionsbuttons
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {
-        "title": card.get("title"),
-        "subtitle": card.get("subtitle"),
-        "content": card.get("content"),
-        "image": card.get("image"),
-        "actions": card.get("actions"),
-        "options": card.get("kwargs"),
-    }
+    return {"title": title, "subtitle": subtitle, "content": content, "image": image, "actions": actions}
 
 
 @register.inclusion_tag("insight_ui/components/cards/horizontale_card.html")
-def card_horizontale(card: dict) -> dict[str, Any]:
+def card_horizontale(  # noqa: PLR0913
+    title: str,
+    content: str,
+    tags: list[str] = [],
+    url: str = "",
+    image: dict[str, str] = {},
+    actions: list[dict[str, str]] = [],
+) -> dict[str, Any]:
     """
     Rendert eine horizontal ausgerichtete Karte.
 
     Mit einem Bild am oberen Rand. Darunter befindet sich der Titel und der Content, sowie wenn angegeben,
     eine Liste von Tags. Am Ende werden die angegebenen Action Buttons übereinander dargestellt.
 
-    Folgende Informationen müssen in dem Dictionary enthalten sein:
-        - title (str)
-        - content (str)
-        - tags (list[str]) (Optional)
-        - url (str) (Optional)
-        - image (dict[url: str, alt: str]) (Optional)
-        - actions (list[dict[text: str, url: str, type: str]]) (Optional)
-
     Args:
     ----
-        card: Ein dictionary mit allen Informationen über die Karte, wie Titel, Content, etc..
+        title (str): Title der Karte
+        content (str): Inhalt der Karte
+        tags (list[str]): Eine Liste von Buttons
+        url (str): Eine URL
+        image (dict[url: str, alt: str]): Informationen über das Bild der Karte
+        actions (list[dict[text: str, url: str, type: str]]): Eine Liste von Aktionsbuttons
 
     Returns:
     -------
         Dict mit Kontext-Variablen für das Template
 
     """
-    return {
-        "title": card.get("title"),
-        "content": card.get("content"),
-        "tags": card.get("tags"),
-        "url": card.get("url"),
-        "image": card.get("image"),
-        "actions": card.get("actions"),
-        "options": card.get("kwargs"),
-    }
+    return {"title": title, "content": content, "tags": tags, "url": url, "image": image, "actions": actions}
 
 
 @register.inclusion_tag("insight_ui/components/form.html")

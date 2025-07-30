@@ -138,10 +138,10 @@
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kacheln' %}</h2>
         <div class="flex gap-6">
             {% for card in cards %}
-                {% card card=card %}
+                {% card title=card.title subtitle=card.subtitle content=card.content actions=card.actions %}
             {% endfor %}
             {% for card in horizontale_cards %}
-                {% card_horizontale card=card %}
+                {% card_horizontale title=card.title content=card.content tags=card.tags url=card.url image=card.image actions=card.actions %}
             {% endfor %}
         </div>
     </section>
