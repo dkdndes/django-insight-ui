@@ -13,8 +13,8 @@
     <link rel="apple-touch-icon" href="{% static INSIGHT_UI.apple_touch_icon %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static INSIGHT_UI.favicon_32 %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static INSIGHT_UI.favicon_16 %}">
-    <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="#5bbad5"> <!-- used by Safari pinned tab -->
-    <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}"> <!-- Sets the background color for a live tile (MS Edge only) -->
+    <link rel="mask-icon" href="{% static INSIGHT_UI.safari_mask_icon %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="{{ INSIGHT_UI.msapplication_TileColor }}">
     <meta name="theme-color" content="{{ INSIGHT_UI.theme_color }}">
     <!-- CSRF Token for Django -->
     <meta name="csrf-token" content="{{ csrf_token }}">
@@ -40,22 +40,19 @@
     <meta name="twitter:creator" content="{% block twitter_author %}{{ INSIGHT_UI.meta.twitter.author }}{% endblock twitter_author %}">
 
     <!-- HTMX CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx-ext-ws@2.0.2" crossorigin="anonymous"></script>
 
     <!-- Insight UI Modular Utils  -->
     <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
 
-    <!-- TailwindCSS for development -->
-    <link rel="stylesheet" href="{% static 'insight_ui/css/tailwind.css' %}">
-
-    <!-- Insight UI CSS -->
-    {% comment %} <link rel="stylesheet" href="{% static 'insight_ui/css/insight-ui.css' %}"> {% endcomment %}
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
 
     {% block extra_head %}{% endblock %}
 </head>
 <body {% if not request.COOKIES.insight_ui_theme %} data-theme="{{ INSIGHT_UI.theme }}"{% endif %}
-    class="w-full h-full min-h-screen bg-gray-50 dark:bg-gray-900 text-insight-text-primary dark:text-white transition-colors duration-200 flex flex-col"
+    class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-insight-text-primary dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 
     <header>
@@ -63,16 +60,12 @@
         {% endblock navbar %}
     </header>
 
-    <div>
-        {% block sidebar_right %}{% endblock sidebar_right %}
-        {% block sidebar_left %}{% endblock sidebar_left %}
-    </div>
+    {% block sidebar_right %}{% endblock sidebar_right %}
+    {% block sidebar_left %}{% endblock sidebar_left %}
 
-    <div class="flex flex-1 relative">
-        <main id="main-content" class="flex-1 mx-auto">
-            {% block content %}{% endblock %}
-        </main>
-    </div>
+    <main id="main-content" class="flex flex-1 relative mx-24">
+        {% block content %}{% endblock %}
+    </main>
 
     {% block footer %}
     {% endblock footer %}

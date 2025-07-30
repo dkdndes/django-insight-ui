@@ -34,7 +34,6 @@ InsightUI.ThemeToggle = {
     document.querySelectorAll('[data-theme-toggle]').forEach(function(toggleButton) {
       toggleButton.addEventListener('click', function (e) {
         e.stopPropagation(); // verhindert Event-Bubbling
-        console.log('Theme-Toggle Button geklickt (JS EventListener)');
         const isDark = root.classList.contains('dark');
         setTheme(isDark ? 'light' : 'dark');
       });

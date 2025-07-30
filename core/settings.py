@@ -106,9 +106,10 @@ INSIGHT_UI = {
     "favicon_32": "insight_ui/favicon/favicon-32x32.png",
     "favicon_16": "insight_ui/favicon/favicon-16x16.png",
     "apple_touch_icon": "insight_ui/favicon/apple-touch-icon.png",
-    "safari_mask_icon": "insight_ui/svg/logo.svg",
-    "msapplication_TileColor": "#da532c",
+    "safari_mask_icon": "insight_ui/svg/logo.svg",  # Used by Safari pinned tab
+    "msapplication_TileColor": "#da532c",  # Sets the background color for a live tile (MS Edge only)
     "theme_color": "#ffffff",
+    "stylesheet": "insight_ui/css/tailwind.css",
     "branding": {"name": PROJECT_NAME, "logo": None},
     "meta": {
         "seo": {
