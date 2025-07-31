@@ -50,6 +50,9 @@
     .btn-info {
         @apply bg-insight-info border-insight-info hover:bg-insight-info-hover active:bg-insight-info-active hover:border-insight-info-hover active:border-insight-info-active transition-colors;
     }
+    .btn-link {
+        @apply border-0 underline text-insight-text-link px-6 py-2 hover:text-insight-text-link-hover;
+    }
     .btn-disabled {
         @apply bg-neutral-300 dark:bg-neutral-600 border-neutral-300 dark:border-neutral-600 text-neutral-400;
     }

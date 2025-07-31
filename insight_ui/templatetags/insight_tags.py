@@ -8,23 +8,43 @@ register = template.Library()
 
 
 @register.inclusion_tag("insight_ui/components/navbar.html")
-def navbar(
-    brand: str = "",
-    links: list[dict[str, Any]] = [],
-    theme: str = "light",
+def navbar(  # noqa: PLR0913 (too many args)
+    brand: dict[str, str] = {},
+    links: list[dict[str, str]] = [],
+    show_searchbar: bool = False,
+    show_usermenu: bool = False,
     show_language_selector: bool = True,
+    show_theme_toggle: bool = True,
     **kwargs,
 ) -> dict[str, Any]:
     """
-    Rendert eine barrierefreie Navigationsleiste.
+    Rendert eine Navigationsleiste.
 
     Args:
     ----
-        brand: Der Name oder Titel der Anwendung
+        brand: Title der Anwendung und Logo Informationen
         links: Eine Liste von Dictionaries mit Link-Informationen
-        theme: Das Farbschema ('light', 'dark', 'high-contrast')
+        show_searchbar:  'True' wenn eine Suchzeile angezeigt werden soll
+        show_usermenu: 'True' wenn ein Login/Usermenü angezeigt werden soll
         show_language_selector: 'True' wenn ein Menü zum wechseln der Sprache angezeigt werden soll
+        show_theme_toggle: 'True' wenn ein Button zum wechseln Des Themes (Hell/Dunkel) angezeigt werden soll
         **kwargs: Zusätzliche Optionen für die Navbar
+
+        Beispiel Branding:
+            {
+                "title": "Insight UI",
+                "logo_url": "path/to/logo.svg or png",
+                "logo_alt": "Unser Logo"
+            }
+
+        Beispiel Links:
+            {
+                "text": _("Startseite"),
+                "view_name": "storybook_view",
+                "active": True,
+                "need_auth": False,
+                "staff_only": False
+            }
 
     Returns:
     -------
@@ -34,8 +54,11 @@ def navbar(
     return {
         "brand": brand,
         "links": links,
-        "theme": theme,
-        "options": {**kwargs, "show_language_selector": show_language_selector},
+        "show_searchbar": show_searchbar,
+        "show_usermenu": show_usermenu,
+        "show_language_selector": show_language_selector,
+        "show_theme_toggle": show_theme_toggle,
+        "options": {**kwargs},
     }
 
 

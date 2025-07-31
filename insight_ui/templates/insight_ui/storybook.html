@@ -11,12 +11,12 @@
 {% endblock sidebar_left %}
 
 {% block navbar %}
-{% navbar brand="Django Insight UI NavBar" links=nav_links show_searchbar=True show_language_selector=True show_theme_toggle=True %}
+{% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
 {% endblock navbar %}
 
 {% block content %}
 <!-- Hauptcontainer für alle Demo-Abschnitte -->
-<div class="w-full pt-32 px-4 sm:px-6 lg:px-24">
+<div class="w-full pt-16 px-4 sm:px-6 lg:px-24">
 
     <!-- Willkommenstext -->
     <section class="mb-8">

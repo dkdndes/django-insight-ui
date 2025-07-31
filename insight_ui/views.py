@@ -12,15 +12,32 @@ from django.views.decorators.http import require_GET, require_http_methods
 logger = structlog.get_logger(__name__)
 
 
-def get_storybook_context() -> dict:
-    """Hilfsfunktion für Index-Seiten Context."""
-    page_obj, surrounding_pages = get_page(generate_payload(100))
-
+def get_nav_and_footer_context() -> dict:
+    """Stellt Inhalt für die Navigation und den Footer bereit."""
     return {
+        "nav_brand": {"title": "Django Insight UI NavBar", "logo_url": "", "logo_alt": "Insight UI Logo"},
         "nav_links": [
-            {"text": _("Startseite"), "url": "storybook_view", "active": True},
-            {"text": _("Storybook"), "url": "storybook_view", "active": False},
-            {"text": _("Dokumentation"), "url": "storybook_view", "active": False},
+            {
+                "text": _("Startseite"),
+                "view_name": "storybook_view",
+                "active": True,
+                "need_auth": False,
+                "staff_only": False,
+            },
+            {
+                "text": _("Storybook"),
+                "view_name": "storybook_view",
+                "active": False,
+                "need_auth": False,
+                "staff_only": False,
+            },
+            {
+                "text": _("Dokumentation"),
+                "view_name": "storybook_view",
+                "active": False,
+                "need_auth": False,
+                "staff_only": False,
+            },
         ],
         "footer": {
             "description": {
@@ -33,6 +50,14 @@ def get_storybook_context() -> dict:
                 {"text": _("Dokumentation"), "url": "storybook_view"},
             ],
         },
+    }
+
+
+def get_storybook_context() -> dict:
+    """Hilfsfunktion für Index-Seiten Context."""
+    page_obj, surrounding_pages = get_page(generate_payload(100))
+
+    return get_nav_and_footer_context() | {
         "breadcrumb_items": [
             {"text": _("Startseite"), "url": "storybook_view"},
             {"text": _("Demo"), "url": "storybook_view"},

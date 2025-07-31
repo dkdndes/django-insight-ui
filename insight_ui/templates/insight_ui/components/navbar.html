@@ -12,13 +12,13 @@
       {% if brand %}
       <div class="flex items-center">
         <a href="{% if brand_url %}{% url brand_url %}{% else %}#{% endif %}" class="flex items-center gap-2 text-xl font-bold text-insight-text-primary dark:text-white hover:text-insight-text-link dark:hover:text-blue-400">
-          {% if brand_logo %}
-            <img src="{{ brand_logo }}" alt="{{ brand }}" class="size rounded-full" />
+          {% if brand.logo_url %}
+            <img src="{% static brand.logo_url %}" alt="{{ brand.logo_alt }}" class="size rounded-full" />
           {% else %}
             <!-- Platzhalter brand_logo, not Profile_Head -->
-            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" aria-hidden="true" />
+            <img src="{% static 'insight_ui/svg/logo.svg' %}" class="size-8 rounded-full dark:bg-white" alt="Brand Icon" />
           {% endif %}
-          <span>{{ brand }}</span>
+          <span>{{ brand.title }}</span>
         </a>
       </div>
       {% endif %}
@@ -29,15 +29,17 @@
         <ul class="flex gap-6">
           {% for link in links %}
             <li>
-              <a
-                href="{% url link.url %}"
-                class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
-                {% if link.active %}aria-current="page"{% endif %}
-                {% if link.external %}target="_blank" rel="noopener"{% endif %}
-              >
-                {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-                {{ link.text }}
-              </a>
+              {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
+                <a
+                  href="{% url link.view_name %}"
+                  class="{% if link.active %}text-insight-text-link dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:text-insight-text-link dark:hover:text-blue-400{% endif %} px-4 py-2 text-sm font-medium transition-colors duration-200"
+                  {% if link.active %}aria-current="page"{% endif %}
+                  {% if link.external %}target="_blank" rel="noopener"{% endif %}
+                >
+                  {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+                  {{ link.text }}
+                </a>
+              {% endif %}
             </li>
           {% endfor %}
         </ul>
@@ -60,8 +62,8 @@
         </button>
       </div>
 
-      {% if options.show_searchbar %}
-      <!-- Searchbar -->
+      {% if show_searchbar %}
+        <!-- Searchbar -->
         <div class="flex-1 max-w-72">
           {% include "insight_ui/components/searchbar.html" with simple=True %}
         </div>
@@ -69,10 +71,13 @@
 
       <!-- Language Selector and Theme Toggle -->
       <div class="hidden md:flex items-center gap-4">
-        {% if options.show_language_selector %}
+        {% if show_usermenu %}
+          {% include "insight_ui/components/user_dropdown.html" with user=options.user show_login=options.show_login %}
+        {% endif %}
+        {% if show_language_selector %}
           {% include "insight_ui/components/toggle_language.html" with options=options %}
         {% endif %}
-        {% if options.show_theme_toggle %}
+        {% if show_theme_toggle %}
           {% include "insight_ui/components/toggle_theme.html" %}
         {% endif %}
       </div>
@@ -83,16 +88,17 @@
     <div id="mobile-menu" class="md:hidden hidden">
       <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         {% for link in links %}
-          <a
-            href="{% url link.url %}"
-            {% if link.id %}id="{{ link.id }}"{% endif %}
-            class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-insight-text-link dark:text-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
-            {% if link.active %}aria-current="page"{% endif %}
-            {% if link.external %}target="_blank" rel="noopener"{% endif %}
-          >
-            {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
-            {{ link.text }}
-          </a>
+          {% if not link.need_auth or user.is_authenticated and not link.staff_only or user.is_staff %}
+            <a
+              href="{% url link.view_name %}"
+              class="{% if link.active %}bg-blue-50 dark:bg-blue-900 text-insight-text-link dark:text-blue-400{% else %}text-insight-text-secondary dark:text-insight-text-secondary-dark hover:bg-gray-50 dark:hover:bg-gray-700{% endif %} block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+              {% if link.active %}aria-current="page"{% endif %}
+              {% if link.external %}target="_blank" rel="noopener"{% endif %}
+            >
+              {% if link.icon %}<span class="inline-block mr-2">{{ link.icon|safe }}</span>{% endif %}
+              {{ link.text }}
+            </a>
+          {% endif %}
         {% endfor %}
       </div>
     </div>

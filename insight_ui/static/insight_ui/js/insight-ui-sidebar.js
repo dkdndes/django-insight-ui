@@ -1,3 +1,5 @@
+window.InsightUI = window.InsightUI || {};
+
 InsightUI.Sidebar = {
   init: function () {
     const sidebars = document.querySelectorAll('[data-insight-sidebar]');
@@ -73,4 +75,5 @@ InsightUI.Sidebar = {
     }
   }
 };
+
 document.addEventListener('DOMContentLoaded', InsightUI.Sidebar.init);

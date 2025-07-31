@@ -63,7 +63,7 @@
     {% block sidebar_right %}{% endblock sidebar_right %}
     {% block sidebar_left %}{% endblock sidebar_left %}
 
-    <main id="main-content" class="flex flex-1 relative mx-24">
+    <main id="main-content" class="flex flex-1 relative pt-16 mx-24">
         {% block content %}{% endblock %}
     </main>
 
@@ -72,6 +72,7 @@
 
     <!-- Insight UI Modular JavaScript -->
     <script defer src="{% static 'insight_ui/js/insight-ui-utils.js' %}"></script>
+    <script defer src="{% static 'insight_ui/js/insight-ui-dropdown.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-theme-toggle.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-modal.js' %}"></script>
     <script defer src="{% static 'insight_ui/js/insight-ui-sidebar.js' %}"></script>

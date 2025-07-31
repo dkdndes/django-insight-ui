@@ -162,3 +162,41 @@
         </div>
     </div>
 </div>
+<!-- Dropdown menus -->
+ <div class="flex flex-col space-y-2">
+    <h3>{% trans "Range-Slider" %}</h3>
+    <div class="flex gap-4">
+        <!-- Button mit data-dropdown-toggle -->
+        <div class="relative">
+            <button data-dropdown-toggle="example-menu1" class="flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Benutzer
+                <svg class="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            <!-- Dropdown Menü mit passender ID -->
+            <div id="example-menu1" class="rounded-md shadow-lg bg-white">
+                <div class="py-1">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Einstellungen</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Abmelden</a>
+                </div>
+            </div>
+        </diV>
+
+        <!-- Zweites Dropdown Beispiel -->
+        <div class="relative">
+            <button data-dropdown-toggle="example-menu2" class="flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Einstellungen
+            </button>
+
+            <div id="example-menu2" class="absolute rounded-md shadow-lg bg-white">
+                <div class="py-1">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Option A</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Option B</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
