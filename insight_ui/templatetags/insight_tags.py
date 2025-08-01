@@ -305,7 +305,7 @@ def modal(  # noqa: PLR0913 (too many args)
     }
 
 
-@register.inclusion_tag("insight_ui/components/card_carousel.html")
+@register.inclusion_tag("insight_ui/components/carousels/card_carousel.html")
 def carousel(  # noqa: PLR0913 (too many args)
     carousel_items: list = [],
     autoplay: bool = False,
