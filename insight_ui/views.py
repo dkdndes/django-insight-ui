@@ -15,7 +15,11 @@ logger = structlog.get_logger(__name__)
 def get_nav_and_footer_context() -> dict:
     """Stellt Inhalt für die Navigation und den Footer bereit."""
     return {
-        "nav_brand": {"title": "Django Insight UI NavBar", "logo_url": "", "logo_alt": "Insight UI Logo"},
+        "nav_brand": {
+            "title": "Django Insight UI NavBar",
+            "logo_url": "insight_ui/svg/ai-logo.svg",
+            "logo_alt": "Insight UI Logo",
+        },
         "nav_links": [
             {
                 "text": _("Startseite"),
@@ -58,6 +62,11 @@ def get_storybook_context() -> dict:
     page_obj, surrounding_pages = get_page(generate_payload(100))
 
     return get_nav_and_footer_context() | {
+        "code_block_code": """
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+""",
         "breadcrumb_items": [
             {"text": _("Startseite"), "url": "storybook_view"},
             {"text": _("Demo"), "url": "storybook_view"},
@@ -177,6 +186,11 @@ def get_storybook_context() -> dict:
             {"code": "zh", "name": "中文"},
         ],
         "carousel_items": map_payload_to_cards(generate_payload()),
+        "image_carousel_items": [
+            {"title": "Test Bild 1", "url": "insight_ui/img/text-services-main.png"},
+            {"title": "Test Bild 2", "url": "insight_ui/img/text-services-response.png"},
+            {"title": "Test Bild 3", "url": "insight_ui/img/text-services-response2.png"},
+        ],
         "range_total_slides": range(3),
         "start_page": {"page_obj": page_obj, "surrounding_pages": surrounding_pages},
     }

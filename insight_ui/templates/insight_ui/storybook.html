@@ -45,7 +45,7 @@
     <!-- Code-Block -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Code Block' %}</h2>
-        {% include "insight_ui/components/code_block.html" %}
+        {% include "insight_ui/components/code_block.html" with code=code_block_code %}
     </section>
 
     <!-- Alert Demo -->
@@ -152,10 +152,16 @@
         </div>
     </section>
 
-    <!-- Carousel Demo -->
+    <!-- Card Carousel Demo -->
     <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Karten/Kachel Karussell' %}</h2>
         {% carousel carousel_items=carousel_items show_index=True slides_count=range_total_slides items_per_slide=2 %}
+    </section>
+
+    <!-- Image Carousel Demo -->
+    <section class="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-semibold text-insight-text-primary dark:text-white mb-4">{% trans 'Bilder Karussell' %}</h2>
+        {% include "insight_ui/components/image_carousel.html" with carousel_items=image_carousel_items show_dots=True show_index=True slides_count=range_total_slides items_per_slide=1 %}
     </section>
 
     <!--Toggle View Demo -->

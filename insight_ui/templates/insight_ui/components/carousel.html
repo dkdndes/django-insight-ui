@@ -9,9 +9,9 @@
   <div class="max-w-6xl mx-auto overflow-hidden">
     <div class="carousel-track flex pt-6 pb-16 transition-transform duration-500 ease-in-out">
       {% for item in carousel_items %}
-          <div class="flex justify-center carousel-item px-2">
-            {% card title=item.title subtitle=item.subtitle content=item.content actions=item.actions %}
-          </div>
+        <div class="flex justify-center carousel-item px-2">
+          {% block carousel_content %}{% endblock carousel_content %}
+        </div>
       {% endfor %}
     </div>
   </div>
@@ -31,9 +31,9 @@
   <!-- Pagination Dots -->
   {% if show_dots %}
     <div class="carousel-dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {% for i in slides_count %}
-          <button class="carousel-dot size-3 rounded-full bg-transparent border border-gray-400 transition" data-index="{{ i }}"></button>
-        {% endfor %}
+      {% for i in slides_count %}
+        <button class="carousel-dot size-3 rounded-full bg-transparent border border-gray-400 transition" data-index="{{ i }}"></button>
+      {% endfor %}
     </div>
   {% endif %}
 
