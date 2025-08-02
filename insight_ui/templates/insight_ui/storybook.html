@@ -4,20 +4,23 @@
 {% block title %}{% trans 'Django Insight UI storybook.html' %}{% endblock %}
 
 {% block sidebar_right %}
-{% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=True collapsible=True sidebar_items=right_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Sekundäre Sidebar" side="right" auto_close=True collapsible=True sidebar_items=right_sidebar_items %}
 {% endblock sidebar_right %}
 {% block sidebar_left %}
-{% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=False collapsible=True sidebar_items=left_sidebar_items %}
+    {% include "insight_ui/components/sidebar.html" with title="Primäre Sidebar" side="left" auto_close=False collapsible=True sidebar_items=left_sidebar_items %}
 {% endblock sidebar_left %}
 
 {% block navbar %}
-{% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
+    {% navbar brand=nav_brand links=nav_links show_searchbar=True show_usermenu=True user=user show_login=True %}
 {% endblock navbar %}
+
+{% block background_image %}
+    <img src="{% static "img/hubble-fiction.webp" %}" alt="Hubble Telescope" class="fixed -z-10 w-full h-dvh object-cover opacity-25">
+{% endblock background_image %}
 
 {% block content %}
 <!-- Hauptcontainer für alle Demo-Abschnitte -->
-<div class="w-full pt-16 px-4 sm:px-6 lg:px-24">
-
+<div class="w-full pt-16">
     <!-- Willkommenstext -->
     <section class="mb-8">
         <h1 class="text-3xl font-bold text-insight-text-primary dark:text-white mb-4">{% trans 'Django Insight UI Storybook' %}</h1>

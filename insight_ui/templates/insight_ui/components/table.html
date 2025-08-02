@@ -8,7 +8,7 @@
 
     {% if headers %}
       <thead class="text-insight-text-primary dark:text-insight-text-primary-dark">
-        <tr class="border-b border-neutral-400 dark:border-neutral-500">
+        <tr class="border-b border-gray-400 dark:border-gray-500">
           {% for header in headers %}
             <th class="text-start text-xs px-4 py-2" scope="col">{{ header }}</th>
           {% endfor %}
@@ -18,7 +18,7 @@
 
     <tbody class="text-insight-text-primary dark:text-insight-text-primary-dark">
       {% for row in rows %}
-        <tr class="border-b dark:border-neutral-600">
+        <tr class="border-b border-gray-200 dark:border-gray-600">
           {% for cell in row %}
             <td class="text-start text-xs px-4 py-3">{{ cell|safe }}</td>
           {% endfor %}
@@ -26,7 +26,7 @@
       {% empty %}
         <tfoot>
           <tr>
-            <td colspan="{{ headers|length }}" class="w-full border-t border-neutral-400 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
+            <td colspan="{{ headers|length }}" class="w-full border-t border-gray-400 dark:border-gray-500 text-insight-text-secondary dark:text-insight-text-secondary-dark text-center pt-16">
               {% trans "Keine Daten vorhanden!" %}
             </td>
           </tr>

@@ -64,6 +64,9 @@
     class="size-full min-h-screen bg-gray-50 dark:bg-gray-900 text-insight-text-primary dark:text-white transition-colors duration-200 flex flex-col"
     hx-ext="ws">
 
+    {% block background_image %}
+    {% endblock background_image %}
+
     <header>
         {% block navbar %}
         {% endblock navbar %}
@@ -72,7 +75,7 @@
     {% block sidebar_right %}{% endblock sidebar_right %}
     {% block sidebar_left %}{% endblock sidebar_left %}
 
-    <main id="main-content" class="flex flex-1 relative pt-16 mx-24">
+    <main id="main-content" class="pt-16 mx-24">
         {% block content %}{% endblock %}
     </main>
 

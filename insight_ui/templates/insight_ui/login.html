@@ -6,7 +6,7 @@
 {% endblock navbar %}
 
 {% block content %}
-  <div class="flex w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 rounded shadow px-6 py-12 lg:px-8 my-16 mx-auto">
+  <div class="flex w-96 flex-col justify-center bg-white dark:bg-gray-800 border dark:border-0 border-gray-200 rounded shadow px-6 py-12 lg:px-8 my-16 mx-auto">
     <h2 class="text-center text-3xl font-bold leading-9 tracking-tight">
       {% trans "Login" %}
     </h2>
@@ -41,9 +41,9 @@
         </div>
       </form>
       <div class="flex items-center gap-4 w-full mt-6">
-        <div class="border-b w-full"></div>
+        <div class="border-b border-gray-200 dark:border-gray-500 w-full"></div>
         <span>{% trans "Or" %}</span>
-        <div class="border-b w-full"></div>
+        <div class="border-b border-gray-200 dark:border-gray-500 w-full"></div>
       </div>
       <div class="flex flex-col mt-2">
         <a href="#" class="btn btn-link">

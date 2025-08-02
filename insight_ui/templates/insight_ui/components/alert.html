@@ -2,7 +2,7 @@
 
 <div
   role="alert"
-  class="flex justify-between w-full shadow p-4 rounded bg-insight-{{ type }}"
+  class="flex justify-between w-full shadow p-4 rounded {% if type == "info" %}bg-insight-info{% elif type == "success" %}bg-insight-success{% elif type == "warning" %}bg-insight-warning{% elif type == "error" %}bg-insight-error{% endif %}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
 >
   <div class="flex items-center gap-2 text-white">

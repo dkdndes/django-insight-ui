@@ -5,7 +5,7 @@ InsightUI.Sidebar = {
     const sidebars = document.querySelectorAll('[data-insight-sidebar]');
     if (!sidebars) return;
 
-    for (const sidebar of sidebars)
+    for (let sidebar of sidebars)
     {
       const side = sidebar.getAttribute("data-insight-sidebar");
       const openBtn = document.querySelector(`.open-btn[data-sidebar-target="${side}"]`);
@@ -13,6 +13,9 @@ InsightUI.Sidebar = {
 
       // Sidebar closes automatically when the mouse leaves the sidebar
       const autoClose = sidebar.getAttribute("data-auto-close") === "true";
+
+      // These classes were added so that the sidebar initially appears closed, but they prevent the sidebar from opening.
+      sidebar.classList.remove("ltr:translate-x-full", "rtl:-translate-x-full", "ltr:-translate-x-full", "rtl:translate-x-full");
 
       // Funktion zum Öffnen der Sidebar
       function openSidebar() {
