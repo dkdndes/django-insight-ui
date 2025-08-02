@@ -1,10 +1,39 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @font-face {
     font-family: "Inter";
     src: url("Inter.ttf");
+}
+
+@theme {
+    --font-sans: "Inter", sans-serif;
+
+    --color-insight-primary: #3b82f6;
+    --color-insight-primary-hover: #60a5fa;
+    --color-insight-primary-active: #93c5fd;
+    --color-insight-secondary: #6b7280;
+    --color-insight-secondary-hover: #94a3b8;
+    --color-insight-secondary-active: #cbd5e1;
+    --color-insight-success: #10b981;
+    --color-insight-success-hover: #34d399;
+    --color-insight-success-active: #6ee7b7;
+    --color-insight-warning: #f59e0b;
+    --color-insight-warning-hover: #fbbf24;
+    --color-insight-warning-active: #fcd34d;
+    --color-insight-error: #ef4444;
+    --color-insight-error-hover: #f87171;
+    --color-insight-error-active: #fca5a5;
+    --color-insight-info: #06b6d4;
+    --color-insight-info-hover: #22d3ee;
+    --color-insight-info-active: #67e8f9;
+    --color-insight-text-primary: #262626;
+    --color-insight-text-secondary: #737373;
+    --color-insight-text-primary-dark: #e5e7eb;
+    --color-insight-text-secondary-dark: #94a3b8;
+    --color-insight-text-link: #3b82f6;
+    --color-insight-text-link-hover: #93c5fd;
 }
 
 @layer base {

@@ -1,4 +1,4 @@
-{% load static i18n insight_tags %}
+{% load static i18n tailwind_cli insight_tags %}
 
 <!DOCTYPE html>
 <html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
@@ -52,6 +52,8 @@
 
     <!-- Main stylesheet -->
     <link rel="stylesheet" href="{% static INSIGHT_UI.stylesheet %}">
+
+    {% tailwind_css %}
 
     <!-- prism stylesheet (Syntax-Highlighting) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css">

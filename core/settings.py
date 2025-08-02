@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_tailwind_cli",
     "django_htmx",
     "insight_ui",
 ]
@@ -85,6 +86,10 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, "insight_ui", "locale")]
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [BASE_DIR / "insight_ui/static/insight_ui/"]
+
+# Tailwind source file
+TAILWIND_CLI_SRC_CSS = os.path.join(BASE_DIR, "insight_ui/static/insight_ui/css/input.css")
 
 # WhiteNoise configuration
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

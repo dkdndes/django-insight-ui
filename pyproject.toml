@@ -40,6 +40,7 @@ dependencies = [
     "beautifulsoup4",
     "structlog>=25.4.0",
     "psutil>=7.0.0",
+    "django-tailwind-cli>=4.3.0",
 ]
 
 [project.optional-dependencies]

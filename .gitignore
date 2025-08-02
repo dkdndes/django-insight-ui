@@ -195,3 +195,5 @@ cython_debug/
 
 .aider*
 uv.lock
+
+.django_tailwind_cli/
